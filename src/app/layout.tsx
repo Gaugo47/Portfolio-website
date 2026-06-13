@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Robotics & AI Engineering Portfolio",
+  title: "Gauthier Defoy | Robotics & AI Engineering",
   description:
-    "Portfolio for a Robotics & AI engineering student building perception, intelligence, robotics, and human-machine interaction systems.",
+    "Portfolio bilingue de Gauthier Defoy, étudiant ingénieur à l'ESILV spécialisé en robotique, IA locale, vision par ordinateur et interfaces humain-machine.",
 };
 
 export default function RootLayout({

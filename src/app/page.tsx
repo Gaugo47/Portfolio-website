@@ -1,30 +1,35 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import {
   BrainCircuit,
   Cpu,
   Eye,
   Gauge,
+  GraduationCap,
   Hand,
+  Languages,
   Mail,
   Map,
   MoveRight,
   Network,
   Radar,
+  ShieldCheck,
   Sparkles,
   Wrench,
 } from "lucide-react";
 import { NavBar, type Language } from "@/components/NavBar";
 import { ParticleField } from "@/components/ParticleField";
-import { ProjectCard, type Project } from "@/components/ProjectCard";
+import type { Project } from "@/components/ProjectCard";
+import { ProjectScrollTrack } from "@/components/ProjectScrollTrack";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 
 const profileLinks = {
   github: "https://github.com/",
   linkedin: "https://www.linkedin.com/in/gauthier-defoy/",
-  email: "mailto:hello@example.com",
+  email: "mailto:gauthier.defoy@edu.devinci.fr",
 };
 
 const content = {
@@ -33,6 +38,7 @@ const content = {
       brand: "GAUTHIER.AI",
       systems: "Systèmes",
       projects: "Projets",
+      education: "Formation",
       experience: "Expérience",
       vision: "Vision",
       contact: "Contact",
@@ -44,15 +50,20 @@ const content = {
       badge: "Gauthier Defoy · Étudiant ingénieur Robotique & IA",
       title: "Je conçois des systèmes intelligents qui perçoivent, décident et interagissent.",
       copy:
-        "Portfolio bilingue pour équipes de robotique, laboratoires IA et studios de technologie créative qui recherchent une approche système, rapide à prototyper et centrée sur l’humain.",
+        "Étudiant à l’ESILV, je construis des prototypes mêlant IA locale, vision par ordinateur, robotique mécanique et interfaces humain-machine pour des environnements créatifs et industriels.",
       projectsCta: "Voir les projets",
       systemsCta: "Explorer le modèle système",
       contactCta: "Contact",
+      credentials: [
+        { value: "ESILV", label: "Cycle ingénieur 2023-2028" },
+        { value: "TOEFL", label: "Anglais C1 - 653/677" },
+        { value: "BIA", label: "Mention Très Bien" },
+      ],
     },
     interface: {
       eyebrow: "Interface système",
       title: "Stack robotique créative",
-      modules: ["Fusion capteurs", "Raisonnement local", "Contrôle moteur", "Retour humain"],
+      modules: ["Vision OpenCV", "LLM local Llama", "Robotique mécanique", "Gestes & voix"],
       moduleLabel: "Module",
     },
     systemsHeader: {
@@ -66,28 +77,28 @@ const content = {
         title: "Perception",
         subtitle: "Vision par ordinateur",
         copy:
-          "Transformer des entrées capteurs bruitées en compréhension exploitable avec OpenCV, MediaPipe, suivi d’objets et pipelines visuels.",
+          "Transformer des entrées caméra en signaux exploitables avec OpenCV, MediaPipe, détection gestuelle et pipelines visuels temps réel.",
         stat: "Entrée vision",
       },
       {
         title: "Intelligence",
         subtitle: "Systèmes IA / LLM",
         copy:
-          "Assembler assistants locaux, orchestration de modèles, logique de prompts et couches de décision pour rendre les systèmes adaptatifs.",
+          "Assembler assistants locaux, modèles Llama, logique de prompts et couches de décision pour rendre les systèmes adaptatifs même hors ligne.",
         stat: "Raisonnement",
       },
       {
         title: "Action",
         subtitle: "Robotique & contrôle",
         copy:
-          "Relier logiciel et matériel avec prototypes embarqués, actionneurs, boucles de contrôle et intégration hardware/software.",
+          "Relier logiciel et matériel avec prototypes embarqués, SolidWorks, impression 3D, CNC, actionneurs et contraintes mécaniques.",
         stat: "Sortie physique",
       },
       {
         title: "Interaction",
         subtitle: "UX humain-machine",
         copy:
-          "Concevoir des interactions où gestes, voix, feedback et comportement spatial rendent la machine lisible et digne de confiance.",
+          "Concevoir des interactions où gestes, voix, projection et feedback rendent la machine lisible, intuitive et digne de confiance.",
         stat: "Signal humain",
       },
     ],
@@ -111,71 +122,129 @@ const content = {
         title: "Assistant vocal IA local",
         label: "Système LLM",
         problem:
-          "Construire un assistant privé capable d’écouter, comprendre une intention et répondre sans dépendre d’un workflow cloud-first.",
+          "Créer un assistant vocal doté d’intelligence artificielle, fonctionnant sans internet, capable de lancer une interaction via un geste de la main.",
         architecture: ["Audio", "Speech pipeline", "LLM local", "Routeur d’actions", "Réponse vocale"],
         stack: ["Python", "Llama models", "STT type Whisper", "TTS", "Outils locaux"],
         outcome:
-          "Une architecture modulaire extensible vers la mémoire, le contrôle local d’appareils et l’expérimentation IA.",
+          "Un projet personnel codé en Python combinant Llama3, OpenCV et MediaPipe, pertinent pour l’IA embarquée et les assistants locaux.",
         mediaLabel: "Placeholder pour waveform, routage d’intention et état de réponse.",
         accent: "green",
       },
       {
-        title: "Système de détection d’objets",
+        title: "Pipeline de vision gestuelle",
         label: "Pipeline perception",
         problem:
-          "Détecter et classifier des objets dans un flux caméra temps réel tout en gardant le pipeline explicable et réglable.",
-        architecture: ["Caméra", "Prétraitement", "Modèle détection", "Tracking", "Overlay UI"],
+          "Détecter une intention gestuelle dans un flux caméra temps réel afin de déclencher des comportements d’assistant ou d’interface.",
+        architecture: ["Caméra", "MediaPipe", "Landmarks", "Geste reconnu", "Action système"],
         stack: ["OpenCV", "MediaPipe", "Python", "NumPy", "Vidéo temps réel"],
         outcome:
-          "Une couche de perception utile pour prototyper des comportements robotiques, installations interactives et interfaces spatiales.",
-        mediaLabel: "Placeholder pour grille de détection et carte de confiance.",
+          "Une couche de perception utile pour prototyper des interactions sans contact dans des installations, robots ou interfaces projetées.",
+        mediaLabel: "Placeholder pour landmarks main, score de confiance et état gestuel.",
         accent: "cyan",
       },
       {
-        title: "Prototype robotique embarqué",
-        label: "Intégration hardware",
+        title: "Robot octopode mécanique",
+        label: "Prototype scolaire",
         problem:
-          "Connecter capteurs, logique de contrôle et sortie matérielle dans un prototype testable rapidement et itérable proprement.",
-        architecture: ["Capteurs", "Microcontrôleur", "Boucle contrôle", "Actionneurs", "Télémétrie"],
-        stack: ["Arduino / ESP32", "C++", "Télémétrie série", "Moteurs", "Prototypage"],
+          "Réaliser en équipe un robot octopode en respectant un cahier des charges précis et des moyens mécaniques imposés.",
+        architecture: ["Cahier des charges", "Cinématique", "Engrenages", "Fabrication", "Test mécanique"],
+        stack: ["SolidWorks", "Impression 3D", "CNC", "Cinématique", "Travail d’équipe"],
         outcome:
-          "Une boucle hardware/software concrète pour valider mouvement, contraintes et feedback opérateur avant de complexifier.",
-        mediaLabel: "Placeholder pour barres de télémétrie et états actionneurs.",
+          "Un prototype mené sur 9 mois en équipe de 4, combinant conception mécanique, fabrication numérique et résolution de contraintes.",
+        mediaLabel: "Placeholder pour schéma cinématique, engrenages et phases de mouvement.",
         accent: "amber",
       },
       {
-        title: "Interaction gestuelle humain-machine",
+        title: "Interface projetée interactive",
         label: "Prototype HMI",
         problem:
-          "Permettre à un utilisateur de communiquer naturellement avec une machine via gestes, feedback visible et calibration légère.",
-        architecture: ["Mouvement", "Landmarks", "Classifieur geste", "État interaction", "Feedback"],
-        stack: ["MediaPipe", "OpenCV", "TypeScript UI", "Machines à états", "Prototypage"],
+          "Diriger un projet d’interface projetée amovible électriquement, interactive et utilisable via gestes ou commande vocale.",
+        architecture: ["Projection", "Entrée geste/voix", "Assistant LLM", "Interface", "Action mécanique"],
+        stack: ["Gestion projet", "LLM", "Voix", "Interaction gestuelle", "Équipe de 6"],
         outcome:
-          "Un modèle d’interaction pour environnements immersifs où la technologie doit répondre clairement sans devenir opaque.",
-        mediaLabel: "Placeholder pour landmarks main et état d’interaction.",
+          "Un projet personnel en cours comme chef et directeur de projet, à la croisée de l’IA, de l’interaction et du hardware.",
+        mediaLabel: "Placeholder pour projection, commande vocale et état d’interface.",
+        media: {
+          src: "/projects/projector-positioning-clean.png",
+          alt: "Système hardware de positionnement motorisé pour projecteur",
+          eyebrow: "Ingénierie en mouvement",
+          title: "Système motorisé de positionnement de projecteur",
+          headline: ["SYSTÈME", "MOTORISÉ", "POSITIONNEMENT", "PROJECTEUR"],
+          tagline: "Précision. Automatisation. Alignement reproductible.",
+          description:
+            "Système motorisé quatre axes conçu pour positionner intelligemment un projecteur et obtenir une performance stable dans un environnement d’interface projetée.",
+          footer: "Projet mécatronique · hardware prototype",
+          overviewLabel: "Vue système",
+          impact: {
+            lead: "Conçu pour la précision.",
+            highlight: "Pensé pour l’impact.",
+          },
+          features: [
+            { title: "Axe de translation linéaire", detail: "Rail en extrusion aluminium" },
+            { title: "Rotation quatre axes", detail: "Mécanisme type gimbal de précision" },
+            { title: "Contrôle par moteurs pas-à-pas", detail: "Architecture pensée pour couple et répétabilité" },
+            { title: "Conçu pour la précision", detail: "Composants robustes et intégration mécatronique" },
+          ],
+        },
         accent: "green",
+      },
+    ],
+    educationHeader: {
+      eyebrow: "Formation & certifications",
+      title: "Un socle ingénieur lisible pour les recruteurs.",
+      copy:
+        "Un focus clair sur les signaux institutionnels de ton parcours : école d’ingénieur, anglais certifié, culture aéronautique et engagement FabLab.",
+    },
+    education: [
+      {
+        title: "ESILV - École d’Ingénieurs",
+        meta: "Cycle préparatoire intégré puis cursus ingénieur · 2023-2028",
+        copy:
+          "Formation en sciences de l’ingénieur, projets techniques, mathématiques, physique, conception et prototypage. Positionnement actuel : robotique, industrie et IA.",
+        signal: "GPA année 1 : 3.1",
+      },
+      {
+        title: "TOEFL ITP - Anglais C1",
+        meta: "Score 653/677",
+        copy:
+          "Certification linguistique utile pour travailler dans des environnements internationaux de recherche, robotique, IA et technologie créative.",
+        signal: "C1",
+      },
+      {
+        title: "Brevet d’Initiation à l’Aéronautique",
+        meta: "Mention Très Bien",
+        copy:
+          "Base aéronautique et culture système : mécanique du vol, navigation, météorologie et compréhension technique d’environnements complexes.",
+        signal: "BIA",
+      },
+      {
+        title: "DeVinci Fablab",
+        meta: "Co-responsable partenariats · 2024 - en cours",
+        copy:
+          "Lien direct avec l’écosystème d’innovation : partenariats entreprises, événements, projets techniques et formations autour du prototypage.",
+        signal: "FabLab",
       },
     ],
     experience: {
       eyebrow: "Expérience",
       title: "Prototyper vite, tester franchement, raffiner le système.",
       copy:
-        "Mon positionnement est celui d’un étudiant ingénieur Robotique & IA qui avance par cycles courts : idée, architecture, prototype, test, démonstration.",
+        "Mon positionnement est celui d’un étudiant ingénieur à l’ESILV qui avance par cycles courts : idée, architecture, prototype, test, démonstration.",
       items: [
         {
-          title: "FabLab & prototypage",
+          title: "Co-responsable partenariats · DeVinci Fablab",
           copy:
-            "Transformer rapidement des idées de systèmes en expériences physiques avec capteurs, outils de fabrication et boucles d’itération.",
+            "Démarchage d’entreprises pour créer des collaborations autour d’événements, de projets techniques et de formations, en lien avec les partenariats parisiens.",
         },
         {
-          title: "Projets d’ingénierie",
+          title: "Projets d’ingénierie · ESILV",
           copy:
-            "Travailler sur toute la chaîne : besoin, architecture, implémentation, debug, démonstration et documentation.",
+            "Cycle préparatoire intégré, projets de conception et prototypage, culture Maths/Physique et approche concrète des systèmes techniques.",
         },
         {
-          title: "Recherche appliquée & défis",
+          title: "Tutorat, BIA & culture scientifique",
           copy:
-            "Avancer sous contrainte avec des solutions claires, fiables, explicables et prêtes à être montrées.",
+            "Cours particuliers en mathématiques et physique, anglais C1 TOEFL ITP 653/677, BIA mention Très Bien et intérêt marqué pour robotique, électronique, IA et aéronautique.",
         },
       ],
     },
@@ -183,7 +252,7 @@ const content = {
       eyebrow: "Vision",
       title: "Je veux construire des systèmes qui donnent l’impression d’être vivants.",
       copy:
-        "Mêler précision d’ingénierie et expériences immersives : robots, assistants et espaces intelligents qui perçoivent le contexte, prennent des décisions lisibles et communiquent avec les humains de manière intuitive, cinématique et fiable.",
+        "Mêler précision d’ingénierie et expériences immersives : robots, assistants locaux et interfaces projetées qui perçoivent le contexte, prennent des décisions lisibles et communiquent avec les humains de manière intuitive, cinématique et fiable.",
     },
     contact: {
       eyebrow: "Contact",
@@ -198,6 +267,7 @@ const content = {
       brand: "GAUTHIER.AI",
       systems: "Systems",
       projects: "Projects",
+      education: "Education",
       experience: "Experience",
       vision: "Vision",
       contact: "Contact",
@@ -209,15 +279,20 @@ const content = {
       badge: "Gauthier Defoy · Robotics & AI Engineering Student",
       title: "I build intelligent systems that perceive, decide, and interact.",
       copy:
-        "A bilingual portfolio for robotics teams, AI labs, and creative technology studios looking for systems thinking, prototyping velocity, and human-centered machine intelligence.",
+        "As an ESILV engineering student, I build prototypes combining local AI, computer vision, mechanical robotics, and human-machine interfaces for creative and industrial environments.",
       projectsCta: "View Projects",
       systemsCta: "Explore System Model",
       contactCta: "Contact",
+      credentials: [
+        { value: "ESILV", label: "Engineering path 2023-2028" },
+        { value: "TOEFL", label: "English C1 - 653/677" },
+        { value: "BIA", label: "Highest honors" },
+      ],
     },
     interface: {
       eyebrow: "System Interface",
       title: "Creative robotics stack",
-      modules: ["Sensor Fusion", "Local Reasoning", "Motion Control", "Human Feedback"],
+      modules: ["OpenCV Vision", "Local Llama LLM", "Mechanical Robotics", "Gesture & Voice"],
       moduleLabel: "Module",
     },
     systemsHeader: {
@@ -231,28 +306,28 @@ const content = {
         title: "Perception",
         subtitle: "Computer Vision",
         copy:
-          "Turning noisy sensor input into structured scene understanding with OpenCV, MediaPipe, object tracking, and visual pipelines.",
+          "Turning camera input into usable signals with OpenCV, MediaPipe, gesture detection, and real-time visual pipelines.",
         stat: "Vision input",
       },
       {
         title: "Intelligence",
         subtitle: "AI / LLM Systems",
         copy:
-          "Designing local assistants, model orchestration, prompt logic, and decision layers that make systems feel adaptive and useful.",
+          "Designing local assistants, Llama models, prompt logic, and decision layers that make systems adaptive even offline.",
         stat: "Reasoning",
       },
       {
         title: "Action",
         subtitle: "Robotics Control",
         copy:
-          "Bridging software and hardware through embedded prototypes, actuator control, feedback loops, and practical system integration.",
+          "Bridging software and hardware through prototypes, SolidWorks, 3D printing, CNC, actuators, and mechanical constraints.",
         stat: "Physical output",
       },
       {
         title: "Interaction",
         subtitle: "Human-Machine UX",
         copy:
-          "Creating interfaces where gestures, voice, feedback, and spatial behavior help people understand and trust intelligent machines.",
+          "Creating interfaces where gesture, voice, projection, and feedback help people understand and trust intelligent machines.",
         stat: "Human signal",
       },
     ],
@@ -276,71 +351,129 @@ const content = {
         title: "Local AI Voice Assistant",
         label: "LLM System",
         problem:
-          "Build a private assistant that can listen, interpret intent, and respond without depending on a cloud-first workflow.",
+          "Create an AI voice assistant that works offline and can start an interaction through a hand gesture.",
         architecture: ["Audio Input", "Speech Pipeline", "Local LLM", "Action Router", "Voice Response"],
         stack: ["Python", "Llama models", "Whisper-style STT", "TTS", "Local tools"],
         outcome:
-          "A modular assistant architecture that can be extended with memory, local device control, and research-grade experimentation.",
+          "A personal Python project combining Llama3, OpenCV, and MediaPipe, relevant to embedded AI and local assistants.",
         mediaLabel: "Waveform, intent routing, and response-state placeholder.",
         accent: "green",
       },
       {
-        title: "Computer Vision Object Detection System",
+        title: "Gesture Vision Pipeline",
         label: "Perception Pipeline",
         problem:
-          "Detect and classify objects in a real-time camera feed while keeping the pipeline understandable and tunable.",
-        architecture: ["Camera Feed", "Preprocess", "Detection Model", "Tracking", "Overlay UI"],
+          "Detect gestural intent from a real-time camera feed to trigger assistant or interface behaviors.",
+        architecture: ["Camera Feed", "MediaPipe", "Landmarks", "Recognized Gesture", "System Action"],
         stack: ["OpenCV", "MediaPipe", "Python", "NumPy", "Realtime video"],
         outcome:
-          "A perception layer suitable for prototyping robotics behaviors, interactive installations, and spatial UI experiments.",
-        mediaLabel: "Detection grid and confidence-map placeholder.",
+          "A perception layer for contactless interactions in installations, robots, and projected interfaces.",
+        mediaLabel: "Hand landmarks, confidence score, and gesture-state placeholder.",
         accent: "cyan",
       },
       {
-        title: "Robotics Prototype Control System",
-        label: "Embedded Integration",
+        title: "Mechanical Octopod Robot",
+        label: "School Prototype",
         problem:
-          "Connect sensing, control logic, and hardware output in a prototype that can be tested quickly and iterated safely.",
-        architecture: ["Sensors", "Microcontroller", "Control Loop", "Actuators", "Telemetry"],
-        stack: ["Arduino / ESP32", "C++", "Serial telemetry", "Motors", "Prototyping"],
+          "Build an octopod robot as a team while respecting precise specifications and imposed mechanical means.",
+        architecture: ["Requirements", "Kinematics", "Gears", "Fabrication", "Mechanical Test"],
+        stack: ["SolidWorks", "3D printing", "CNC", "Kinematics", "Teamwork"],
         outcome:
-          "A practical hardware/software loop for validating movement, constraints, and operator feedback before scaling complexity.",
-        mediaLabel: "Telemetry bars and actuator-state placeholder.",
+          "A 9-month team prototype combining mechanical design, digital fabrication, and constraint-driven problem solving.",
+        mediaLabel: "Kinematic diagram, gears, and motion-phase placeholder.",
         accent: "amber",
       },
       {
-        title: "Gesture-Based Human Interaction System",
+        title: "Interactive Projected Interface",
         label: "HMI Prototype",
         problem:
-          "Let users communicate with a machine naturally through gesture input, visible system feedback, and low-friction calibration.",
-        architecture: ["User Motion", "Landmarks", "Gesture Classifier", "Interaction State", "Feedback"],
-        stack: ["MediaPipe", "OpenCV", "TypeScript UI", "State machines", "Prototyping"],
+          "Lead a removable electrically actuated projected interface usable through gestures or voice.",
+        architecture: ["Projection", "Gesture/Voice Input", "LLM Assistant", "Interface", "Mechanical Action"],
+        stack: ["Project management", "LLM", "Voice", "Gesture interaction", "Team of 6"],
         outcome:
-          "An interaction model for immersive environments where technology needs to feel responsive without disappearing into magic.",
-        mediaLabel: "Hand landmark and interaction-state placeholder.",
+          "An ongoing personal project as project lead, combining AI, interaction design, and hardware.",
+        mediaLabel: "Projection, voice command, and interface-state placeholder.",
+        media: {
+          src: "/projects/projector-positioning-clean.png",
+          alt: "Hardware system for motorized projector positioning",
+          eyebrow: "Engineering in motion",
+          title: "Motorized projector positioning system",
+          headline: ["Motorized", "Projector", "Positioning", "System"],
+          tagline: "Precision. Automation. Repeatable alignment.",
+          description:
+            "Four-axis motorized system designed for intelligent projector positioning and stable performance inside a projected-interface environment.",
+          footer: "Mechatronics portfolio project · hardware prototype",
+          overviewLabel: "System overview",
+          impact: {
+            lead: "Built for precision.",
+            highlight: "Designed for impact.",
+          },
+          features: [
+            { title: "Linear translation axis", detail: "Aluminium extrusion rail" },
+            { title: "Four-axis rotation", detail: "Precision gimbal-style mechanism" },
+            { title: "Stepper motor control", detail: "Architecture designed for torque and repeatability" },
+            { title: "Engineered for precision", detail: "Robust components and mechatronic integration" },
+          ],
+        },
         accent: "green",
+      },
+    ],
+    educationHeader: {
+      eyebrow: "Education & Certifications",
+      title: "A clear engineering foundation for recruiters.",
+      copy:
+        "A clear focus on the institutional signals in the profile: engineering school, certified English level, aviation culture, and FabLab involvement.",
+    },
+    education: [
+      {
+        title: "ESILV - Engineering School",
+        meta: "Integrated preparatory cycle and engineering curriculum · 2023-2028",
+        copy:
+          "Engineering-science training with technical projects, mathematics, physics, design, and prototyping. Current focus: robotics, industry, and AI.",
+        signal: "Year 1 GPA: 3.1",
+      },
+      {
+        title: "TOEFL ITP - English C1",
+        meta: "Score 653/677",
+        copy:
+          "Language certification for international research, robotics, AI, and creative technology environments.",
+        signal: "C1",
+      },
+      {
+        title: "Aeronautics Initiation Certificate",
+        meta: "Highest honors",
+        copy:
+          "Aviation and systems culture: flight mechanics, navigation, meteorology, and technical understanding of complex environments.",
+        signal: "BIA",
+      },
+      {
+        title: "DeVinci Fablab",
+        meta: "Partnership co-lead · 2024 - present",
+        copy:
+          "Direct link with the innovation ecosystem: company partnerships, events, technical projects, and prototyping-oriented training.",
+        signal: "FabLab",
       },
     ],
     experience: {
       eyebrow: "Experience",
       title: "Prototype fast, test honestly, refine the system.",
       copy:
-        "My positioning is Robotics & AI engineering student with short iteration loops: idea, architecture, prototype, test, demonstration.",
+        "My positioning is ESILV engineering student with short iteration loops: idea, architecture, prototype, test, demonstration.",
       items: [
         {
-          title: "FabLab & prototyping",
+          title: "Partnership co-lead · DeVinci Fablab",
           copy:
-            "Rapidly turning system ideas into physical experiments with sensors, fabrication tools, and iteration loops.",
+            "Company outreach to create collaborations around events, technical projects, and training, working with the Paris partnerships team.",
         },
         {
-          title: "Engineering projects",
+          title: "Engineering projects · ESILV",
           copy:
-            "Working across the full chain: requirements, architecture, implementation, debugging, demonstration, and documentation.",
+            "Integrated preparatory engineering cycle, design and prototyping projects, Maths/Physics background, and practical systems thinking.",
         },
         {
-          title: "Applied research & challenges",
+          title: "Tutoring, BIA & science culture",
           copy:
-            "Working under constraints where the best solution is clear, reliable, explainable, and ready to demo.",
+            "Maths and physics tutoring, English C1 TOEFL ITP 653/677, BIA with highest honors, and strong interest in robotics, electronics, AI, and aviation.",
         },
       ],
     },
@@ -348,7 +481,7 @@ const content = {
       eyebrow: "Vision",
       title: "I want to build systems that feel alive.",
       copy:
-        "Combining engineering precision with immersive experiences: robots, assistants, and intelligent spaces that sense context, make clear decisions, and communicate with people in ways that feel intuitive, cinematic, and trustworthy.",
+        "Combining engineering precision with immersive experiences: robots, local assistants, and projected interfaces that sense context, make clear decisions, and communicate with people in ways that feel intuitive, cinematic, and trustworthy.",
     },
     contact: {
       eyebrow: "Contact",
@@ -414,15 +547,28 @@ export default function Home() {
                   <Mail className="h-4 w-4" />
                 </a>
               </div>
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                {t.hero.credentials.map((credential) => (
+                  <div key={credential.value} className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
+                    <p className="text-lg font-semibold text-white">{credential.value}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-400">{credential.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
 
           <Reveal delay={0.14}>
             <div className="glass-panel rounded-lg p-5 md:p-6">
               <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{t.interface.eyebrow}</p>
-                  <p className="mt-1 font-medium text-white">{t.interface.title}</p>
+                <div className="flex items-center gap-4">
+                  <div className="relative h-14 w-14 overflow-hidden rounded-full border border-white/15 bg-white/5">
+                    <Image src="/profile.jpg" alt="Gauthier Defoy" fill sizes="56px" className="object-cover" priority />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{t.interface.eyebrow}</p>
+                    <p className="mt-1 font-medium text-white">{t.interface.title}</p>
+                  </div>
                 </div>
                 <Gauge className="h-5 w-5 text-emerald-200" />
               </div>
@@ -443,7 +589,7 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-                {["CV", "LLM", "HMI"].map((item) => (
+                {["ESILV", "LLM", "HMI"].map((item) => (
                   <div key={item} className="rounded-md border border-white/10 bg-black/20 px-3 py-4">
                     <p className="text-2xl font-semibold text-white">{item}</p>
                     <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{t.interface.moduleLabel}</p>
@@ -488,10 +634,40 @@ export default function Home() {
           <Reveal>
             <SectionHeader eyebrow={t.projectsHeader.eyebrow} title={t.projectsHeader.title} copy={t.projectsHeader.copy} />
           </Reveal>
-          <div className="space-y-6">
-            {projects.map((project, index) => (
-              <ProjectCard key={project.title} project={project} index={index} labels={t.projectLabels} />
-            ))}
+          <ProjectScrollTrack projects={projects} labels={t.projectLabels} />
+        </div>
+      </section>
+
+      <section id="education" className="relative px-5 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <SectionHeader eyebrow={t.educationHeader.eyebrow} title={t.educationHeader.title} copy={t.educationHeader.copy} />
+          </Reveal>
+          <div className="grid gap-4 md:grid-cols-2">
+            {t.education.map((item, index) => {
+              const Icon = index === 0 ? GraduationCap : index === 1 ? Languages : index === 2 ? ShieldCheck : Wrench;
+              return (
+                <Reveal key={item.title} delay={index * 0.05}>
+                  <article className="h-full rounded-lg border border-white/10 bg-slate-950/[0.65] p-6 transition-colors duration-200 hover:border-emerald-200/35 hover:bg-white/[0.06]">
+                    <div className="mb-8 flex items-start justify-between gap-5">
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-md border border-white/10 bg-white/5">
+                          <Icon className="h-5 w-5 text-emerald-200" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                          <p className="mt-1 text-sm text-slate-400">{item.meta}</p>
+                        </div>
+                      </div>
+                      <span className="shrink-0 rounded-full border border-emerald-200/25 bg-emerald-200/[0.08] px-3 py-1.5 text-xs font-semibold text-emerald-100">
+                        {item.signal}
+                      </span>
+                    </div>
+                    <p className="leading-7 text-slate-300">{item.copy}</p>
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -550,7 +726,7 @@ export default function Home() {
                 className="focus-ring cursor-pointer rounded-full border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
                 href={profileLinks.email}
               >
-                {t.contact.email}
+                gauthier.defoy@edu.devinci.fr
               </a>
               <a
                 className="focus-ring cursor-pointer rounded-full border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"

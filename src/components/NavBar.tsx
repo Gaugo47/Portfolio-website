@@ -10,6 +10,7 @@ type NavBarProps = {
   labels: {
     systems: string;
     projects: string;
+    education: string;
     experience: string;
     vision: string;
     contact: string;
@@ -29,6 +30,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
   const navLinks = [
     { label: labels.systems, href: "#systems" },
     { label: labels.projects, href: "#projects" },
+    { label: labels.education, href: "#education" },
     { label: labels.experience, href: "#experience" },
     { label: labels.vision, href: "#vision" },
   ];
@@ -49,7 +51,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
         <a className="focus-ring rounded-full text-sm font-semibold tracking-[0.18em] text-white" href="#top">
           {labels.brand}
         </a>
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
             <a
               key={link.href}
