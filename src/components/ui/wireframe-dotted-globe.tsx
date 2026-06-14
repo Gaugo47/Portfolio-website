@@ -108,7 +108,7 @@ export default function RotatingEarth({
   className = "",
   routes = [],
   activeRouteIndex = 0,
-  interactionLabel = "Drag to rotate - Scroll to zoom",
+  interactionLabel = "Drag to rotate",
 }: RotatingEarthProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const activeRouteRef = useRef(activeRouteIndex);
@@ -214,16 +214,16 @@ export default function RotatingEarth({
 
       context.beginPath();
       context.arc(containerWidth / 2, containerHeight / 2, projection.scale(), 0, 2 * Math.PI);
-      context.fillStyle = "#000000";
+      context.fillStyle = "#02030a";
       context.fill();
-      context.strokeStyle = "rgba(248,250,252,0.78)";
+      context.strokeStyle = "rgba(148,163,184,0.42)";
       context.lineWidth = 1.4 * scaleFactor;
       context.stroke();
 
       const graticule = d3.geoGraticule();
       context.beginPath();
       path(graticule());
-      context.strokeStyle = "rgba(248,250,252,0.24)";
+      context.strokeStyle = "rgba(71,85,105,0.26)";
       context.lineWidth = 0.8 * scaleFactor;
       context.stroke();
 
@@ -232,7 +232,7 @@ export default function RotatingEarth({
         landFeatures.forEach((feature) => {
           path(feature as Parameters<typeof path>[0]);
         });
-        context.strokeStyle = "rgba(248,250,252,0.62)";
+        context.strokeStyle = "rgba(100,116,139,0.42)";
         context.lineWidth = 0.9 * scaleFactor;
         context.stroke();
 
@@ -243,7 +243,7 @@ export default function RotatingEarth({
 
           context.beginPath();
           context.arc(projected[0], projected[1], 1.15 * scaleFactor, 0, 2 * Math.PI);
-          context.fillStyle = "rgba(226,232,240,0.74)";
+          context.fillStyle = "rgba(71,85,105,0.72)";
           context.fill();
         });
       }
@@ -317,26 +317,17 @@ export default function RotatingEarth({
       document.addEventListener("mouseup", handleMouseUp);
     };
 
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      const nextScale = event.deltaY > 0 ? projection.scale() * 0.9 : projection.scale() * 1.1;
-      projection.scale(Math.max(dimensions.radius * 0.6, Math.min(dimensions.radius * 2.2, nextScale)));
-      render();
-    };
-
     resize();
     loadWorldData();
 
     window.addEventListener("resize", resize, { passive: true });
     canvas.addEventListener("mousedown", handleMouseDown);
-    canvas.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
       cancelled = true;
       rotationTimer.stop();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousedown", handleMouseDown);
-      canvas.removeEventListener("wheel", handleWheel);
     };
   }, [height, routeSegments, routes, width]);
 

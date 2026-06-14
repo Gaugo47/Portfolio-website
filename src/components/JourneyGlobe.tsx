@@ -91,7 +91,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
           <div className="relative">
             <div className="sticky top-24 overflow-hidden rounded-lg border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/25">
               <div className="absolute inset-0 opacity-45 interface-grid" aria-hidden="true" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(125,211,252,0.16),transparent_20rem)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(15,23,42,0.72),transparent_20rem)]" />
 
               <div
                 className="relative z-10 min-h-[24rem] px-3 py-5 md:px-6 md:py-8"
@@ -104,7 +104,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                   routes={routes}
                   activeRouteIndex={activeIndex}
                   interactionLabel={
-                    language === "fr" ? "Faire glisser pour tourner - molette pour zoomer" : "Drag to rotate - Scroll to zoom"
+                    language === "fr" ? "Faire glisser pour tourner" : "Drag to rotate"
                   }
                   className="mx-auto"
                 />
