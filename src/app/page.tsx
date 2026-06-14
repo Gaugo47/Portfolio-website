@@ -24,6 +24,7 @@ import type { Project } from "@/components/ProjectCard";
 import { ProjectScrollTrack } from "@/components/ProjectScrollTrack";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
+import { SplineShowcase } from "@/components/SplineShowcase";
 import { journeys } from "@/data/journeys";
 
 const profileLinks = {
@@ -66,6 +67,8 @@ const content = {
       title: "Stack robotique créative",
       modules: ["Vision OpenCV", "LLM local Llama", "Robotique mécanique", "Gestes & voix"],
       moduleLabel: "Module",
+      copy:
+        "Une scène Spline en direct ajoute une couche tactile au portfolio : spatiale, réactive et alignée avec des systèmes robotiques qui dépassent l’écran plat.",
     },
     systemsHeader: {
       eyebrow: "Vue système",
@@ -342,6 +345,8 @@ const content = {
       title: "Creative robotics stack",
       modules: ["OpenCV Vision", "Local Llama LLM", "Mechanical Robotics", "Gesture & Voice"],
       moduleLabel: "Module",
+      copy:
+        "A live Spline scene adds a tactile layer to the portfolio: spatial, reactive, and aligned with robotics work that moves beyond flat screens.",
     },
     systemsHeader: {
       eyebrow: "System Overview",
@@ -709,6 +714,8 @@ export default function Home() {
       </section>
 
       <NavBar language={language} onLanguageChange={setLanguage} labels={t.nav} links={profileLinks} />
+
+      <SplineShowcase labels={t.interface} />
 
       <section id="systems" className="relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
