@@ -10,6 +10,7 @@ type NavBarProps = {
   labels: {
     systems: string;
     projects: string;
+    journey: string;
     education: string;
     experience: string;
     vision: string;
@@ -30,6 +31,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
   const navLinks = [
     { label: labels.systems, href: "#systems" },
     { label: labels.projects, href: "#projects" },
+    { label: labels.journey, href: "#journey" },
     { label: labels.education, href: "#education" },
     { label: labels.experience, href: "#experience" },
     { label: labels.vision, href: "#vision" },
@@ -43,7 +45,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
       >
         {labels.skip}
       </a>
-      <header className="fixed left-3 right-3 top-3 z-50 md:left-6 md:right-6 md:top-5">
+      <header className="sticky top-3 z-50 px-3 py-3 md:top-5 md:px-6">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-white/10 bg-slate-950/70 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl"
         aria-label="Primary navigation"

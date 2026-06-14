@@ -1,10 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Gauthier Defoy | Robotics & AI Engineering",
   description:
     "Portfolio bilingue de Gauthier Defoy, étudiant ingénieur à l'ESILV spécialisé en robotique, IA locale, vision par ordinateur et interfaces humain-machine.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

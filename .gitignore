@@ -27,3 +27,4 @@ tsconfig.tsbuildinfo
 # Local Codex workspace metadata
 .codex/
 .tmp_cv_extract/
+.tmp_crealab_*/

@@ -13,6 +13,9 @@ type ProjectMedia = {
   description: string;
   footer: string;
   overviewLabel: string;
+  interfaceLabel?: string;
+  interfaceTitle?: string;
+  interfaceCopy?: string;
   indexLabel?: string;
   impact: {
     lead: string;
@@ -21,6 +24,12 @@ type ProjectMedia = {
   features: Array<{
     title: string;
     detail: string;
+  }>;
+  interfaceScreens?: Array<{
+    src: string;
+    alt: string;
+    caption: string;
+    description: string;
   }>;
 };
 
@@ -56,6 +65,8 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
   const media = project.media;
 
   if (media) {
+    const interfaceScreens = media.interfaceScreens ?? [];
+
     return (
       <Reveal delay={index * 0.06}>
         <article className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-[#050b0f] shadow-2xl shadow-black/30">
@@ -192,6 +203,48 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </div>
             </div>
           </div>
+
+          {interfaceScreens.length > 0 ? (
+            <div className="mx-auto max-w-[96rem] px-5 py-8 md:px-12 md:py-12 lg:px-14">
+              <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
+                    {media.interfaceLabel ?? "Interface layer"}
+                  </p>
+                  <h4 className="mt-2 text-xl font-semibold tracking-normal text-white md:text-2xl">
+                    {media.interfaceTitle ?? "Local AI, motor control and assistance in one interface."}
+                  </h4>
+                </div>
+                <p className="max-w-xl text-sm leading-6 text-slate-400">
+                  {media.interfaceCopy ??
+                    "Interface captures from the project: navigation, positioning, 3D visualization and assistant-triggered tutorials."}
+                </p>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {interfaceScreens.map((screen) => (
+                  <figure
+                    key={screen.src}
+                    className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20"
+                  >
+                    <div className="relative aspect-[16/9] bg-white">
+                      <Image
+                        src={screen.src}
+                        alt={screen.alt}
+                        fill
+                        sizes="(min-width: 1280px) 31vw, (min-width: 768px) 46vw, 100vw"
+                        className="object-cover object-left-top"
+                      />
+                    </div>
+                    <figcaption className="p-4">
+                      <p className="text-sm font-semibold text-slate-100">{screen.caption}</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-400">{screen.description}</p>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </article>
       </Reveal>
     );

@@ -47,10 +47,10 @@ export function ProjectScrollTrack({ projects, labels }: ProjectScrollTrackProps
               </div>
             ) : null}
             <motion.div
-              initial={reduceMotion ? false : { opacity: 0.38, y: 42, filter: "blur(4px)" }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.42 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.04 }}
+              initial={reduceMotion ? false : { opacity: 0.72, y: 28 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: project.media ? 0.16 : 0.32 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: index * 0.03 }}
             >
               <ProjectCard project={project} index={index} labels={labels} />
             </motion.div>

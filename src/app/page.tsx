@@ -6,7 +6,6 @@ import {
   BrainCircuit,
   Cpu,
   Eye,
-  Gauge,
   GraduationCap,
   Hand,
   Languages,
@@ -20,11 +19,12 @@ import {
   Wrench,
 } from "lucide-react";
 import { NavBar, type Language } from "@/components/NavBar";
-import { ParticleField } from "@/components/ParticleField";
+import { JourneyGlobe } from "@/components/JourneyGlobe";
 import type { Project } from "@/components/ProjectCard";
 import { ProjectScrollTrack } from "@/components/ProjectScrollTrack";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
+import { journeys } from "@/data/journeys";
 
 const profileLinks = {
   github: "https://github.com/",
@@ -38,6 +38,7 @@ const content = {
       brand: "GAUTHIER.AI",
       systems: "Systèmes",
       projects: "Projets",
+      journey: "Parcours",
       education: "Formation",
       experience: "Expérience",
       vision: "Vision",
@@ -108,6 +109,16 @@ const content = {
       copy:
         "Chaque projet est cadré par le problème, l’architecture, la stack et le résultat pour montrer autant l’ambition créative que la rigueur d’ingénierie.",
     },
+    journeyHeader: {
+      eyebrow: "My Journey",
+      title: "Une trajectoire d’ingénieur qui relie les lieux, les systèmes et les ambitions.",
+      copy:
+        "Le globe met en scène les déplacements importants de mon parcours. Chaque ligne apparaît au scroll pour relier une étape académique ou personnelle à son contexte.",
+    },
+    journeyLabels: {
+      route: "Trajet actif",
+      simplified: "Version mobile simplifiée",
+    },
     projectLabels: {
       problem: "Problème",
       architecture: "Architecture système",
@@ -155,35 +166,71 @@ const content = {
         accent: "amber",
       },
       {
-        title: "Interface projetée interactive",
-        label: "Prototype HMI",
+        title: "Créalab Augmenté",
+        label: "Interface agentique & mécatronique",
         problem:
-          "Diriger un projet d’interface projetée amovible électriquement, interactive et utilisable via gestes ou commande vocale.",
-        architecture: ["Projection", "Entrée geste/voix", "Assistant LLM", "Interface", "Action mécanique"],
-        stack: ["Gestion projet", "LLM", "Voix", "Interaction gestuelle", "Équipe de 6"],
+          "Transformer un prototype de projecteur motorisé trop lourd et difficile à déplacer, avec un logiciel limité à une console, en système utilisable par les étudiants du FabLab.",
+        architecture: ["Frontend web", "Backend Docker", "Tool calling", "IA locale", "Contrôle projecteur"],
+        stack: ["Docker", "Python", "Ollama / Llama 3.1", "Whisper", "Kokoro TTS", "HTML/CSS/JS"],
         outcome:
-          "Un projet personnel en cours comme chef et directeur de projet, à la croisée de l’IA, de l’interaction et du hardware.",
-        mediaLabel: "Placeholder pour projection, commande vocale et état d’interface.",
+          "Contribution software centrée sur l’IA locale, le tool calling et l’interface : questions texte/voix, réponses vocalisées, tutoriels vidéo déclenchés selon la machine demandée et intégration dans une architecture conteneurisée.",
+        mediaLabel: "Interface web Créalab, contrôle de position, assistant IA et tutoriels machine.",
         media: {
-          src: "/projects/projector-positioning-clean.png",
+          src: "/projects/projector-positioning-clean.webp",
           alt: "Système hardware de positionnement motorisé pour projecteur",
           eyebrow: "Ingénierie en mouvement",
-          title: "Système motorisé de positionnement de projecteur",
-          headline: ["SYSTÈME", "MOTORISÉ", "POSITIONNEMENT", "PROJECTEUR"],
-          tagline: "Précision. Automatisation. Alignement reproductible.",
+          title: "Créalab Augmenté",
+          headline: ["CRÉALAB", "AUGMENTÉ", "IA LOCALE", "PROJECTEUR"],
+          tagline: "Projection. Assistance. Contrôle reproductible.",
           description:
-            "Système motorisé quatre axes conçu pour positionner intelligemment un projecteur et obtenir une performance stable dans un environnement d’interface projetée.",
-          footer: "Projet mécatronique · hardware prototype",
+            "Système augmenté combinant interface web, assistant vocal local et positionnement motorisé pour guider les utilisateurs du FabLab dans un environnement projeté.",
+          footer: "Projet Créalab · IA locale + interface + mécatronique",
           overviewLabel: "Vue système",
+          interfaceLabel: "Couche interface",
+          interfaceTitle: "IA locale, contrôle moteur et assistance FabLab dans une interface unique.",
+          interfaceCopy:
+            "Captures issues du rapport Créalab Augmenté : navigation, positionnement, visualisation 3D et tutoriels déclenchés par l’assistant.",
           impact: {
-            lead: "Conçu pour la précision.",
-            highlight: "Pensé pour l’impact.",
+            lead: "Conçu pour l’usage réel.",
+            highlight: "Pensé pour le FabLab.",
           },
           features: [
-            { title: "Axe de translation linéaire", detail: "Rail en extrusion aluminium" },
-            { title: "Rotation quatre axes", detail: "Mécanisme type gimbal de précision" },
-            { title: "Contrôle par moteurs pas-à-pas", detail: "Architecture pensée pour couple et répétabilité" },
-            { title: "Conçu pour la précision", detail: "Composants robustes et intégration mécatronique" },
+            { title: "Structure allégée", detail: "Passage vers une conception majoritairement PETG-CF" },
+            { title: "Translation sur rail", detail: "Moteur embarqué proche du rail avec entraînement par crémaillère" },
+            { title: "Couple & maintien", detail: "Démultiplication, moteurs pas-à-pas et réducteur cycloïdal" },
+            { title: "Assistant local", detail: "Chaîne Whisper, Llama 3.1 via Ollama et Kokoro TTS" },
+          ],
+          interfaceScreens: [
+            {
+              src: "/projects/crealab-home.webp",
+              alt: "Écran d’accueil de l’interface Créalab Augmenté",
+              caption: "Accueil modulaire",
+              description: "Navigation par fonctions : positionnement, extinction, information, patrons, questions et tutoriels.",
+            },
+            {
+              src: "/projects/crealab-positioning.webp",
+              alt: "Interface de positionnement du projecteur motorisé Créalab",
+              caption: "Contrôle de position",
+              description: "Sliders et vues de contrôle pour piloter les axes du projecteur sur son rail.",
+            },
+            {
+              src: "/projects/crealab-pattern.webp",
+              alt: "Visionneuse 3D de patrons STL dans l’interface Créalab",
+              caption: "Patrons & visualisation STL",
+              description: "Bibliothèque, import et visualisation 3D pour préparer des fichiers liés au FabLab.",
+            },
+            {
+              src: "/projects/crealab-tutorials.webp",
+              alt: "Page tutoriels avec vidéo intégrée dans l’interface Créalab",
+              caption: "Tutoriels machine",
+              description: "Sélection de tutoriels et lecture vidéo intégrée pour accompagner les usages atelier.",
+            },
+            {
+              src: "/projects/crealab-ai-video.webp",
+              alt: "Réponse IA Créalab affichant une vidéo YouTube pertinente",
+              caption: "Tool calling IA",
+              description: "L’assistant comprend la demande, choisit un tutoriel adapté et insère la vidéo dans la réponse.",
+            },
           ],
         },
         accent: "green",
@@ -267,6 +314,7 @@ const content = {
       brand: "GAUTHIER.AI",
       systems: "Systems",
       projects: "Projects",
+      journey: "Journey",
       education: "Education",
       experience: "Experience",
       vision: "Vision",
@@ -337,6 +385,16 @@ const content = {
       copy:
         "Each project is framed by the problem, architecture, stack, and outcome so recruiters can see both the creative ambition and the engineering logic.",
     },
+    journeyHeader: {
+      eyebrow: "My Journey",
+      title: "An engineering path connecting places, systems, and ambition.",
+      copy:
+        "The globe stages the key moves in my journey. Each line appears with scroll to connect an academic or personal milestone to its context.",
+    },
+    journeyLabels: {
+      route: "Active route",
+      simplified: "Simplified mobile version",
+    },
     projectLabels: {
       problem: "Problem",
       architecture: "System Architecture",
@@ -384,35 +442,71 @@ const content = {
         accent: "amber",
       },
       {
-        title: "Interactive Projected Interface",
-        label: "HMI Prototype",
+        title: "Augmented Créalab",
+        label: "Agentic interface & mechatronics",
         problem:
-          "Lead a removable electrically actuated projected interface usable through gestures or voice.",
-        architecture: ["Projection", "Gesture/Voice Input", "LLM Assistant", "Interface", "Mechanical Action"],
-        stack: ["Project management", "LLM", "Voice", "Gesture interaction", "Team of 6"],
+          "Turn a heavy motorized-projector prototype and a console-only software layer into a usable FabLab system for students.",
+        architecture: ["Web frontend", "Docker backend", "Tool calling", "Local AI", "Projector control"],
+        stack: ["Docker", "Python", "Ollama / Llama 3.1", "Whisper", "Kokoro TTS", "HTML/CSS/JS"],
         outcome:
-          "An ongoing personal project as project lead, combining AI, interaction design, and hardware.",
-        mediaLabel: "Projection, voice command, and interface-state placeholder.",
+          "Software contribution focused on local AI, tool calling, and interface design: text/voice questions, spoken answers, machine-specific video tutorials, and deployment through a containerized architecture.",
+        mediaLabel: "Créalab web interface, position control, AI assistant, and machine tutorials.",
         media: {
-          src: "/projects/projector-positioning-clean.png",
+          src: "/projects/projector-positioning-clean.webp",
           alt: "Hardware system for motorized projector positioning",
           eyebrow: "Engineering in motion",
-          title: "Motorized projector positioning system",
-          headline: ["Motorized", "Projector", "Positioning", "System"],
-          tagline: "Precision. Automation. Repeatable alignment.",
+          title: "Augmented Créalab",
+          headline: ["Augmented", "Créalab", "Local AI", "Projector"],
+          tagline: "Projection. Assistance. Repeatable control.",
           description:
-            "Four-axis motorized system designed for intelligent projector positioning and stable performance inside a projected-interface environment.",
-          footer: "Mechatronics portfolio project · hardware prototype",
+            "An augmented FabLab system combining a web interface, local voice assistant, and motorized projector positioning for guided projected interaction.",
+          footer: "Créalab project · local AI + interface + mechatronics",
           overviewLabel: "System overview",
+          interfaceLabel: "Interface layer",
+          interfaceTitle: "Local AI, motor control, and FabLab assistance in one interface.",
+          interfaceCopy:
+            "Screens from the Augmented Créalab report: navigation, positioning, 3D visualization, and tutorials triggered by the assistant.",
           impact: {
-            lead: "Built for precision.",
-            highlight: "Designed for impact.",
+            lead: "Built for real usage.",
+            highlight: "Designed for the FabLab.",
           },
           features: [
-            { title: "Linear translation axis", detail: "Aluminium extrusion rail" },
-            { title: "Four-axis rotation", detail: "Precision gimbal-style mechanism" },
-            { title: "Stepper motor control", detail: "Architecture designed for torque and repeatability" },
-            { title: "Engineered for precision", detail: "Robust components and mechatronic integration" },
+            { title: "Lightweight structure", detail: "Shift toward a mostly PETG-CF mechanical design" },
+            { title: "Rail translation", detail: "On-board motor close to the rail with rack-and-pinion motion" },
+            { title: "Torque & holding", detail: "Gear reduction, stepper motors, and cycloidal reducer" },
+            { title: "Local assistant", detail: "Whisper, Llama 3.1 through Ollama, and Kokoro TTS pipeline" },
+          ],
+          interfaceScreens: [
+            {
+              src: "/projects/crealab-home.webp",
+              alt: "Augmented Créalab home screen",
+              caption: "Modular home screen",
+              description: "Function-first navigation: positioning, shutdown, information, patterns, questions, and tutorials.",
+            },
+            {
+              src: "/projects/crealab-positioning.webp",
+              alt: "Augmented Créalab projector positioning interface",
+              caption: "Position control",
+              description: "Sliders and visual previews for controlling the projector axes on the rail.",
+            },
+            {
+              src: "/projects/crealab-pattern.webp",
+              alt: "STL pattern viewer inside the Augmented Créalab interface",
+              caption: "Patterns & STL viewer",
+              description: "Library, import, and 3D visualization tools for FabLab files.",
+            },
+            {
+              src: "/projects/crealab-tutorials.webp",
+              alt: "Tutorial page with embedded video inside the Augmented Créalab interface",
+              caption: "Machine tutorials",
+              description: "Tutorial selection and embedded playback to guide workshop users.",
+            },
+            {
+              src: "/projects/crealab-ai-video.webp",
+              alt: "Augmented Créalab AI answer displaying a relevant YouTube video",
+              caption: "AI tool calling",
+              description: "The assistant understands the request, selects a matching tutorial, and embeds the video in the answer.",
+            },
           ],
         },
         accent: "green",
@@ -507,99 +601,114 @@ export default function Home() {
   const projects = useMemo(() => t.projects as Project[], [t.projects]);
 
   return (
-    <main id="top" className="relative overflow-hidden">
-      <div className="pointer-events-none fixed inset-0 interface-grid opacity-60" aria-hidden="true" />
-      <NavBar language={language} onLanguageChange={setLanguage} labels={t.nav} links={profileLinks} />
+    <main id="top" className="relative overflow-x-clip">
+      <section id="content" className="relative min-h-[100svh] overflow-hidden bg-[#050607] md:aspect-[1570/1002]">
+        <Image
+          src="/hero-engineering-desk-mobile.png"
+          alt="Bureau d'ingÃ©nierie vertical avec imprimante 3D, croquis de robotique, calculatrice et outils"
+          fill
+          sizes="100vw"
+          className="object-contain object-top md:hidden"
+          priority
+        />
+        <Image
+          src="/hero-engineering-desk-v2.png"
+          alt="Bureau d'ingénierie avec croquis de robotique, calculatrice, pied à coulisse et imprimante 3D"
+          fill
+          sizes="100vw"
+          className="hidden object-cover object-center md:block"
+          priority
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_50%,transparent_0,rgba(0,0,0,0.05)_42%,rgba(0,0,0,0.64)_100%)]" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/48" aria-hidden="true" />
 
-      <section id="content" className="relative flex min-h-screen items-center px-5 pb-20 pt-36 md:px-8 md:pt-28">
-        <ParticleField />
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <Reveal>
-            <div>
-              <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300">
-                <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(142,230,168,0.8)]" />
+        <div className="relative z-10 h-[100svh] min-h-[48rem] w-full md:min-h-[42rem]">
+          <Reveal className="absolute left-0 right-0 top-[1.25rem] px-5 text-center sm:top-[1.8rem] md:top-[3.6rem]">
+            <p className="mx-auto w-[min(34rem,90vw)] text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.95)] sm:text-xs md:tracking-[0.22em]">
+              {language === "fr" ? "Conçu pour inventer. Fait pour durer." : "Designed to invent. Built to last."}
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.05} className="absolute left-[clamp(1rem,4.5vw,4rem)] top-[3.6rem] max-w-[calc(100vw-2rem)] sm:top-[3.9rem] md:left-[clamp(1.25rem,3.4vw,4rem)] md:top-[6.4rem] md:max-w-[calc(100vw-2.5rem)] md:whitespace-nowrap">
+            <h1 className="select-none font-['Archivo',ui-sans-serif] text-[clamp(2.55rem,13vw,4.9rem)] font-black uppercase leading-[0.78] tracking-[0] text-[#fff8ea] drop-shadow-[0_14px_40px_rgba(0,0,0,0.82)] md:text-[clamp(4.5rem,17vw,13.5rem)]">
+              Gauthier
+            </h1>
+          </Reveal>
+
+          <Reveal delay={0.08} className="absolute left-4 right-4 top-[9.4rem] md:hidden">
+            <div className="border border-white/16 bg-zinc-950/54 p-3 shadow-2xl shadow-black/45 backdrop-blur-sm">
+              <p className="flex items-center gap-2 text-[0.68rem] font-semibold uppercase leading-4 tracking-[0.16em] text-slate-100">
+                <span className="h-2 w-2 shrink-0 rounded-full bg-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.8)]" />
                 {t.hero.badge}
-              </div>
-              <h1 className="max-w-5xl text-balance text-4xl font-semibold tracking-normal text-white sm:text-5xl md:text-6xl xl:text-7xl">
-                {t.hero.title}
-              </h1>
-              <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-slate-300 md:text-xl">{t.hero.copy}</p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#projects"
-                  className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
-                >
-                  {t.hero.projectsCta}
-                  <MoveRight className="h-4 w-4" />
-                </a>
-                <a
-                  href="#systems"
-                  className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.12] bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                >
-                  {t.hero.systemsCta}
-                  <Map className="h-4 w-4" />
-                </a>
-                <a
-                  href="#contact"
-                  className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.12] px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                >
-                  {t.hero.contactCta}
-                  <Mail className="h-4 w-4" />
-                </a>
-              </div>
-              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+              </p>
+              <div className="mt-3 grid grid-cols-3 gap-2">
                 {t.hero.credentials.map((credential) => (
-                  <div key={credential.value} className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
-                    <p className="text-lg font-semibold text-white">{credential.value}</p>
-                    <p className="mt-1 text-xs leading-5 text-slate-400">{credential.label}</p>
+                  <div key={credential.value} className="border border-white/12 bg-black/32 px-2 py-2">
+                    <p className="text-sm font-semibold leading-none text-white">{credential.value}</p>
+                    <p className="mt-1 line-clamp-2 text-[0.58rem] leading-3 text-slate-300">{credential.label}</p>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
 
-          <Reveal delay={0.14}>
-            <div className="glass-panel rounded-lg p-5 md:p-6">
-              <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-4">
-                  <div className="relative h-14 w-14 overflow-hidden rounded-full border border-white/15 bg-white/5">
-                    <Image src="/profile.jpg" alt="Gauthier Defoy" fill sizes="56px" className="object-cover" priority />
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{t.interface.eyebrow}</p>
-                    <p className="mt-1 font-medium text-white">{t.interface.title}</p>
-                  </div>
-                </div>
-                <Gauge className="h-5 w-5 text-emerald-200" />
-              </div>
-              <div className="grid gap-3">
-                {t.interface.modules.map((item, index) => (
-                  <div key={item} className="grid grid-cols-[1fr_auto] items-center gap-4 rounded-md border border-white/10 bg-white/[0.04] p-4">
-                    <div>
-                      <p className="text-sm font-medium text-white">{item}</p>
-                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-sky-300 to-amber-200"
-                          style={{ width: `${68 + index * 7}%` }}
-                        />
-                      </div>
-                    </div>
-                    <span className="text-sm text-slate-400">0{index + 1}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-                {["ESILV", "LLM", "HMI"].map((item) => (
-                  <div key={item} className="rounded-md border border-white/10 bg-black/20 px-3 py-4">
-                    <p className="text-2xl font-semibold text-white">{item}</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{t.interface.moduleLabel}</p>
-                  </div>
-                ))}
-              </div>
+          <Reveal delay={0.1} className="absolute left-4 right-4 top-[20.5rem] max-w-none sm:top-[22rem] md:bottom-[11%] md:left-[clamp(1.25rem,3.4vw,4rem)] md:right-auto md:top-auto md:max-w-[18.5rem]">
+            <div className="flex min-h-[17rem] flex-col justify-center border border-white/18 bg-zinc-950/68 p-6 shadow-2xl shadow-black/55 md:min-h-0 md:p-6">
+              <p className="text-[1.35rem] font-semibold uppercase leading-[1.06] text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.7)] sm:text-xl md:text-xl">
+                {language === "fr" ? "Conçu pour résoudre. Ingénié pour l’avenir." : "Built to solve. Engineered for what comes next."}
+              </p>
+              <div className="my-5 h-px w-full bg-white/20" />
+              <p className="text-sm leading-6 text-slate-200 md:text-sm md:leading-6">{t.hero.copy}</p>
             </div>
           </Reveal>
+
+          <Reveal delay={0.16} className="absolute bottom-[14.25rem] right-[clamp(1.25rem,4vw,4.5rem)] hidden max-w-lg md:block">
+            <div className="border border-white/16 bg-zinc-950/62 p-5 text-right shadow-2xl shadow-black/55">
+              <p className="mb-4 inline-flex items-center gap-3 rounded-full border border-white/22 bg-black/48 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-100 shadow-2xl shadow-black/30">
+                <span className="h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.8)]" />
+                {language === "fr" ? "Etudiant ingenieur Robotique & IA" : "Robotics & AI Engineering Student"}
+              </p>
+              <h2 className="text-balance text-3xl font-semibold leading-tight text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.95)]">
+                {t.hero.title}
+              </h2>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2} className="absolute bottom-[5.25rem] left-4 right-4 sm:left-auto sm:right-[clamp(1.25rem,4vw,4.5rem)] md:bottom-[8%]">
+            <div className="flex flex-col items-stretch gap-2 sm:flex-row md:gap-3">
+              <a
+                href="#projects"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200 md:px-6 md:py-3"
+              >
+                {t.hero.projectsCta}
+                <MoveRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#contact"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.26] bg-black/48 px-5 py-2.5 text-sm font-semibold text-white shadow-2xl shadow-black/30 transition-colors duration-200 hover:bg-black/62 md:px-6 md:py-3"
+              >
+                {t.hero.contactCta}
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
+          </Reveal>
+
+          <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-4 px-[clamp(1rem,4.5vw,4rem)] text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 md:bottom-5 md:justify-between md:px-[clamp(1.25rem,3.4vw,4rem)]">
+            <a href="#systems" className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/24 bg-black/48 px-3 py-2 shadow-2xl shadow-black/30 transition-colors duration-200 hover:bg-black/62">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/30">
+                <MoveRight className="h-3.5 w-3.5 rotate-90" />
+              </span>
+              {language === "fr" ? "Scroller pour découvrir" : "Scroll to discover"}
+            </a>
+            <a href="#systems" className="focus-ring hidden cursor-pointer items-center gap-2 rounded-full border border-white/18 bg-black/48 px-4 py-2 shadow-2xl shadow-black/30 transition-colors duration-200 hover:bg-black/62 md:inline-flex">
+              {t.hero.systemsCta}
+              <Map className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </section>
+
+      <NavBar language={language} onLanguageChange={setLanguage} labels={t.nav} links={profileLinks} />
 
       <section id="systems" className="relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
@@ -637,6 +746,8 @@ export default function Home() {
           <ProjectScrollTrack projects={projects} labels={t.projectLabels} />
         </div>
       </section>
+
+      <JourneyGlobe language={language} journeys={journeys} header={t.journeyHeader} labels={t.journeyLabels} />
 
       <section id="education" className="relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
