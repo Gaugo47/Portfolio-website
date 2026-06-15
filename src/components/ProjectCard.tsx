@@ -147,7 +147,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <span className="h-5 w-5 rotate-45 border border-sky-400" aria-hidden="true" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
+                    <p className="mono-detail text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
                     {media.eyebrow}
                   </p>
                 </div>
@@ -157,7 +157,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </div>
 
               <div className="mt-10 max-w-[17rem] self-start md:mt-16">
-                <h3 className="text-3xl font-semibold uppercase leading-[1.12] tracking-normal text-white md:text-4xl">
+                <h3 className="text-4xl font-semibold leading-[0.98] tracking-normal text-white md:text-5xl">
                   {media.headline.map((line, lineIndex) => (
                     <span key={line} className={lineIndex === 2 ? "block text-sky-400" : "block"}>
                       {line}
@@ -171,7 +171,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               <div className="mt-auto grid gap-4 pt-[19rem] md:mt-0 md:grid-cols-[18rem_1fr_18rem] md:items-end md:pt-0">
                 <div className="grid gap-7">
                   <div className="rounded-md border border-white/20 bg-slate-950/72 p-4 shadow-2xl shadow-black/30 backdrop-blur-md">
-                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-sky-300">{media.overviewLabel}</p>
+                    <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{media.overviewLabel}</p>
                     <div className="grid gap-3.5">
                       {media.features.map((feature) => (
                         <div key={feature.title} className="grid grid-cols-[2rem_1fr] gap-3">
@@ -186,7 +186,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
                       ))}
                     </div>
                   </div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
                     {media.footer}
                   </p>
                 </div>
@@ -195,7 +195,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
                 <div className="md:justify-self-end">
                   <div className="rounded-md border border-white/14 bg-slate-950/72 px-4 py-3 backdrop-blur-md">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                    <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
                       {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
                     </p>
                   </div>
@@ -208,10 +208,10 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
             <div className="mx-auto max-w-[96rem] px-5 py-8 md:px-12 md:py-12 lg:px-14">
               <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
+                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
                     {media.interfaceLabel ?? "Interface layer"}
                   </p>
-                  <h4 className="mt-2 text-xl font-semibold tracking-normal text-white md:text-2xl">
+                  <h4 className="mt-2 text-2xl font-semibold tracking-normal text-white md:text-3xl">
                     {media.interfaceTitle ?? "Local AI, motor control and assistance in one interface."}
                   </h4>
                 </div>
@@ -252,16 +252,16 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
   return (
     <Reveal delay={index * 0.06}>
-      <article className="grid overflow-hidden rounded-lg border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/20 md:grid-cols-[0.86fr_1.14fr]">
+      <article className="grid overflow-hidden rounded-lg border border-white/10 bg-[#07080d]/78 shadow-[0_34px_100px_rgba(0,0,0,0.26)] md:grid-cols-[0.86fr_1.14fr]">
         <div className={`relative min-h-72 bg-gradient-to-br ${mediaAccents[project.accent]} p-6`}>
           <div className="absolute inset-0 opacity-35 interface-grid" aria-hidden="true" />
           <div className="relative flex h-full min-h-60 flex-col justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-300">{project.label}</p>
-                <h3 className="mt-4 max-w-sm text-3xl font-semibold tracking-normal text-white">{project.title}</h3>
+                <p className="mono-detail text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">{project.label}</p>
+                <h3 className="mt-4 max-w-sm text-4xl font-semibold leading-[0.98] tracking-normal text-white">{project.title}</h3>
               </div>
               <div className="rounded-md border border-white/10 bg-black/30 p-4 backdrop-blur-sm">
-                <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-slate-400">
+                <div className="mono-detail mb-3 flex items-center justify-between text-xs uppercase tracking-[0.16em] text-slate-400">
                   <span>{labels.demo}</span>
                   <span className="signal-text">{labels.live}</span>
                 </div>
@@ -281,18 +281,18 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
         <div className="space-y-7 p-6 md:p-8">
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{labels.problem}</p>
+            <p className="mono-detail mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{labels.problem}</p>
             <p className="text-base leading-7 text-slate-200">{project.problem}</p>
           </div>
 
           <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{labels.architecture}</p>
+            <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{labels.architecture}</p>
             <ArchitectureDiagram nodes={project.architecture} accent={project.accent} />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{labels.stack}</p>
+              <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{labels.stack}</p>
               <div className="flex flex-wrap gap-2">
                 {project.stack.map((item) => (
                   <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-200">
@@ -302,7 +302,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </div>
             </div>
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{labels.outcome}</p>
+              <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{labels.outcome}</p>
               <p className="text-sm leading-6 text-slate-300">{project.outcome}</p>
             </div>
           </div>

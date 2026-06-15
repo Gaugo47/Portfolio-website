@@ -37,31 +37,46 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
   useEffect(() => {
     if (journeys.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    let animationFrame = 0;
 
-        if (!visibleEntry) return;
+    const syncActiveCard = () => {
+      const viewportAnchor = window.innerHeight * 0.52;
+      let nearestIndex = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
 
-        const index = Number((visibleEntry.target as HTMLElement).dataset.index);
-        if (Number.isFinite(index)) {
-          setActiveIndex(index);
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const isNearViewport = rect.bottom >= 0 && rect.top <= window.innerHeight;
+
+        if (!isNearViewport) return;
+
+        const cardCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(cardCenter - viewportAnchor);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
         }
-      },
-      {
-        threshold: [0.35, 0.55, 0.75],
-        rootMargin: "-24% 0px -34% 0px",
-      },
-    );
+      });
 
-    cardRefs.current.forEach((card) => {
-      if (card) observer.observe(card);
-    });
+      setActiveIndex(nearestIndex);
+    };
+
+    const requestSync = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(syncActiveCard);
+    };
+
+    syncActiveCard();
+    window.addEventListener("scroll", requestSync, { passive: true });
+    window.addEventListener("resize", requestSync, { passive: true });
 
     return () => {
-      observer.disconnect();
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestSync);
+      window.removeEventListener("resize", requestSync);
     };
   }, [journeys.length]);
 
@@ -73,64 +88,70 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
       />
 
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-3xl md:mb-16">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-200/80">
+        <div className="mb-12 grid max-w-7xl gap-5 border-t border-white/10 pt-7 md:mb-16 md:grid-cols-[0.32fr_0.68fr] md:gap-10 md:pt-9">
+          <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
+            <span className="h-px w-10 bg-emerald-200/45" aria-hidden="true" />
             {header.eyebrow}
           </p>
 
-          <h2 className="text-balance text-3xl font-semibold tracking-normal text-white md:text-5xl">
-            {header.title}
-          </h2>
+          <div>
+            <h2 className="text-balance text-4xl font-semibold leading-[0.98] tracking-normal text-white md:text-6xl">
+              {header.title}
+            </h2>
 
-          <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-slate-300 md:text-lg">
-            {header.copy}
-          </p>
+            <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-slate-300 md:text-lg">
+              {header.copy}
+            </p>
+          </div>
         </div>
 
-        <div className="grid gap-9 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
-          <div className="relative">
-            <div className="sticky top-24 overflow-hidden rounded-lg border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/25">
-              <div className="absolute inset-0 opacity-45 interface-grid" aria-hidden="true" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(15,23,42,0.72),transparent_20rem)]" />
+        <div className="grid gap-9 lg:grid-cols-[1.08fr_0.92fr] lg:items-stretch">
+          <div className="relative lg:self-stretch">
+            <div className="md:sticky md:top-0 md:flex md:min-h-screen md:items-center">
+              <div className="relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#07080d]/82 shadow-[0_40px_120px_rgba(0,0,0,0.34)]">
+                <div className="absolute inset-0 opacity-45 interface-grid" aria-hidden="true" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(15,23,42,0.72),transparent_20rem)]" />
 
-              <div
-                className="relative z-10 min-h-[24rem] px-3 py-5 md:px-6 md:py-8"
-                role="img"
-                aria-label={`${activeJourney?.from.city ?? ""} to ${activeJourney?.to.city ?? ""}`}
-              >
-                <RotatingEarth
-                  width={820}
-                  height={620}
-                  routes={routes}
-                  activeRouteIndex={activeIndex}
-                  interactionLabel={
-                    language === "fr" ? "Faire glisser pour tourner" : "Drag to rotate"
-                  }
-                  className="mx-auto"
-                />
-              </div>
-
-              {activeJourney ? (
-                <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between rounded-md border border-white/10 bg-black/48 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 backdrop-blur-md">
-                  <span>{labels.route}</span>
-                  <span className="text-emerald-200">
-                    {activeJourney.from.city} - {activeJourney.to.city}
-                  </span>
+                <div
+                  className="relative z-10 min-h-[24rem] px-3 py-5 md:px-6 md:py-8"
+                  role="img"
+                  aria-label={`${activeJourney?.from.city ?? ""} to ${activeJourney?.to.city ?? ""}`}
+                >
+                  <RotatingEarth
+                    width={820}
+                    height={620}
+                    routes={routes}
+                    activeRouteIndex={activeIndex}
+                    interactionLabel={
+                      language === "fr" ? "Faire glisser pour tourner" : "Drag to rotate"
+                    }
+                    className="mx-auto"
+                  />
                 </div>
-              ) : null}
+
+                {activeJourney ? (
+                  <div className="mono-detail absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between rounded-md border border-white/10 bg-black/48 px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-300 backdrop-blur-md">
+                    <span>{labels.route}</span>
+                    <span className="text-emerald-200">
+                      {activeJourney.from.city} - {activeJourney.to.city}
+                    </span>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
 
           <div className="relative">
             <div className="absolute left-4 top-2 hidden h-[calc(100%-1rem)] w-px bg-white/10 md:block" aria-hidden="true" />
 
-            <div className="grid gap-4 md:gap-8">
+            <div className="grid gap-4 md:gap-0">
               {journeys.map((journey, index) => {
                 const isActive = index === activeIndex;
 
                 return (
                   <div
                     key={`${journey.year}-${journey.to.city}`}
+                    className="md:flex md:min-h-[64vh] md:items-center lg:min-h-[72vh]"
                     ref={(node) => {
                       cardRefs.current[index] = node;
                     }}
@@ -140,7 +161,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                       className={`relative rounded-lg border p-5 transition-colors duration-300 md:ml-10 ${
                         isActive
                           ? "border-emerald-200/35 bg-emerald-200/[0.08] shadow-2xl shadow-emerald-950/20"
-                          : "border-white/10 bg-white/[0.04]"
+                          : "border-white/10 bg-white/[0.035]"
                       }`}
                     >
                       <span
@@ -153,14 +174,14 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                       />
 
                       <div className="flex flex-wrap items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-emerald-200">{journey.year}</p>
+                        <p className="mono-detail text-sm font-semibold text-emerald-200">{journey.year}</p>
 
-                        <p className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        <p className="mono-detail rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                           {journey.from.city} - {journey.to.city}
                         </p>
                       </div>
 
-                      <h3 className="mt-4 text-xl font-semibold text-white">{journey.title[language]}</h3>
+                      <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">{journey.title[language]}</h3>
 
                       <p className="mt-3 leading-7 text-slate-300">{journey.description[language]}</p>
                     </article>

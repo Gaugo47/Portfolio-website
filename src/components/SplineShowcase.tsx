@@ -19,10 +19,10 @@ type SplineShowcaseProps = {
 export function SplineShowcase({ labels }: SplineShowcaseProps) {
   return (
     <section id="interactive-3d" className="relative overflow-hidden px-5 py-16 md:px-8 md:py-24">
-      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-lg border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/25 lg:min-h-[34rem] lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-lg border border-white/10 bg-[#07080d]/82 shadow-[0_40px_120px_rgba(0,0,0,0.34)] backdrop-blur-xl lg:min-h-[34rem] lg:grid-cols-[0.9fr_1.1fr]">
         <div className="relative z-10 flex flex-col justify-center p-6 md:p-10 lg:p-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200/80">{labels.eyebrow}</p>
-          <h2 className="mt-4 max-w-xl text-balance text-3xl font-semibold tracking-normal text-white md:text-5xl">
+          <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-sky-200/80">{labels.eyebrow}</p>
+          <h2 className="mt-4 max-w-xl text-balance text-4xl font-semibold leading-[0.98] tracking-normal text-white md:text-6xl">
             {labels.title}
           </h2>
           <p className="mt-5 max-w-lg text-base leading-7 text-slate-300 md:text-lg">
@@ -34,13 +34,13 @@ export function SplineShowcase({ labels }: SplineShowcaseProps) {
               const Icon = moduleIcons[index] ?? Cpu;
 
               return (
-                <div key={module} className="rounded-md border border-white/10 bg-white/[0.04] p-4">
+                <div key={module} className="rounded-md border border-white/10 bg-white/[0.035] p-4 transition-colors duration-200 hover:border-sky-200/25 hover:bg-white/[0.055]">
                   <div className="flex items-center gap-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-md border border-sky-200/18 bg-sky-200/[0.08] text-sky-200">
                       <Icon className="h-4 w-4" />
                     </span>
                     <div>
-                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
                         {labels.moduleLabel} {String(index + 1).padStart(2, "0")}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-slate-100">{module}</p>

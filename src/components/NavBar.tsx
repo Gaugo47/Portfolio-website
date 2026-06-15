@@ -47,10 +47,10 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
       </a>
       <header className="sticky top-3 z-50 px-3 py-3 md:top-5 md:px-6">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-white/10 bg-slate-950/70 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl"
+        className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-white/12 bg-[#05060a]/78 px-4 py-3 shadow-[0_18px_70px_rgba(0,0,0,0.34)] backdrop-blur-2xl"
         aria-label="Primary navigation"
       >
-        <a className="focus-ring rounded-full text-sm font-semibold tracking-[0.18em] text-white" href="#top">
+        <a className="focus-ring mono-detail rounded-full text-sm font-semibold uppercase tracking-[0.22em] text-white" href="#top">
           {labels.brand}
         </a>
         <div className="hidden items-center gap-1 lg:flex">
@@ -58,7 +58,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
             <a
               key={link.href}
               href={link.href}
-              className="focus-ring cursor-pointer rounded-full px-4 py-2 text-sm text-slate-300 transition-colors duration-200 hover:bg-white/[0.08] hover:text-white"
+              className="focus-ring cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors duration-200 hover:bg-white/[0.07] hover:text-white"
             >
               {link.label}
             </a>

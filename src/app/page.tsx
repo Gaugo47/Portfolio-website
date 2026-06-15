@@ -169,6 +169,70 @@ const content = {
         accent: "amber",
       },
       {
+        title: "Lampe connectée modélisée",
+        label: "SolidWorks vers Blender",
+        problem:
+          "Apprendre à passer d’une logique de conception mécanique paramétrique à une logique de rendu réaliste, en modélisant une lampe d’abord sur SolidWorks puis en travaillant l’environnement, les matériaux et la lumière dans Blender.",
+        architecture: ["Conception CAO", "Export modèle", "Scène Blender", "Matériaux", "Rendu final"],
+        stack: ["SolidWorks", "Blender", "Modélisation 3D", "Lighting", "Rendu produit"],
+        outcome:
+          "Un exercice personnel de montée en compétence : comprendre les contraintes de forme dans SolidWorks, puis apprendre à valoriser l’objet par la composition, les textures, les angles caméra et l’éclairage.",
+        mediaLabel: "Rendus produit d’une lampe de bureau connectée, de la base au plan d’ensemble.",
+        media: {
+          src: "/projects/blender-lamp-overhead-desk.png",
+          alt: "Rendu Blender d’un bureau avec lampe connectée, tablette de découpe et imprimante 3D",
+          eyebrow: "Modélisation & rendu",
+          title: "Lampe connectée modélisée",
+          headline: ["Lampe", "connectée", "SolidWorks", "Blender"],
+          tagline: "Concevoir la forme. Composer la scène. Rendre l’objet crédible.",
+          description:
+            "Projet d’apprentissage autour d’une lampe de bureau : modélisation initiale sous SolidWorks, passage dans Blender, travail des matériaux, de la lumière et des cadrages pour produire des rendus réalistes.",
+          footer: "Projet personnel · CAO + rendu 3D + direction lumière",
+          overviewLabel: "Processus",
+          interfaceLabel: "Galerie de rendus",
+          interfaceTitle: "Un objet technique mis en scène comme un rendu produit.",
+          interfaceCopy:
+            "Les rendus montrent le passage d’un objet modélisé à une scène complète : gros plan sur la base, vue latérale, composition de bureau et cadrage plongeant sur la lampe.",
+          impact: {
+            lead: "Apprentissage concret.",
+            highlight: "SolidWorks puis Blender.",
+          },
+          features: [
+            { title: "Base CAO", detail: "Construction de la forme et des volumes principaux dans SolidWorks" },
+            { title: "Matériaux", detail: "Recherche d’un rendu sombre, plastique/métal et lumière bleutée" },
+            { title: "Composition", detail: "Mise en scène dans un bureau de prototypage avec imprimante 3D et plan de travail" },
+            { title: "Cadrages", detail: "Plans rapprochés, vues plongeantes et plan large pour raconter l’objet" },
+          ],
+          interfaceScreens: [
+            {
+              src: "/projects/blender-lamp-base-closeup.png",
+              alt: "Gros plan sur la base de la lampe connectée avec molette lumineuse",
+              caption: "Base & interface",
+              description: "Travail de détail sur la base, la molette circulaire, le symbole de charge et les matériaux sombres.",
+            },
+            {
+              src: "/projects/blender-lamp-side-plan.png",
+              alt: "Vue latérale d’un bureau avec lampe, plan de découpe et imprimante 3D",
+              caption: "Plan latéral",
+              description: "Mise en scène de la lampe dans un environnement de travail, avec projection lumineuse et objets d’atelier.",
+            },
+            {
+              src: "/projects/blender-lamp-overhead-desk.png",
+              alt: "Vue plongeante du bureau complet avec lampe, tablette et imprimante 3D",
+              caption: "Vue d’ensemble",
+              description: "Composition complète du bureau pour donner du contexte à l’objet et à son usage.",
+            },
+            {
+              src: "/projects/blender-lamp-top-closeup.png",
+              alt: "Vue plongeante rapprochée de la lampe avec faisceau lumineux bleu",
+              caption: "Cadrage produit",
+              description: "Cadrage plus cinématique centré sur la tête de lampe, le bras et le faisceau lumineux.",
+            },
+          ],
+        },
+        accent: "cyan",
+      },
+      {
         title: "Créalab Augmenté",
         label: "Interface agentique & mécatronique",
         problem:
@@ -447,6 +511,70 @@ const content = {
         accent: "amber",
       },
       {
+        title: "Modeled Smart Desk Lamp",
+        label: "SolidWorks to Blender",
+        problem:
+          "Learn how to move from parametric mechanical design to realistic 3D rendering by modeling a desk lamp first in SolidWorks, then building the scene, materials, and lighting in Blender.",
+        architecture: ["CAD design", "Model export", "Blender scene", "Materials", "Final render"],
+        stack: ["SolidWorks", "Blender", "3D modeling", "Lighting", "Product rendering"],
+        outcome:
+          "A personal learning project: understand shape constraints in SolidWorks, then make the object credible through composition, textures, camera angles, and lighting.",
+        mediaLabel: "Product renders of a smart desk lamp, from base close-up to full desk scene.",
+        media: {
+          src: "/projects/blender-lamp-overhead-desk.png",
+          alt: "Blender render of a desk with a smart lamp, cutting mat, and 3D printer",
+          eyebrow: "Modeling & rendering",
+          title: "Modeled Smart Desk Lamp",
+          headline: ["Smart", "desk lamp", "SolidWorks", "Blender"],
+          tagline: "Design the form. Compose the scene. Make the object believable.",
+          description:
+            "A learning project around a desk lamp: initial modeling in SolidWorks, transition into Blender, and work on materials, lighting, and camera framing to produce realistic renders.",
+          footer: "Personal project · CAD + 3D rendering + lighting direction",
+          overviewLabel: "Process",
+          interfaceLabel: "Render gallery",
+          interfaceTitle: "A technical object staged like a product render.",
+          interfaceCopy:
+            "The renders show the move from modeled object to complete scene: base close-up, side view, desk composition, and overhead product framing.",
+          impact: {
+            lead: "Hands-on learning.",
+            highlight: "SolidWorks then Blender.",
+          },
+          features: [
+            { title: "CAD base", detail: "Shape construction and main volumes designed in SolidWorks" },
+            { title: "Materials", detail: "Dark plastic/metal look with blue light accents" },
+            { title: "Composition", detail: "Desk staging with prototyping tools, 3D printer, and work surface" },
+            { title: "Framing", detail: "Close-ups, overhead views, and wide shots to tell the object story" },
+          ],
+          interfaceScreens: [
+            {
+              src: "/projects/blender-lamp-base-closeup.png",
+              alt: "Close-up of the smart lamp base with illuminated control dial",
+              caption: "Base & interface",
+              description: "Detail work on the base, circular dial, charging symbol, and dark material treatment.",
+            },
+            {
+              src: "/projects/blender-lamp-side-plan.png",
+              alt: "Side view of a desk with lamp, cutting mat, and 3D printer",
+              caption: "Side view",
+              description: "Lamp staged in a work environment with projected light and workshop objects.",
+            },
+            {
+              src: "/projects/blender-lamp-overhead-desk.png",
+              alt: "Overhead view of the full desk with lamp, tablet, and 3D printer",
+              caption: "Full scene",
+              description: "Complete desk composition to give context to the object and its use.",
+            },
+            {
+              src: "/projects/blender-lamp-top-closeup.png",
+              alt: "Overhead close-up of the lamp with a blue light beam",
+              caption: "Product framing",
+              description: "More cinematic framing focused on the lamp head, arm, and projected light beam.",
+            },
+          ],
+        },
+        accent: "cyan",
+      },
+      {
         title: "Augmented Créalab",
         label: "Agentic interface & mechatronics",
         problem:
@@ -629,20 +757,20 @@ export default function Home() {
 
         <div className="relative z-10 h-[100svh] min-h-[48rem] w-full md:min-h-[42rem]">
           <Reveal className="absolute left-0 right-0 top-[1.25rem] px-5 text-center sm:top-[1.8rem] md:top-[3.6rem]">
-            <p className="mx-auto w-[min(34rem,90vw)] text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.95)] sm:text-xs md:tracking-[0.22em]">
+            <p className="mono-detail mx-auto w-[min(34rem,90vw)] text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.95)] sm:text-xs md:tracking-[0.22em]">
               {language === "fr" ? "Conçu pour inventer. Fait pour durer." : "Designed to invent. Built to last."}
             </p>
           </Reveal>
 
           <Reveal delay={0.05} className="absolute left-[clamp(1rem,4.5vw,4rem)] top-[3.6rem] max-w-[calc(100vw-2rem)] sm:top-[3.9rem] md:left-[clamp(1.25rem,3.4vw,4rem)] md:top-[6.4rem] md:max-w-[calc(100vw-2.5rem)] md:whitespace-nowrap">
-            <h1 className="select-none font-['Archivo',ui-sans-serif] text-[clamp(2.55rem,13vw,4.9rem)] font-black uppercase leading-[0.78] tracking-[0] text-[#fff8ea] drop-shadow-[0_14px_40px_rgba(0,0,0,0.82)] md:text-[clamp(4.5rem,17vw,13.5rem)]">
+            <h1 className="select-none text-[clamp(2.55rem,13vw,4.9rem)] font-black uppercase leading-[0.78] tracking-[0] text-[#fff8ea] drop-shadow-[0_14px_40px_rgba(0,0,0,0.82)] md:text-[clamp(4.5rem,17vw,13.5rem)]">
               Gauthier
             </h1>
           </Reveal>
 
           <Reveal delay={0.08} className="absolute left-4 right-4 top-[9.4rem] md:hidden">
             <div className="border border-white/16 bg-zinc-950/54 p-3 shadow-2xl shadow-black/45 backdrop-blur-sm">
-              <p className="flex items-center gap-2 text-[0.68rem] font-semibold uppercase leading-4 tracking-[0.16em] text-slate-100">
+              <p className="mono-detail flex items-center gap-2 text-[0.68rem] font-semibold uppercase leading-4 tracking-[0.16em] text-slate-100">
                 <span className="h-2 w-2 shrink-0 rounded-full bg-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.8)]" />
                 {t.hero.badge}
               </p>
@@ -669,11 +797,11 @@ export default function Home() {
 
           <Reveal delay={0.16} className="absolute bottom-[14.25rem] right-[clamp(1.25rem,4vw,4.5rem)] hidden max-w-lg md:block">
             <div className="border border-white/16 bg-zinc-950/62 p-5 text-right shadow-2xl shadow-black/55">
-              <p className="mb-4 inline-flex items-center gap-3 rounded-full border border-white/22 bg-black/48 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-100 shadow-2xl shadow-black/30">
+              <p className="mono-detail mb-4 inline-flex items-center gap-3 rounded-full border border-white/22 bg-black/48 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-100 shadow-2xl shadow-black/30">
                 <span className="h-2 w-2 rounded-full bg-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.8)]" />
                 {language === "fr" ? "Etudiant ingenieur Robotique & IA" : "Robotics & AI Engineering Student"}
               </p>
-              <h2 className="text-balance text-3xl font-semibold leading-tight text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.95)]">
+              <h2 className="text-balance text-4xl font-semibold leading-[0.98] text-white [text-shadow:0_3px_22px_rgba(0,0,0,0.95)]">
                 {t.hero.title}
               </h2>
             </div>
@@ -727,15 +855,15 @@ export default function Home() {
               const Icon = pillarVisuals[index].icon;
               return (
                 <Reveal key={pillar.title} delay={index * 0.05}>
-                  <div className="h-full rounded-lg border border-white/10 bg-slate-950/[0.65] p-6 transition-colors duration-200 hover:border-white/[0.22] hover:bg-white/[0.06]">
+                  <div className="h-full rounded-lg border border-white/10 bg-[#080a10]/72 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] transition-colors duration-200 hover:border-white/[0.22] hover:bg-white/[0.055]">
                     <div className="mb-10 flex items-center justify-between">
                       <div className="rounded-md border border-white/10 bg-white/5 p-3">
                         <Icon className={`h-5 w-5 ${pillarVisuals[index].accent}`} />
                       </div>
-                      <span className="text-xs uppercase tracking-[0.2em] text-slate-500">{pillar.stat}</span>
+                      <span className="mono-detail text-xs uppercase tracking-[0.18em] text-slate-500">{pillar.stat}</span>
                     </div>
                     <p className="text-sm font-medium text-slate-400">{pillar.subtitle}</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">{pillar.title}</h3>
+                    <h3 className="mt-2 text-3xl font-semibold text-white">{pillar.title}</h3>
                     <p className="mt-4 text-sm leading-6 text-slate-300">{pillar.copy}</p>
                   </div>
                 </Reveal>
@@ -766,18 +894,18 @@ export default function Home() {
               const Icon = index === 0 ? GraduationCap : index === 1 ? Languages : index === 2 ? ShieldCheck : Wrench;
               return (
                 <Reveal key={item.title} delay={index * 0.05}>
-                  <article className="h-full rounded-lg border border-white/10 bg-slate-950/[0.65] p-6 transition-colors duration-200 hover:border-emerald-200/35 hover:bg-white/[0.06]">
+                  <article className="h-full rounded-lg border border-white/10 bg-[#080a10]/72 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] transition-colors duration-200 hover:border-emerald-200/35 hover:bg-white/[0.055]">
                     <div className="mb-8 flex items-start justify-between gap-5">
                       <div className="flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-md border border-white/10 bg-white/5">
                           <Icon className="h-5 w-5 text-emerald-200" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                          <h3 className="text-2xl font-semibold text-white">{item.title}</h3>
                           <p className="mt-1 text-sm text-slate-400">{item.meta}</p>
                         </div>
                       </div>
-                      <span className="shrink-0 rounded-full border border-emerald-200/25 bg-emerald-200/[0.08] px-3 py-1.5 text-xs font-semibold text-emerald-100">
+                      <span className="mono-detail shrink-0 rounded-full border border-emerald-200/25 bg-emerald-200/[0.08] px-3 py-1.5 text-xs font-semibold text-emerald-100">
                         {item.signal}
                       </span>
                     </div>
@@ -794,22 +922,22 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <Reveal>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-200/80">{t.experience.eyebrow}</p>
-              <h2 className="text-balance text-3xl font-semibold text-white md:text-5xl">{t.experience.title}</h2>
+              <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">{t.experience.eyebrow}</p>
+              <h2 className="text-balance text-4xl font-semibold leading-[0.98] text-white md:text-6xl">{t.experience.title}</h2>
               <p className="mt-5 text-lg leading-8 text-slate-300">{t.experience.copy}</p>
             </div>
           </Reveal>
           <div className="grid gap-4">
             {t.experience.items.map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06}>
-                <div className="grid gap-5 rounded-lg border border-white/10 bg-white/[0.04] p-6 md:grid-cols-[auto_1fr]">
+                <div className="grid gap-5 rounded-lg border border-white/10 bg-white/[0.035] p-6 transition-colors duration-200 hover:border-emerald-200/25 hover:bg-white/[0.055] md:grid-cols-[auto_1fr]">
                   <div className="flex h-11 w-11 items-center justify-center rounded-md border border-white/10 bg-slate-950">
                     {index === 0 ? <Wrench className="h-5 w-5 text-amber-200" /> : null}
                     {index === 1 ? <Network className="h-5 w-5 text-sky-200" /> : null}
                     {index === 2 ? <Radar className="h-5 w-5 text-emerald-200" /> : null}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                    <h3 className="text-2xl font-semibold text-white">{item.title}</h3>
                     <p className="mt-2 leading-7 text-slate-300">{item.copy}</p>
                   </div>
                 </div>
@@ -821,10 +949,10 @@ export default function Home() {
 
       <section id="vision" className="relative px-5 py-20 md:px-8 md:py-28">
         <Reveal>
-          <div className="mx-auto max-w-5xl rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.08] via-slate-950/80 to-emerald-300/[0.08] p-8 text-center shadow-2xl shadow-black/30 md:p-14">
+          <div className="mx-auto max-w-5xl rounded-lg border border-white/10 bg-[#07080d]/82 p-8 text-center shadow-[0_40px_120px_rgba(0,0,0,0.34)] md:p-14">
             <Sparkles className="mx-auto h-7 w-7 text-emerald-200" />
-            <p className="mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-200/80">{t.vision.eyebrow}</p>
-            <h2 className="mt-4 text-balance text-3xl font-semibold text-white md:text-6xl">{t.vision.title}</h2>
+            <p className="mono-detail mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">{t.vision.eyebrow}</p>
+            <h2 className="mt-4 text-balance text-4xl font-semibold leading-[0.98] text-white md:text-7xl">{t.vision.title}</h2>
             <p className="mx-auto mt-7 max-w-3xl text-pretty text-lg leading-8 text-slate-300 md:text-xl">{t.vision.copy}</p>
           </div>
         </Reveal>
@@ -834,8 +962,8 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-8 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
           <Reveal>
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">{t.contact.eyebrow}</p>
-              <h2 className="text-3xl font-semibold text-white md:text-5xl">{t.contact.title}</h2>
+              <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{t.contact.eyebrow}</p>
+              <h2 className="text-4xl font-semibold leading-[0.98] text-white md:text-6xl">{t.contact.title}</h2>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
