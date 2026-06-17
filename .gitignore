@@ -19,6 +19,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log
 
 # Editor and OS files
 .DS_Store
@@ -27,5 +28,6 @@ tsconfig.tsbuildinfo
 
 # Local Codex workspace metadata
 .codex/
+.tmp_*
 .tmp_cv_extract/
 .tmp_crealab_*/
