@@ -41,7 +41,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://prod.spline.design https://*.spline.design",
   "font-src 'self' data: https://www.gstatic.com",
-  "connect-src 'self' https://prod.spline.design https://*.spline.design https://www.gstatic.com https://raw.githubusercontent.com",
+  "connect-src 'self' https://prod.spline.design https://*.spline.design https://www.gstatic.com https://unpkg.com https://raw.githubusercontent.com",
   "child-src 'self' blob:",
   "worker-src 'self' blob:",
   "media-src 'self' blob:",
