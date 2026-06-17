@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import {
   BrainCircuit,
   Cpu,
@@ -19,13 +18,14 @@ import {
   Wrench,
 } from "lucide-react";
 import { NavBar, type Language } from "@/components/NavBar";
-import { JourneyGlobe } from "@/components/JourneyGlobe";
+import { LazyJourneyGlobe } from "@/components/LazyJourneyGlobe";
 import type { Project } from "@/components/ProjectCard";
 import { ProjectScrollTrack } from "@/components/ProjectScrollTrack";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SplineShowcase } from "@/components/SplineShowcase";
 import { journeys } from "@/data/journeys";
+import { assetPath } from "@/lib/assetPath";
 
 const profileLinks = {
   github: "https://github.com/",
@@ -179,7 +179,7 @@ const content = {
           "Un exercice personnel de montée en compétence : comprendre les contraintes de forme dans SolidWorks, puis apprendre à valoriser l’objet par la composition, les textures, les angles caméra et l’éclairage.",
         mediaLabel: "Rendus produit d’une lampe de bureau connectée, de la base au plan d’ensemble.",
         media: {
-          src: "/projects/blender-lamp-overhead-desk.png",
+          src: "/projects/blender-lamp-overhead-desk.webp",
           alt: "Rendu Blender d’un bureau avec lampe connectée, tablette de découpe et imprimante 3D",
           eyebrow: "Modélisation & rendu",
           title: "Lampe connectée modélisée",
@@ -205,25 +205,25 @@ const content = {
           ],
           interfaceScreens: [
             {
-              src: "/projects/blender-lamp-base-closeup.png",
+              src: "/projects/blender-lamp-base-closeup.webp",
               alt: "Gros plan sur la base de la lampe connectée avec molette lumineuse",
               caption: "Base & interface",
               description: "Travail de détail sur la base, la molette circulaire, le symbole de charge et les matériaux sombres.",
             },
             {
-              src: "/projects/blender-lamp-side-plan.png",
+              src: "/projects/blender-lamp-side-plan.webp",
               alt: "Vue latérale d’un bureau avec lampe, plan de découpe et imprimante 3D",
               caption: "Plan latéral",
               description: "Mise en scène de la lampe dans un environnement de travail, avec projection lumineuse et objets d’atelier.",
             },
             {
-              src: "/projects/blender-lamp-overhead-desk.png",
+              src: "/projects/blender-lamp-overhead-desk.webp",
               alt: "Vue plongeante du bureau complet avec lampe, tablette et imprimante 3D",
               caption: "Vue d’ensemble",
               description: "Composition complète du bureau pour donner du contexte à l’objet et à son usage.",
             },
             {
-              src: "/projects/blender-lamp-top-closeup.png",
+              src: "/projects/blender-lamp-top-closeup.webp",
               alt: "Vue plongeante rapprochée de la lampe avec faisceau lumineux bleu",
               caption: "Cadrage produit",
               description: "Cadrage plus cinématique centré sur la tête de lampe, le bras et le faisceau lumineux.",
@@ -521,7 +521,7 @@ const content = {
           "A personal learning project: understand shape constraints in SolidWorks, then make the object credible through composition, textures, camera angles, and lighting.",
         mediaLabel: "Product renders of a smart desk lamp, from base close-up to full desk scene.",
         media: {
-          src: "/projects/blender-lamp-overhead-desk.png",
+          src: "/projects/blender-lamp-overhead-desk.webp",
           alt: "Blender render of a desk with a smart lamp, cutting mat, and 3D printer",
           eyebrow: "Modeling & rendering",
           title: "Modeled Smart Desk Lamp",
@@ -547,25 +547,25 @@ const content = {
           ],
           interfaceScreens: [
             {
-              src: "/projects/blender-lamp-base-closeup.png",
+              src: "/projects/blender-lamp-base-closeup.webp",
               alt: "Close-up of the smart lamp base with illuminated control dial",
               caption: "Base & interface",
               description: "Detail work on the base, circular dial, charging symbol, and dark material treatment.",
             },
             {
-              src: "/projects/blender-lamp-side-plan.png",
+              src: "/projects/blender-lamp-side-plan.webp",
               alt: "Side view of a desk with lamp, cutting mat, and 3D printer",
               caption: "Side view",
               description: "Lamp staged in a work environment with projected light and workshop objects.",
             },
             {
-              src: "/projects/blender-lamp-overhead-desk.png",
+              src: "/projects/blender-lamp-overhead-desk.webp",
               alt: "Overhead view of the full desk with lamp, tablet, and 3D printer",
               caption: "Full scene",
               description: "Complete desk composition to give context to the object and its use.",
             },
             {
-              src: "/projects/blender-lamp-top-closeup.png",
+              src: "/projects/blender-lamp-top-closeup.webp",
               alt: "Overhead close-up of the lamp with a blue light beam",
               caption: "Product framing",
               description: "More cinematic framing focused on the lamp head, arm, and projected light beam.",
@@ -736,22 +736,16 @@ export default function Home() {
   return (
     <main id="top" className="relative overflow-x-clip">
       <section id="content" className="relative min-h-[100svh] overflow-hidden bg-[#050607] md:aspect-[1570/1002]">
-        <Image
-          src="/hero-engineering-desk-mobile.png"
-          alt="Bureau d'ingÃ©nierie vertical avec imprimante 3D, croquis de robotique, calculatrice et outils"
-          fill
-          sizes="100vw"
-          className="object-contain object-top md:hidden"
-          priority
-        />
-        <Image
-          src="/hero-engineering-desk-v2.png"
-          alt="Bureau d'ingénierie avec croquis de robotique, calculatrice, pied à coulisse et imprimante 3D"
-          fill
-          sizes="100vw"
-          className="hidden object-cover object-center md:block"
-          priority
-        />
+        <picture>
+          <source media="(max-width: 767px)" srcSet={assetPath("/hero-engineering-desk-mobile.webp")} />
+          <img
+            src={assetPath("/hero-engineering-desk-v2.webp")}
+            alt="Bureau d'ingénierie avec croquis de robotique, calculatrice, pied à coulisse et imprimante 3D"
+            className="absolute inset-0 h-full w-full object-contain object-top md:object-cover md:object-center"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_50%,transparent_0,rgba(0,0,0,0.05)_42%,rgba(0,0,0,0.64)_100%)]" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/48" aria-hidden="true" />
 
@@ -845,7 +839,7 @@ export default function Home() {
 
       <SplineShowcase labels={t.interface} />
 
-      <section id="systems" className="relative px-5 py-20 md:px-8 md:py-28">
+      <section id="systems" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeader eyebrow={t.systemsHeader.eyebrow} title={t.systemsHeader.title} copy={t.systemsHeader.copy} />
@@ -873,7 +867,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="projects" className="relative px-5 py-20 md:px-8 md:py-28">
+      <section id="projects" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeader eyebrow={t.projectsHeader.eyebrow} title={t.projectsHeader.title} copy={t.projectsHeader.copy} />
@@ -882,9 +876,9 @@ export default function Home() {
         </div>
       </section>
 
-      <JourneyGlobe language={language} journeys={journeys} header={t.journeyHeader} labels={t.journeyLabels} />
+      <LazyJourneyGlobe language={language} journeys={journeys} header={t.journeyHeader} labels={t.journeyLabels} />
 
-      <section id="education" className="relative px-5 py-20 md:px-8 md:py-28">
+      <section id="education" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeader eyebrow={t.educationHeader.eyebrow} title={t.educationHeader.title} copy={t.educationHeader.copy} />
@@ -918,7 +912,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="experience" className="relative px-5 py-20 md:px-8 md:py-28">
+      <section id="experience" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <Reveal>
             <div>
@@ -947,7 +941,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="vision" className="relative px-5 py-20 md:px-8 md:py-28">
+      <section id="vision" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <Reveal>
           <div className="mx-auto max-w-5xl rounded-lg border border-white/10 bg-[#07080d]/82 p-8 text-center shadow-[0_40px_120px_rgba(0,0,0,0.34)] md:p-14">
             <Sparkles className="mx-auto h-7 w-7 text-emerald-200" />

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ProjectCard, type Project, type ProjectCardLabels } from "@/components/ProjectCard";
 
 type ProjectScrollTrackProps = {
@@ -11,23 +10,55 @@ type ProjectScrollTrackProps = {
 
 export function ProjectScrollTrack({ projects, labels }: ProjectScrollTrackProps) {
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start 72%", "end 28%"],
-  });
-  const lineScale = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 24,
-    mass: 0.2,
-  });
+  const lineRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const line = lineRef.current;
+    if (!track || !line) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      line.style.transform = "scaleY(1)";
+      return;
+    }
+
+    let animationFrame = 0;
+
+    const updateProgress = () => {
+      const rect = track.getBoundingClientRect();
+      const startOffset = window.innerHeight * 0.72;
+      const endOffset = window.innerHeight * 0.28;
+      const total = rect.height + startOffset - endOffset;
+      const progress = total > 0 ? (startOffset - rect.top) / total : 0;
+      const clampedProgress = Math.min(1, Math.max(0, progress));
+
+      line.style.transform = `scaleY(${clampedProgress})`;
+    };
+
+    const requestUpdate = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
 
   return (
     <div ref={trackRef} className="relative mt-2">
       <div className="absolute left-4 top-2 h-[calc(100%-1rem)] w-px overflow-hidden rounded-full bg-sky-200/12 md:left-6" aria-hidden="true">
-        <motion.div
-          className="h-full w-full origin-top rounded-full bg-gradient-to-b from-sky-300 via-cyan-200 to-blue-500 shadow-[0_0_24px_rgba(125,211,252,0.65)]"
-          style={{ scaleY: reduceMotion ? 1 : lineScale }}
+        <div
+          ref={lineRef}
+          className="h-full w-full origin-top rounded-full bg-gradient-to-b from-sky-300 via-cyan-200 to-blue-500 shadow-[0_0_24px_rgba(125,211,252,0.65)] will-change-transform"
+          style={{ transform: "scaleY(0)" }}
         />
       </div>
 
@@ -46,14 +77,7 @@ export function ProjectScrollTrack({ projects, labels }: ProjectScrollTrackProps
                 </div>
               </div>
             ) : null}
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0.72, y: 28 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: project.media ? 0.16 : 0.32 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: index * 0.03 }}
-            >
-              <ProjectCard project={project} index={index} labels={labels} />
-            </motion.div>
+            <ProjectCard project={project} index={index} labels={labels} />
           </div>
         ))}
       </div>

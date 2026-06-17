@@ -110,8 +110,10 @@ export default function RotatingEarth({
   activeRouteIndex = 0,
   interactionLabel = "Drag to rotate",
 }: RotatingEarthProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const activeRouteRef = useRef(activeRouteIndex);
+  const [shouldInitialize, setShouldInitialize] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -129,7 +131,26 @@ export default function RotatingEarth({
   }, [activeRouteIndex]);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    const container = containerRef.current;
+    if (!container || shouldInitialize) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldInitialize(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "700px 0px" },
+    );
+
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, [shouldInitialize]);
+
+  useEffect(() => {
+    if (!shouldInitialize || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -140,6 +161,8 @@ export default function RotatingEarth({
     let allDots: DotData[] = [];
     let landFeatures: LandFeature[] = [];
     let autoRotate = true;
+    let isInViewport = true;
+    let tabIsVisible = document.visibilityState === "visible";
     const rotation: [number, number, number] = [0, -8, 0];
 
     const projection = d3.geoOrthographic().clipAngle(90);
@@ -150,7 +173,7 @@ export default function RotatingEarth({
       const containerWidth = Math.max(280, Math.min(width, parentWidth, window.innerWidth - 40));
       const containerHeight = Math.max(320, Math.min(height, window.innerHeight - 100));
       const radius = Math.min(containerWidth, containerHeight) / 2.45;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
       dimensions = { width: containerWidth, height: containerHeight, radius, dpr };
       canvas.width = Math.floor(containerWidth * dpr);
@@ -271,7 +294,7 @@ export default function RotatingEarth({
         if (cancelled) return;
 
         landFeatures = landData.features;
-        allDots = landFeatures.flatMap((feature) => generateDotsInPolygon(feature, 16));
+        allDots = landFeatures.flatMap((feature) => generateDotsInPolygon(feature, 28));
         render();
         setIsLoading(false);
       } catch {
@@ -282,13 +305,34 @@ export default function RotatingEarth({
       }
     };
 
-    const rotationTimer = d3.timer(() => {
-      if (!autoRotate) return;
+    let lastRenderTime = 0;
 
-      rotation[0] += 0.22;
+    const rotationTimer = d3.timer((elapsed) => {
+      if (!autoRotate || !isInViewport || !tabIsVisible) return;
+      if (elapsed - lastRenderTime < 58) return;
+
+      lastRenderTime = elapsed;
+      rotation[0] += 0.28;
       projection.rotate(rotation);
       render();
     });
+
+    const viewportObserver = new IntersectionObserver(
+      ([entry]) => {
+        isInViewport = entry.isIntersecting;
+        if (isInViewport) render();
+      },
+      { rootMargin: "240px 0px" },
+    );
+
+    if (containerRef.current) {
+      viewportObserver.observe(containerRef.current);
+    }
+
+    const handleVisibilityChange = () => {
+      tabIsVisible = document.visibilityState === "visible";
+      if (tabIsVisible && isInViewport) render();
+    };
 
     const handleMouseDown = (event: MouseEvent) => {
       autoRotate = false;
@@ -321,15 +365,18 @@ export default function RotatingEarth({
     loadWorldData();
 
     window.addEventListener("resize", resize, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     canvas.addEventListener("mousedown", handleMouseDown);
 
     return () => {
       cancelled = true;
       rotationTimer.stop();
+      viewportObserver.disconnect();
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       canvas.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [height, routeSegments, routes, width]);
+  }, [height, routeSegments, routes, shouldInitialize, width]);
 
   if (error) {
     return (
@@ -343,7 +390,7 @@ export default function RotatingEarth({
   }
 
   return (
-    <div className={`relative flex justify-center ${className}`}>
+    <div ref={containerRef} className={`relative flex justify-center ${className}`}>
       <canvas
         ref={canvasRef}
         className="dark h-auto w-full cursor-grab rounded-2xl bg-background active:cursor-grabbing"

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Reveal } from "@/components/Reveal";
+import { assetPath } from "@/lib/assetPath";
 
 type ProjectMedia = {
   src: string;
@@ -99,7 +100,14 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
             <div className="relative h-64 overflow-hidden border-y border-sky-200/10">
               <div className="absolute inset-x-0 top-1/2 h-px bg-sky-200/22" aria-hidden="true" />
-              <Image src={media.src} alt={media.alt} fill sizes="100vw" className="object-contain object-center" priority={index === 0} />
+              <Image
+                src={assetPath(media.src)}
+                alt={media.alt}
+                fill
+                sizes="100vw"
+                className="object-contain object-center"
+                quality={74}
+              />
             </div>
 
             <div className="space-y-5 px-5 pb-8 pt-6">
@@ -134,12 +142,12 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
             <div className="absolute inset-0" aria-hidden="true">
               <Image
-                src={media.src}
+                src={assetPath(media.src)}
                 alt=""
                 fill
                 sizes="100vw"
                 className="object-cover object-center"
-                priority={index === 0}
+                quality={74}
               />
             </div>
 
@@ -229,11 +237,12 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
                   >
                     <div className="relative aspect-[16/9] bg-white">
                       <Image
-                        src={screen.src}
+                        src={assetPath(screen.src)}
                         alt={screen.alt}
                         fill
                         sizes="(min-width: 1280px) 31vw, (min-width: 768px) 46vw, 100vw"
                         className="object-cover object-left-top"
+                        quality={72}
                       />
                     </div>
                     <figcaption className="p-4">
