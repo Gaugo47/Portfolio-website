@@ -5,6 +5,18 @@ import type { Application } from "@splinetool/runtime";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
+function SplineFallback() {
+  return (
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#020617]">
+      <div className="absolute inset-0 opacity-45 interface-grid" aria-hidden="true" />
+      <div className="absolute h-52 w-52 rounded-full border border-sky-200/18 bg-sky-300/[0.06] shadow-[0_0_80px_rgba(125,211,252,0.18)]" />
+      <div className="relative grid h-28 w-28 place-items-center rounded-full border border-emerald-200/20 bg-black/35 shadow-[0_0_48px_rgba(142,230,168,0.16)]">
+        <div className="h-12 w-12 rounded-md border border-sky-200/50 bg-sky-200/[0.08]" />
+      </div>
+    </div>
+  );
+}
+
 interface SplineSceneProps {
   scene: string;
   className?: string;
@@ -36,20 +48,16 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const compactViewportQuery = window.matchMedia("(max-width: 767px)");
-    const navigatorWithMemory = navigator as Navigator & { deviceMemory?: number };
 
     const updateCapability = () => {
-      setCanUse3D(!reducedMotionQuery.matches && !compactViewportQuery.matches && (navigatorWithMemory.deviceMemory ?? 8) >= 4);
+      setCanUse3D(!reducedMotionQuery.matches);
     };
 
     updateCapability();
     reducedMotionQuery.addEventListener("change", updateCapability);
-    compactViewportQuery.addEventListener("change", updateCapability);
 
     return () => {
       reducedMotionQuery.removeEventListener("change", updateCapability);
-      compactViewportQuery.removeEventListener("change", updateCapability);
     };
   }, []);
 
@@ -125,10 +133,12 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
         >
           <Spline scene={scene} className="h-full w-full" onLoad={handleLoad} renderOnDemand />
         </Suspense>
-      ) : (
+      ) : canUse3D ? (
         <div className="flex h-full w-full items-center justify-center bg-black/18">
           <span className="loader"></span>
         </div>
+      ) : (
+        <SplineFallback />
       )}
     </div>
   );
