@@ -10,12 +10,14 @@ import {
   Languages,
   Mail,
   Map,
+  Menu,
   MoveRight,
   Network,
   Radar,
   ShieldCheck,
   Sparkles,
   Wrench,
+  X,
 } from "lucide-react";
 import { NavBar, type Language } from "@/components/NavBar";
 import { LazyJourneyGlobe } from "@/components/LazyJourneyGlobe";
@@ -24,6 +26,7 @@ import { ProjectScrollTrack } from "@/components/ProjectScrollTrack";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SplineShowcase } from "@/components/SplineShowcase";
+import { SplineScene } from "@/components/ui/splite";
 import { journeys } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
 
@@ -32,6 +35,8 @@ const profileLinks = {
   linkedin: "https://www.linkedin.com/in/gauthier-defoy/",
   email: "mailto:gauthier.defoy@edu.devinci.fr",
 };
+
+const heroSplineScene = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
 
 const content = {
   fr: {
@@ -813,13 +818,179 @@ const pillarVisuals = [
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("fr");
+  const [mobileHeroMenuOpen, setMobileHeroMenuOpen] = useState(false);
   const t = content[language];
 
   const projects = useMemo(() => t.projects as Project[], [t.projects]);
+  const heroNavLinks = [
+    { label: t.nav.systems, href: "#systems" },
+    { label: t.nav.projects, href: "#projects" },
+    { label: t.nav.journey, href: "#journey" },
+    { label: t.nav.education, href: "#education" },
+    { label: t.nav.experience, href: "#experience" },
+    { label: t.nav.vision, href: "#vision" },
+  ];
 
   return (
     <main id="top" className="relative overflow-x-clip">
-      <section id="content" className="relative min-h-[100svh] overflow-hidden bg-[#050607] md:aspect-[1570/1002]">
+      <section id="content" className="relative overflow-hidden bg-black/[0.88] px-5 pb-14 pt-7 md:min-h-[100svh] md:px-8 md:py-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_44%,rgba(56,189,248,0.16),transparent_31%),linear-gradient(180deg,rgba(0,0,0,0.42),rgba(0,0,0,0.88))]" aria-hidden="true" />
+
+        <div className="relative z-10 md:hidden">
+          <div className="relative z-40 flex items-center justify-between border-b border-white/10 pb-7">
+            <a href="#top" className="focus-ring mono-detail text-2xl font-black uppercase tracking-[0] text-white">
+              GD
+            </a>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMobileHeroMenuOpen((isOpen) => !isOpen)}
+                className="focus-ring inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-white transition-colors duration-200 hover:bg-white/[0.08]"
+                aria-expanded={mobileHeroMenuOpen}
+                aria-label={mobileHeroMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              >
+                {mobileHeroMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-8 w-8" />}
+              </button>
+
+              {mobileHeroMenuOpen ? (
+                <div className="absolute right-0 top-full z-50 mt-4 w-64 rounded-lg border border-white/12 bg-black/92 p-2 shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
+                  {heroNavLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileHeroMenuOpen(false)}
+                      className="focus-ring block cursor-pointer rounded-md px-4 py-3 text-sm font-semibold text-slate-200 transition-colors duration-200 hover:bg-white/[0.08] hover:text-white"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                  <a
+                    href="#contact"
+                    onClick={() => setMobileHeroMenuOpen(false)}
+                    className="focus-ring mt-2 flex cursor-pointer items-center justify-between rounded-md bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
+                  >
+                    {t.nav.contact}
+                    <Mail className="h-4 w-4" />
+                  </a>
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <Reveal className="-mx-5 border-b border-white/10">
+            <div className="relative h-[34rem] overflow-hidden">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(56,189,248,0.28),transparent_42%)]" aria-hidden="true" />
+              <SplineScene scene={heroSplineScene} className="absolute left-1/2 top-[-3.75rem] h-[39rem] w-[39rem] -translate-x-1/2 scale-[1.08]" interactive />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black to-transparent" aria-hidden="true" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black via-black/88 to-transparent" aria-hidden="true" />
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08} className="relative z-10 -mt-24">
+            <p className="mono-detail text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-100">
+              {language === "fr" ? "Etudiant ingenieur Robotique & IA" : "Robotics & AI Engineering Student"}
+            </p>
+            <h1 className="mt-5 text-[clamp(4.15rem,18vw,6.4rem)] font-black uppercase leading-[0.86] tracking-[0] text-white">
+              Gauthier Defoy
+            </h1>
+            <p className="mt-8 text-balance text-[1.7rem] font-semibold leading-[1.18] text-white">
+              {t.hero.title}
+            </p>
+            <p className="mt-6 text-lg leading-8 text-slate-300">{t.hero.copy}</p>
+
+            <div className="mt-9 flex flex-col gap-3">
+              <a
+                href="#projects"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-3 rounded-full bg-white px-6 py-4 text-base font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
+              >
+                {t.hero.projectsCta}
+                <MoveRight className="h-5 w-5" />
+              </a>
+              <a
+                href="#contact"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-3 rounded-full border border-white/[0.22] bg-white/[0.03] px-6 py-4 text-base font-semibold text-white transition-colors duration-200 hover:bg-white/[0.09]"
+              >
+                {t.hero.contactCta}
+                <Mail className="h-5 w-5" />
+              </a>
+            </div>
+
+            <div className="mt-7 grid grid-cols-3 gap-5 border-t border-white/12 pt-7">
+              {t.hero.credentials.map((credential) => (
+                <div key={credential.value} className="border-r border-white/12 pr-4 last:border-r-0 last:pr-0">
+                  <p className="text-lg font-semibold leading-none text-white">{credential.value}</p>
+                  <p className="mt-3 text-sm leading-5 text-slate-400">{credential.label}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="relative z-10 mx-auto hidden min-h-[calc(100svh-7rem)] w-full max-w-[96rem] items-center gap-10 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(28rem,1.08fr)] lg:gap-14">
+          <Reveal className="max-w-3xl">
+            <div className="max-w-[52vw] sm:max-w-[31rem] md:max-w-none">
+            <p className="mono-detail hidden text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-sky-200 sm:text-[0.72rem] md:block md:tracking-[0.2em]">
+              {language === "fr" ? "Étudiant ingénieur Robotique & IA" : "Robotics & AI Engineering Student"}
+            </p>
+            <h1 className="mt-4 text-balance text-[clamp(2.65rem,11vw,4.6rem)] font-black uppercase leading-[0.86] tracking-[0] text-white sm:text-[clamp(3.35rem,10vw,6rem)] md:mt-5 md:text-[clamp(5rem,8vw,8.6rem)]">
+              Gauthier Defoy
+            </h1>
+            </div>
+            <p className="mt-[9.5rem] max-w-2xl text-balance text-lg font-semibold leading-tight text-slate-100 sm:mt-12 sm:text-xl md:mt-7 md:text-2xl lg:text-3xl">
+              {t.hero.title}
+            </p>
+            <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 md:text-lg md:leading-8">{t.hero.copy}</p>
+
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row">
+              <a
+                href="#projects"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
+              >
+                {t.hero.projectsCta}
+                <MoveRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#contact"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.22] bg-white/[0.04] px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/[0.09]"
+              >
+                {t.hero.contactCta}
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div className="mt-9 grid gap-3 sm:grid-cols-3">
+              {t.hero.credentials.map((credential) => (
+                <div key={credential.value} className="border-t border-white/16 pt-3">
+                  <p className="text-lg font-semibold leading-none text-white">{credential.value}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">{credential.label}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08} className="relative hidden min-h-[34rem] md:block lg:min-h-[40rem]">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_56%_48%,rgba(125,211,252,0.18),transparent_34%),radial-gradient(circle_at_50%_75%,rgba(16,185,129,0.12),transparent_28%)]" aria-hidden="true" />
+            <SplineScene scene={heroSplineScene} className="absolute inset-0" interactive />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/70 to-transparent" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-black to-transparent" aria-hidden="true" />
+          </Reveal>
+
+          <Reveal delay={0.12} className="md:hidden">
+            <div className="overflow-hidden border border-white/10 bg-[#050607] shadow-2xl shadow-black/40">
+              <img
+                src={assetPath("/hero-engineering-desk-mobile.webp")}
+                alt="Bureau d'ingÃ©nierie avec croquis de robotique, calculatrice, pied Ã  coulisse et imprimante 3D"
+                className="h-auto w-full object-contain"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {false && (
+      <section aria-hidden="true" className="hidden">
         <picture>
           <source media="(max-width: 767px)" srcSet={assetPath("/hero-engineering-desk-mobile.webp")} />
           <img
@@ -918,6 +1089,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       <NavBar language={language} onLanguageChange={setLanguage} labels={t.nav} links={profileLinks} />
 

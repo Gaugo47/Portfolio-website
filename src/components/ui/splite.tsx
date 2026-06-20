@@ -20,9 +20,10 @@ function SplineFallback() {
 interface SplineSceneProps {
   scene: string;
   className?: string;
+  interactive?: boolean;
 }
 
-export function SplineScene({ scene, className }: SplineSceneProps) {
+export function SplineScene({ scene, className, interactive = false }: SplineSceneProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const splineAppRef = useRef<Application | null>(null);
   const unloadTimerRef = useRef<number | null>(null);
@@ -41,10 +42,10 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
 
   const handleLoad = useCallback((spline: Application) => {
     splineAppRef.current = spline;
-    spline.renderOnDemand = true;
-    spline.setGlobalEvents(false);
+    spline.renderOnDemand = !interactive;
+    spline.setGlobalEvents(interactive);
     spline.requestRender();
-  }, []);
+  }, [interactive]);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -131,7 +132,7 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
             </div>
           }
         >
-          <Spline scene={scene} className="h-full w-full" onLoad={handleLoad} renderOnDemand />
+          <Spline scene={scene} className="h-full w-full" onLoad={handleLoad} renderOnDemand={!interactive} />
         </Suspense>
       ) : canUse3D ? (
         <div className="flex h-full w-full items-center justify-center bg-black/18">

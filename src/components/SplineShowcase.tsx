@@ -3,7 +3,7 @@
 import { BrainCircuit, Cpu, Hand, Radar } from "lucide-react";
 import { SplineScene } from "@/components/ui/splite";
 
-const sceneUrl = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+const sceneUrl = "https://prod.spline.design/ojIWewmuVPBkMtIz/scene.splinecode";
 const moduleIcons = [Radar, BrainCircuit, Cpu, Hand];
 
 type SplineShowcaseProps = {
@@ -55,7 +55,7 @@ export function SplineShowcase({ labels }: SplineShowcaseProps) {
         <div className="relative min-h-[24rem] overflow-hidden border-t border-white/10 bg-black lg:min-h-full lg:border-l lg:border-t-0">
           <div className="absolute inset-0 opacity-40 interface-grid" aria-hidden="true" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(125,211,252,0.16),transparent_28rem)]" aria-hidden="true" />
-          <SplineScene scene={sceneUrl} className="absolute inset-0" />
+          <SplineScene scene={sceneUrl} className="pointer-events-none absolute inset-0" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/72 to-transparent" aria-hidden="true" />
         </div>
       </div>
