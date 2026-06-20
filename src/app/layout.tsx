@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
+import { ParticleField } from "@/components/ParticleField";
 import { SitePreloader } from "@/components/SitePreloader";
 import "./globals.css";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body>
+        <ParticleField />
         <SitePreloader />
         {children}
       </body>

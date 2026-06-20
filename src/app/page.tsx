@@ -296,11 +296,13 @@ const content = {
               items: [
                 {
                   motor: "2x NEMA 17",
+                  previousRatio: "1:1",
                   ratio: "≈ 3.5:1",
                   detail: "Démultiplication ajoutée sur deux axes de rotation pour augmenter le couple disponible.",
                 },
                 {
                   motor: "NEMA 23",
+                  previousRatio: "1:1",
                   ratio: "40:1",
                   detail: "Réduction cycloïdale : 40 tours moteur pour 1 tour en sortie du réducteur.",
                 },
@@ -678,11 +680,13 @@ const content = {
               items: [
                 {
                   motor: "2x NEMA 17",
+                  previousRatio: "1:1",
                   ratio: "≈ 3.5:1",
                   detail: "Added gear reduction on two rotation axes to increase available torque.",
                 },
                 {
                   motor: "NEMA 23",
+                  previousRatio: "1:1",
                   ratio: "40:1",
                   detail: "Cycloidal reduction: 40 motor revolutions for 1 output revolution.",
                 },

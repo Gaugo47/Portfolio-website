@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { BarChart3, ExternalLink } from "lucide-react";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { Reveal } from "@/components/Reveal";
 import { assetPath } from "@/lib/assetPath";
@@ -60,6 +60,7 @@ type ProjectMedia = {
       label: string;
       items: Array<{
         motor: string;
+        previousRatio?: string;
         ratio: string;
         detail: string;
       }>;
@@ -95,18 +96,42 @@ const mediaAccents = {
   amber: "from-amber-300/[0.18] via-white/[0.08] to-transparent",
 };
 
+const parseMetricNumber = (value: string) => Number(value.replace(",", ".").match(/\d+(?:\.\d+)?/)?.[0] ?? 0);
+
 function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedia["engineeringMetrics"]> }) {
   const maxWeight = Math.max(metrics.weight.beforeKg, metrics.weight.afterKg);
-  const beforeWidth = `${Math.round((metrics.weight.beforeKg / maxWeight) * 100)}%`;
-  const afterWidth = `${Math.round((metrics.weight.afterKg / maxWeight) * 100)}%`;
+  const weightBars = [
+    {
+      label: metrics.weight.beforeLabel,
+      value: metrics.weight.beforeKg,
+      displayValue: metrics.weight.beforeValue,
+      className: "bg-slate-500/90",
+    },
+    {
+      label: metrics.weight.afterLabel,
+      value: metrics.weight.afterKg,
+      displayValue: metrics.weight.afterValue,
+      className: "bg-gradient-to-t from-emerald-400 to-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.35)]",
+    },
+  ];
+  const drivetrainBars = metrics.drivetrain.items.map((item) => ({
+    ...item,
+    previousRatio: item.previousRatio ?? "1:1",
+    previousValue: parseMetricNumber(item.previousRatio ?? "1:1"),
+    value: parseMetricNumber(item.ratio),
+  }));
+  const maxRatio = Math.max(...drivetrainBars.flatMap((item) => [item.previousValue, item.value]), 1);
 
   return (
     <div className="rounded-md border border-white/14 bg-[#070d13] p-4 shadow-2xl shadow-black/24">
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
-          <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
-            {metrics.label}
-          </p>
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-emerald-200" aria-hidden="true" />
+            <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+              {metrics.label}
+            </p>
+          </div>
           <p className="mt-1 text-sm font-semibold text-white">{metrics.title}</p>
         </div>
         <span className="mono-detail shrink-0 rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] px-2.5 py-1 text-[0.68rem] font-semibold text-emerald-100">
@@ -114,67 +139,183 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
         </span>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <div className="mb-2 flex items-center justify-between gap-3">
-            <p className="text-xs font-medium text-slate-300">{metrics.weight.beforeLabel}</p>
-            <p className="mono-detail text-xs font-semibold text-slate-100">{metrics.weight.beforeValue}</p>
-          </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white/[0.08]">
-            <div className="h-full rounded-full bg-slate-500/80" style={{ width: beforeWidth }} />
-          </div>
+      <div className="rounded-md border border-sky-200/14 bg-[#07131d] p-3">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs font-medium text-slate-300">{metrics.weight.label}</p>
+          <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            ordonnee: kg / abscisse: version
+          </p>
         </div>
-
-        <div>
-          <div className="mb-2 flex items-center justify-between gap-3">
-            <p className="text-xs font-medium text-slate-300">{metrics.weight.afterLabel}</p>
-            <p className="mono-detail text-xs font-semibold text-emerald-100">{metrics.weight.afterValue}</p>
+        <div className="relative h-56 pb-12 pl-12" role="img" aria-label={`${metrics.weight.label}: ${metrics.weight.beforeLabel} ${metrics.weight.beforeValue}, ${metrics.weight.afterLabel} ${metrics.weight.afterValue}`}>
+          <div className="absolute bottom-10 left-0 top-2 flex w-5 items-center justify-center" aria-hidden="true">
+            <span className="mono-detail -rotate-90 whitespace-nowrap text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-sky-200/60">
+              ordonnee - masse (kg)
+            </span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white/[0.08]">
-            <div className="h-full rounded-full bg-gradient-to-r from-emerald-300 to-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.35)]" style={{ width: afterWidth }} />
+          <div className="absolute bottom-10 left-12 right-0 top-2 border-b border-l border-slate-500/55" aria-hidden="true">
+            <span className="absolute -left-[0.24rem] -top-1 h-2 w-2 rotate-45 border-l border-t border-slate-500/70" />
+            <span className="absolute -bottom-[0.24rem] -right-1 h-2 w-2 rotate-45 border-r border-t border-slate-500/70" />
+            {[10, 5, 0].map((tick) => (
+              <div
+                key={tick}
+                className="absolute left-0 right-0 border-t border-white/[0.07]"
+                style={{ bottom: `${(tick / maxWeight) * 100}%` }}
+              >
+                <span className="absolute right-[calc(100%+0.6rem)] top-0 -translate-y-1/2 text-[0.62rem] font-medium text-slate-500">
+                  {tick}
+                </span>
+              </div>
+            ))}
           </div>
+          <div className="absolute bottom-10 left-12 right-0 top-2 grid grid-cols-2 items-end gap-5 px-5">
+            {weightBars.map((bar) => (
+              <div key={bar.label} className="flex h-full min-w-0 flex-col justify-end">
+                <span className="mono-detail mb-2 text-center text-xs font-semibold text-slate-100">{bar.displayValue}</span>
+                <div
+                  className={`min-h-2 rounded-t-md ${bar.className}`}
+                  style={{ height: `${(bar.value / maxWeight) * 100}%` }}
+                  aria-hidden="true"
+                />
+              </div>
+            ))}
+          </div>
+          <div className="absolute bottom-5 left-12 right-0 grid grid-cols-2 gap-5 px-5">
+            {weightBars.map((bar) => (
+              <p key={bar.label} className="truncate text-center text-[0.68rem] font-medium text-slate-400">
+                {bar.label}
+              </p>
+            ))}
+          </div>
+          <p className="mono-detail absolute bottom-0 left-12 right-0 text-center text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-sky-200/60">
+            abscisse - version
+          </p>
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 sm:grid-cols-2">
-        <div className="rounded-md border border-white/10 bg-[#09111a] p-3">
+      <div className="mt-5 grid items-stretch gap-3 border-t border-white/10 pt-4 sm:grid-cols-2">
+        <div className="flex min-h-[10.75rem] flex-col rounded-md border border-white/10 bg-[#09111a] p-3">
           <div className="mb-3 flex items-center justify-between gap-4">
             <p className="text-xs font-medium text-slate-300">{metrics.centerOfGravity.label}</p>
             <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.centerOfGravity.value}</p>
           </div>
-          <div className="relative h-8">
-            <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/14" />
-            <div className="absolute left-[18%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
-            <div className="absolute left-[64%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
-            <div className="absolute left-[35%] right-[40%] top-1/2 h-1 -translate-y-1/2 rounded-full bg-sky-300 shadow-[0_0_16px_rgba(125,211,252,0.45)]" />
-            <span className="absolute left-[34%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-100 bg-sky-300" />
-            <span className="absolute left-[58%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-100 bg-emerald-300" />
+          <div className="relative h-16 rounded-md border border-white/10 bg-black/20 px-3 py-2">
+            <div className="absolute bottom-3 left-3 right-3 h-px bg-white/14" />
+            <div className="absolute bottom-3 left-[28%] h-8 w-px bg-slate-500/80" />
+            <div className="absolute bottom-3 left-[66%] h-8 w-px bg-slate-500/80" />
+            <div className="absolute bottom-3 left-[28%] h-6 w-[38%] rounded-r-full bg-gradient-to-r from-sky-300 to-emerald-300 shadow-[0_0_16px_rgba(125,211,252,0.35)]" />
+            <span className="absolute bottom-11 left-[27%] text-[0.6rem] font-medium text-slate-500">V1</span>
+            <span className="absolute bottom-11 left-[62%] text-[0.6rem] font-medium text-emerald-100">V2</span>
           </div>
-          <p className="mt-2 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
+          <p className="mt-3 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
         </div>
 
-        <div className="rounded-md border border-emerald-200/14 bg-[#071810] p-3">
-          <p className="text-xs font-medium text-slate-300">{metrics.cost.label}</p>
-          <div className="mt-3 flex items-end gap-2">
-            <p className="mono-detail text-3xl font-semibold leading-none text-emerald-100">{metrics.cost.value}</p>
-            <span className="mb-1 h-px flex-1 bg-emerald-200/24" aria-hidden="true" />
+        <div className="flex min-h-[10.75rem] flex-col rounded-md border border-white/10 bg-[#09111a] p-3">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-xs font-medium text-slate-300">{metrics.cost.label}</p>
+            <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.cost.value}</p>
+          </div>
+          <div className="mt-4 rounded-md border border-white/10 bg-black/20 p-3">
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+              <div className="rounded-md border border-white/10 bg-[#050b12] px-3 py-2">
+                <p className="mono-detail text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-slate-500">V1</p>
+                <p className="mono-detail mt-1 text-lg font-semibold leading-none text-slate-100">100%</p>
+              </div>
+              <div className="mono-detail rounded-md border border-sky-200/14 bg-sky-200/[0.06] px-2.5 py-2 text-sm font-semibold text-sky-100">
+                {metrics.cost.value}
+              </div>
+              <div className="rounded-md border border-white/10 bg-[#050b12] px-3 py-2">
+                <p className="mono-detail text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-slate-500">V2</p>
+                <p className="mono-detail mt-1 text-lg font-semibold leading-none text-sky-100">1/6</p>
+              </div>
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-[0.64rem] font-medium text-slate-500">
+              <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
+              <span className="mono-detail uppercase tracking-[0.14em]">cout relatif ≈ 17%</span>
+              <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
+            </div>
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-400">{metrics.cost.detail}</p>
         </div>
       </div>
 
       <div className="mt-3 rounded-md border border-sky-200/14 bg-[#07131d] p-3">
-        <p className="text-xs font-medium text-slate-300">{metrics.drivetrain.label}</p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {metrics.drivetrain.items.map((item) => (
-            <div key={item.motor} className="rounded-md border border-white/10 bg-[#050b12] p-3">
-              <div className="flex items-start justify-between gap-3">
-                <p className="text-xs font-medium text-slate-300">{item.motor}</p>
-                <p className="mono-detail shrink-0 text-sm font-semibold text-sky-100">{item.ratio}</p>
-              </div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">{item.detail}</p>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs font-medium text-slate-300">{metrics.drivetrain.label}</p>
+          <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            ordonnee: ratio / abscisse: moteur
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,0.95fr)_1.05fr]">
+          <div className="relative h-44 pb-10 pl-8" role="img" aria-label={drivetrainBars.map((item) => `${item.motor}: V1 ${item.previousRatio}, V2 ${item.ratio}`).join(", ")}>
+            <div className="absolute bottom-8 left-8 right-0 top-1 border-b border-l border-slate-500/45" aria-hidden="true">
+              <span className="absolute -left-[0.24rem] -top-1 h-2 w-2 rotate-45 border-l border-t border-slate-500/70" />
+              <span className="absolute -bottom-[0.24rem] -right-1 h-2 w-2 rotate-45 border-r border-t border-slate-500/70" />
+              <div className="absolute left-0 right-0 top-1/2 border-t border-white/[0.07]" />
+              <span className="absolute right-[calc(100%+0.5rem)] top-0 -translate-y-1/2 text-[0.58rem] font-medium text-slate-500">
+                {maxRatio}
+              </span>
+              <span className="absolute right-[calc(100%+0.5rem)] bottom-0 translate-y-1/2 text-[0.58rem] font-medium text-slate-500">
+                0
+              </span>
             </div>
-          ))}
+            <span className="mono-detail absolute left-0 top-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap text-[0.55rem] font-semibold uppercase tracking-[0.12em] text-sky-200/60">
+              ordonnee - ratio
+            </span>
+            <div className="absolute right-1 top-1 flex items-center gap-3 text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-sm bg-slate-500/80" aria-hidden="true" />
+                V1 1:1
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-sky-100">
+                <span className="h-2 w-2 rounded-sm bg-sky-300" aria-hidden="true" />
+                V2
+              </span>
+            </div>
+            <div className="absolute bottom-10 left-8 right-0 top-5 grid grid-cols-2 items-end gap-4 px-4">
+              {drivetrainBars.map((item) => (
+                <div key={item.motor} className="flex h-full min-w-0 flex-col justify-end">
+                  <span className="mono-detail mb-2 text-center text-xs font-semibold text-sky-100">
+                    {item.previousRatio} &rarr; {item.ratio}
+                  </span>
+                  <div className="grid h-full grid-cols-2 items-end gap-1.5">
+                    <div
+                      className="min-h-1 rounded-t-sm bg-slate-500/80"
+                      style={{ height: `${(item.previousValue / maxRatio) * 100}%` }}
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="min-h-2 rounded-t-md bg-gradient-to-t from-sky-500 to-sky-200"
+                      style={{ height: `${(item.value / maxRatio) * 100}%` }}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="absolute bottom-4 left-8 right-0 grid grid-cols-2 gap-4 px-4">
+              {drivetrainBars.map((item) => (
+                <p key={item.motor} className="truncate text-center text-[0.58rem] font-medium text-slate-500">
+                  {item.motor}
+                </p>
+              ))}
+            </div>
+            <p className="mono-detail absolute bottom-0 left-8 right-0 text-center text-[0.55rem] font-semibold uppercase tracking-[0.12em] text-sky-200/60">
+              abscisse - moteur
+            </p>
+          </div>
+          <div className="grid gap-2">
+            {drivetrainBars.map((item) => (
+              <div key={item.motor} className="rounded-md border border-white/10 bg-[#050b12] p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-xs font-medium text-slate-300">{item.motor}</p>
+                  <p className="mono-detail shrink-0 text-sm font-semibold text-sky-100">
+                    {item.previousRatio} &rarr; {item.ratio}
+                  </p>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{item.detail}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -218,14 +359,13 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </div>
             </div>
 
-            <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-y border-sky-200/10 bg-[#071016]">
+            <div className="relative left-1/2 aspect-[16/10] w-screen -translate-x-1/2 overflow-hidden border-y border-sky-200/10 bg-[#071016]">
               <Image
                 src={assetPath(media.src)}
                 alt={media.alt}
-                width={1536}
-                height={1024}
+                fill
                 sizes="100vw"
-                className="h-auto w-full"
+                className="object-cover object-top"
                 quality={74}
               />
             </div>
