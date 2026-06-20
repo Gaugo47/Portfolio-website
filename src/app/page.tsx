@@ -290,6 +290,21 @@ const content = {
               value: "÷6",
               detail: "Prix de la structure divisé par 6, hors moteur, électronique et rail.",
             },
+            drivetrain: {
+              label: "Transmission moteurs",
+              items: [
+                {
+                  motor: "2x NEMA 17",
+                  ratio: "≈ 3.5:1",
+                  detail: "Démultiplication ajoutée sur deux axes de rotation pour augmenter le couple disponible.",
+                },
+                {
+                  motor: "NEMA 23",
+                  ratio: "40:1",
+                  detail: "Réduction cycloïdale : 40 tours moteur pour 1 tour en sortie du réducteur.",
+                },
+              ],
+            },
           },
           interfaceScreens: [
             {
@@ -655,6 +670,21 @@ const content = {
               label: "Structure cost",
               value: "÷6",
               detail: "Structure cost divided by 6, excluding motor, electronics, and rail.",
+            },
+            drivetrain: {
+              label: "Motor transmission",
+              items: [
+                {
+                  motor: "2x NEMA 17",
+                  ratio: "≈ 3.5:1",
+                  detail: "Added gear reduction on two rotation axes to increase available torque.",
+                },
+                {
+                  motor: "NEMA 23",
+                  ratio: "40:1",
+                  detail: "Cycloidal reduction: 40 motor revolutions for 1 output revolution.",
+                },
+              ],
             },
           },
           interfaceScreens: [

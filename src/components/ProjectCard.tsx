@@ -55,6 +55,14 @@ type ProjectMedia = {
       value: string;
       detail: string;
     };
+    drivetrain: {
+      label: string;
+      items: Array<{
+        motor: string;
+        ratio: string;
+        detail: string;
+      }>;
+    };
   };
 };
 
@@ -151,6 +159,21 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
             <span className="mb-1 h-px flex-1 bg-emerald-200/24" aria-hidden="true" />
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-400">{metrics.cost.detail}</p>
+        </div>
+      </div>
+
+      <div className="mt-3 rounded-md border border-sky-200/14 bg-sky-200/[0.045] p-3">
+        <p className="text-xs font-medium text-slate-300">{metrics.drivetrain.label}</p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {metrics.drivetrain.items.map((item) => (
+            <div key={item.motor} className="rounded-md border border-white/10 bg-slate-950/45 p-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xs font-medium text-slate-300">{item.motor}</p>
+                <p className="mono-detail shrink-0 text-sm font-semibold text-sky-100">{item.ratio}</p>
+              </div>
+              <p className="mt-2 text-xs leading-5 text-slate-400">{item.detail}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
