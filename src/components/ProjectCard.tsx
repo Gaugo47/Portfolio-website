@@ -185,6 +185,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
 
   if (media) {
     const interfaceScreens = media.interfaceScreens ?? [];
+    const hasEngineeringMetrics = Boolean(media.engineeringMetrics);
 
     return (
       <Reveal delay={index * 0.06}>
@@ -255,80 +256,79 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
             </div>
           </div>
 
-          <div className="relative mx-auto hidden max-w-[96rem] md:block md:aspect-[3/2]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(14,165,233,0.12),transparent_22rem)]" aria-hidden="true" />
-            <div className="absolute inset-x-0 top-[17rem] h-px bg-sky-200/20 md:top-[47%]" aria-hidden="true" />
-
-            <div className="absolute inset-0" aria-hidden="true">
-              <Image
-                src={assetPath(media.src)}
-                alt=""
-                fill
-                sizes="100vw"
-                className="object-cover object-center"
-                quality={74}
-              />
+          <div className="mx-auto hidden max-w-[96rem] px-8 pb-10 pt-10 md:block lg:px-14 lg:pt-12">
+            <div className="flex items-start justify-between gap-6">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="h-5 w-5 shrink-0 rotate-45 border border-sky-400" aria-hidden="true" />
+                <p className="mono-detail text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
+                  {media.eyebrow}
+                </p>
+              </div>
+              <span className="shrink-0 rounded-md border border-sky-200/15 bg-black/35 px-3 py-1.5 text-xs font-semibold text-sky-200">
+                {media.indexLabel ?? "01 / 04"}
+              </span>
             </div>
 
-            <div className="absolute inset-0 z-10 grid grid-rows-[auto_1fr_auto] px-12 py-12 lg:px-14">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="h-5 w-5 rotate-45 border border-sky-400" aria-hidden="true" />
-                    <p className="mono-detail text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
-                    {media.eyebrow}
-                  </p>
-                </div>
-                <span className="rounded-md border border-sky-200/15 bg-black/35 px-3 py-1.5 text-xs font-semibold text-sky-200 backdrop-blur-sm">
-                  {media.indexLabel ?? "01 / 04"}
-                </span>
-              </div>
-
-              <div className="mt-10 max-w-[17rem] self-start md:mt-16">
-                <h3 className="text-4xl font-semibold leading-[0.98] tracking-normal text-white md:text-5xl">
+            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(28rem,1fr)] lg:items-end">
+              <div>
+                <h3 className="max-w-xl text-5xl font-semibold uppercase leading-[1.02] tracking-normal text-white xl:text-6xl">
                   {media.headline.map((line, lineIndex) => (
                     <span key={line} className={lineIndex === 2 ? "block text-sky-400" : "block"}>
                       {line}
                     </span>
                   ))}
                 </h3>
-                <p className="mt-7 text-sm font-semibold text-white">{media.tagline}</p>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{media.description}</p>
+                <p className="mt-7 max-w-sm text-sm font-semibold leading-6 text-white">{media.tagline}</p>
+                <p className="mt-3 max-w-md text-sm leading-7 text-slate-300">{media.description}</p>
               </div>
 
-              <div className="mt-auto grid gap-4 pt-[19rem] md:mt-0 md:grid-cols-[18rem_1fr_18rem] md:items-end md:pt-0">
-                <div className="grid gap-7">
-                  <div className="rounded-md border border-white/20 bg-slate-950/72 p-4 shadow-2xl shadow-black/30 backdrop-blur-md">
-                    <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{media.overviewLabel}</p>
-                    <div className="grid gap-3.5">
-                      {media.features.map((feature) => (
-                        <div key={feature.title} className="grid grid-cols-[2rem_1fr] gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/28 bg-black/20 text-xs text-sky-200">
-                            <span className="h-3 w-3 rounded-sm border border-current" aria-hidden="true" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-slate-100">{feature.title}</p>
-                            <p className="mt-0.5 text-xs leading-5 text-slate-400">{feature.detail}</p>
-                          </div>
-                        </div>
-                      ))}
+              <div className="relative min-h-[22rem] overflow-hidden rounded-lg border border-sky-200/10 bg-[#071016]">
+                <div className="absolute inset-x-0 top-1/2 h-px bg-sky-200/18" aria-hidden="true" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(14,165,233,0.16),transparent_22rem)]" aria-hidden="true" />
+                <Image
+                  src={assetPath(media.src)}
+                  alt={media.alt}
+                  fill
+                  sizes="(min-width: 1024px) 58vw, 92vw"
+                  className="object-contain object-center p-2"
+                  quality={78}
+                />
+              </div>
+            </div>
+
+            <div
+              className={`mt-5 grid gap-4 lg:items-start ${
+                hasEngineeringMetrics ? "lg:grid-cols-[18rem_minmax(0,1fr)_18rem]" : "lg:grid-cols-[minmax(0,1fr)_18rem]"
+              }`}
+            >
+              <div className="rounded-md border border-white/20 bg-slate-950/78 p-4 shadow-2xl shadow-black/24">
+                <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{media.overviewLabel}</p>
+                <div className="grid gap-3.5">
+                  {media.features.map((feature) => (
+                    <div key={feature.title} className="grid grid-cols-[2rem_1fr] gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/28 bg-black/20 text-xs text-sky-200">
+                        <span className="h-3 w-3 rounded-sm border border-current" aria-hidden="true" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-100">{feature.title}</p>
+                        <p className="mt-0.5 text-xs leading-5 text-slate-400">{feature.detail}</p>
+                      </div>
                     </div>
-                  </div>
-                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                    {media.footer}
+                  ))}
+                </div>
+              </div>
+
+              {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
+
+              <div className="grid gap-4">
+                <div className="rounded-md border border-white/14 bg-slate-950/78 px-4 py-3">
+                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
+                    {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
                   </p>
                 </div>
-
-                <div className="hidden md:block">
-                  {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
-                </div>
-
-                <div className="md:justify-self-end">
-                  <div className="rounded-md border border-white/14 bg-slate-950/72 px-4 py-3 backdrop-blur-md">
-                    <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
-                      {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
-                    </p>
-                  </div>
-                </div>
+                <p className="mono-detail text-xs font-semibold uppercase leading-5 tracking-[0.18em] text-slate-400">
+                  {media.footer}
+                </p>
               </div>
             </div>
           </div>
