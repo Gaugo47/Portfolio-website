@@ -267,6 +267,25 @@ const content = {
             { title: "Couple & maintien", detail: "Démultiplication, moteurs pas-à-pas et réducteur cycloïdal" },
             { title: "Assistant local", detail: "Chaîne Whisper, Llama 3.1 via Ollama et Kokoro TTS" },
           ],
+          engineeringMetrics: {
+            label: "Optimisation mécanique",
+            title: "Version 2 : moins de masse, meilleur équilibre.",
+            weight: {
+              label: "Poids structure",
+              beforeLabel: "Version 1",
+              afterLabel: "Version 2",
+              beforeValue: "10 kg",
+              afterValue: "≈ 4,8 kg",
+              beforeKg: 10,
+              afterKg: 4.8,
+              reductionLabel: "-52% masse",
+            },
+            centerOfGravity: {
+              label: "Centre de gravité",
+              value: "≈ 4 cm",
+              detail: "Rapproché de la structure du rail pour limiter le porte-à-faux du projecteur.",
+            },
+          },
           interfaceScreens: [
             {
               src: "/projects/crealab-home.webp",
@@ -609,6 +628,25 @@ const content = {
             { title: "Torque & holding", detail: "Gear reduction, stepper motors, and cycloidal reducer" },
             { title: "Local assistant", detail: "Whisper, Llama 3.1 through Ollama, and Kokoro TTS pipeline" },
           ],
+          engineeringMetrics: {
+            label: "Mechanical optimization",
+            title: "Version 2: lower mass, better balance.",
+            weight: {
+              label: "Structure weight",
+              beforeLabel: "Version 1",
+              afterLabel: "Version 2",
+              beforeValue: "10 kg",
+              afterValue: "≈ 4.8 kg",
+              beforeKg: 10,
+              afterKg: 4.8,
+              reductionLabel: "-52% mass",
+            },
+            centerOfGravity: {
+              label: "Center of gravity",
+              value: "≈ 4 cm",
+              detail: "Moved closer to the rail structure to reduce projector overhang.",
+            },
+          },
           interfaceScreens: [
             {
               src: "/projects/crealab-home.webp",

@@ -32,6 +32,25 @@ type ProjectMedia = {
     caption: string;
     description: string;
   }>;
+  engineeringMetrics?: {
+    label: string;
+    title: string;
+    weight: {
+      label: string;
+      beforeLabel: string;
+      afterLabel: string;
+      beforeValue: string;
+      afterValue: string;
+      beforeKg: number;
+      afterKg: number;
+      reductionLabel: string;
+    };
+    centerOfGravity: {
+      label: string;
+      value: string;
+      detail: string;
+    };
+  };
 };
 
 export type Project = {
@@ -61,6 +80,66 @@ const mediaAccents = {
   cyan: "from-sky-300/[0.18] via-white/[0.08] to-transparent",
   amber: "from-amber-300/[0.18] via-white/[0.08] to-transparent",
 };
+
+function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedia["engineeringMetrics"]> }) {
+  const maxWeight = Math.max(metrics.weight.beforeKg, metrics.weight.afterKg);
+  const beforeWidth = `${Math.round((metrics.weight.beforeKg / maxWeight) * 100)}%`;
+  const afterWidth = `${Math.round((metrics.weight.afterKg / maxWeight) * 100)}%`;
+
+  return (
+    <div className="rounded-md border border-white/14 bg-slate-950/76 p-4 shadow-2xl shadow-black/24 backdrop-blur-md">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+            {metrics.label}
+          </p>
+          <p className="mt-1 text-sm font-semibold text-white">{metrics.title}</p>
+        </div>
+        <span className="mono-detail shrink-0 rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] px-2.5 py-1 text-[0.68rem] font-semibold text-emerald-100">
+          {metrics.weight.reductionLabel}
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-xs font-medium text-slate-300">{metrics.weight.beforeLabel}</p>
+            <p className="mono-detail text-xs font-semibold text-slate-100">{metrics.weight.beforeValue}</p>
+          </div>
+          <div className="h-3 overflow-hidden rounded-full bg-white/[0.08]">
+            <div className="h-full rounded-full bg-slate-500/80" style={{ width: beforeWidth }} />
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-xs font-medium text-slate-300">{metrics.weight.afterLabel}</p>
+            <p className="mono-detail text-xs font-semibold text-emerald-100">{metrics.weight.afterValue}</p>
+          </div>
+          <div className="h-3 overflow-hidden rounded-full bg-white/[0.08]">
+            <div className="h-full rounded-full bg-gradient-to-r from-emerald-300 to-sky-300 shadow-[0_0_18px_rgba(125,211,252,0.35)]" style={{ width: afterWidth }} />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 border-t border-white/10 pt-4">
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <p className="text-xs font-medium text-slate-300">{metrics.centerOfGravity.label}</p>
+          <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.centerOfGravity.value}</p>
+        </div>
+        <div className="relative h-9">
+          <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/14" />
+          <div className="absolute left-[18%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
+          <div className="absolute left-[64%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
+          <div className="absolute left-[35%] right-[40%] top-1/2 h-1 -translate-y-1/2 rounded-full bg-sky-300 shadow-[0_0_16px_rgba(125,211,252,0.45)]" />
+          <span className="absolute left-[34%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-100 bg-sky-300" />
+          <span className="absolute left-[58%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-100 bg-emerald-300" />
+        </div>
+        <p className="mt-2 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
+      </div>
+    </div>
+  );
+}
 
 export function ProjectCard({ project, index, labels }: { project: Project; index: number; labels: ProjectCardLabels }) {
   const media = project.media;
@@ -132,6 +211,7 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
                   {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
                 </p>
               </div>
+              {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">{media.footer}</p>
             </div>
           </div>
@@ -199,7 +279,9 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
                   </p>
                 </div>
 
-                <div className="hidden md:block" aria-hidden="true" />
+                <div className="hidden md:block">
+                  {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
+                </div>
 
                 <div className="md:justify-self-end">
                   <div className="rounded-md border border-white/14 bg-slate-950/72 px-4 py-3 backdrop-blur-md">
