@@ -50,6 +50,11 @@ type ProjectMedia = {
       value: string;
       detail: string;
     };
+    cost: {
+      label: string;
+      value: string;
+      detail: string;
+    };
   };
 };
 
@@ -122,20 +127,31 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
         </div>
       </div>
 
-      <div className="mt-5 border-t border-white/10 pt-4">
-        <div className="mb-3 flex items-center justify-between gap-4">
-          <p className="text-xs font-medium text-slate-300">{metrics.centerOfGravity.label}</p>
-          <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.centerOfGravity.value}</p>
+      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 sm:grid-cols-2">
+        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+          <div className="mb-3 flex items-center justify-between gap-4">
+            <p className="text-xs font-medium text-slate-300">{metrics.centerOfGravity.label}</p>
+            <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.centerOfGravity.value}</p>
+          </div>
+          <div className="relative h-8">
+            <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/14" />
+            <div className="absolute left-[18%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
+            <div className="absolute left-[64%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
+            <div className="absolute left-[35%] right-[40%] top-1/2 h-1 -translate-y-1/2 rounded-full bg-sky-300 shadow-[0_0_16px_rgba(125,211,252,0.45)]" />
+            <span className="absolute left-[34%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-100 bg-sky-300" />
+            <span className="absolute left-[58%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-100 bg-emerald-300" />
+          </div>
+          <p className="mt-2 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
         </div>
-        <div className="relative h-9">
-          <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/14" />
-          <div className="absolute left-[18%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
-          <div className="absolute left-[64%] top-1/2 h-5 w-px -translate-y-1/2 bg-slate-500" />
-          <div className="absolute left-[35%] right-[40%] top-1/2 h-1 -translate-y-1/2 rounded-full bg-sky-300 shadow-[0_0_16px_rgba(125,211,252,0.45)]" />
-          <span className="absolute left-[34%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-100 bg-sky-300" />
-          <span className="absolute left-[58%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-100 bg-emerald-300" />
+
+        <div className="rounded-md border border-emerald-200/14 bg-emerald-200/[0.045] p-3">
+          <p className="text-xs font-medium text-slate-300">{metrics.cost.label}</p>
+          <div className="mt-3 flex items-end gap-2">
+            <p className="mono-detail text-3xl font-semibold leading-none text-emerald-100">{metrics.cost.value}</p>
+            <span className="mb-1 h-px flex-1 bg-emerald-200/24" aria-hidden="true" />
+          </div>
+          <p className="mt-3 text-xs leading-5 text-slate-400">{metrics.cost.detail}</p>
         </div>
-        <p className="mt-2 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
       </div>
     </div>
   );

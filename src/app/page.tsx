@@ -285,6 +285,11 @@ const content = {
               value: "≈ 4 cm",
               detail: "Rapproché de la structure du rail pour limiter le porte-à-faux du projecteur.",
             },
+            cost: {
+              label: "Coût structure",
+              value: "÷6",
+              detail: "Prix de la structure divisé par 6, hors moteur, électronique et rail.",
+            },
           },
           interfaceScreens: [
             {
@@ -645,6 +650,11 @@ const content = {
               label: "Center of gravity",
               value: "≈ 4 cm",
               detail: "Moved closer to the rail structure to reduce projector overhang.",
+            },
+            cost: {
+              label: "Structure cost",
+              value: "÷6",
+              detail: "Structure cost divided by 6, excluding motor, electronics, and rail.",
             },
           },
           interfaceScreens: [
