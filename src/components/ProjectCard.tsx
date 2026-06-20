@@ -6,6 +6,7 @@ import { assetPath } from "@/lib/assetPath";
 
 type ProjectMedia = {
   src: string;
+  desktopSrc?: string;
   alt: string;
   eyebrow: string;
   title: string;
@@ -100,7 +101,7 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
   const afterWidth = `${Math.round((metrics.weight.afterKg / maxWeight) * 100)}%`;
 
   return (
-    <div className="rounded-md border border-white/14 bg-slate-950/76 p-4 shadow-2xl shadow-black/24 backdrop-blur-md">
+    <div className="rounded-md border border-white/14 bg-[#070d13] p-4 shadow-2xl shadow-black/24">
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
@@ -136,7 +137,7 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
       </div>
 
       <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 sm:grid-cols-2">
-        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+        <div className="rounded-md border border-white/10 bg-[#09111a] p-3">
           <div className="mb-3 flex items-center justify-between gap-4">
             <p className="text-xs font-medium text-slate-300">{metrics.centerOfGravity.label}</p>
             <p className="mono-detail text-xs font-semibold text-sky-100">{metrics.centerOfGravity.value}</p>
@@ -152,7 +153,7 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
           <p className="mt-2 text-xs leading-5 text-slate-400">{metrics.centerOfGravity.detail}</p>
         </div>
 
-        <div className="rounded-md border border-emerald-200/14 bg-emerald-200/[0.045] p-3">
+        <div className="rounded-md border border-emerald-200/14 bg-[#071810] p-3">
           <p className="text-xs font-medium text-slate-300">{metrics.cost.label}</p>
           <div className="mt-3 flex items-end gap-2">
             <p className="mono-detail text-3xl font-semibold leading-none text-emerald-100">{metrics.cost.value}</p>
@@ -162,11 +163,11 @@ function EngineeringMetricsChart({ metrics }: { metrics: NonNullable<ProjectMedi
         </div>
       </div>
 
-      <div className="mt-3 rounded-md border border-sky-200/14 bg-sky-200/[0.045] p-3">
+      <div className="mt-3 rounded-md border border-sky-200/14 bg-[#07131d] p-3">
         <p className="text-xs font-medium text-slate-300">{metrics.drivetrain.label}</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {metrics.drivetrain.items.map((item) => (
-            <div key={item.motor} className="rounded-md border border-white/10 bg-slate-950/45 p-3">
+            <div key={item.motor} className="rounded-md border border-white/10 bg-[#050b12] p-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-xs font-medium text-slate-300">{item.motor}</p>
                 <p className="mono-detail shrink-0 text-sm font-semibold text-sky-100">{item.ratio}</p>
@@ -217,14 +218,14 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </div>
             </div>
 
-            <div className="relative h-64 overflow-hidden border-y border-sky-200/10">
-              <div className="absolute inset-x-0 top-1/2 h-px bg-sky-200/22" aria-hidden="true" />
+            <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-y border-sky-200/10 bg-[#071016]">
               <Image
                 src={assetPath(media.src)}
                 alt={media.alt}
-                fill
+                width={1536}
+                height={1024}
                 sizes="100vw"
-                className="object-contain object-center"
+                className="h-auto w-full"
                 quality={74}
               />
             </div>
@@ -269,66 +270,69 @@ export function ProjectCard({ project, index, labels }: { project: Project; inde
               </span>
             </div>
 
-            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(28rem,1fr)] lg:items-end">
-              <div>
-                <h3 className="max-w-xl text-5xl font-semibold uppercase leading-[1.02] tracking-normal text-white xl:text-6xl">
-                  {media.headline.map((line, lineIndex) => (
-                    <span key={line} className={lineIndex === 2 ? "block text-sky-400" : "block"}>
-                      {line}
-                    </span>
-                  ))}
-                </h3>
-                <p className="mt-7 max-w-sm text-sm font-semibold leading-6 text-white">{media.tagline}</p>
-                <p className="mt-3 max-w-md text-sm leading-7 text-slate-300">{media.description}</p>
+            <div className="mt-10">
+              <h3 className="max-w-4xl text-5xl font-semibold uppercase leading-[1.02] tracking-normal text-white xl:text-6xl">
+                {media.headline.map((line, lineIndex) => (
+                  <span key={line} className={lineIndex === 2 ? "inline text-sky-400" : "inline"}>
+                    {line}
+                    {lineIndex < media.headline.length - 1 ? " " : ""}
+                  </span>
+                ))}
+              </h3>
+              <div className="mt-6 grid gap-4 lg:grid-cols-[18rem_minmax(0,34rem)]">
+                <p className="text-sm font-semibold leading-6 text-white">{media.tagline}</p>
+                <p className="text-sm leading-7 text-slate-300">{media.description}</p>
               </div>
 
-              <div className="relative min-h-[22rem] overflow-hidden rounded-lg border border-sky-200/10 bg-[#071016]">
-                <div className="absolute inset-x-0 top-1/2 h-px bg-sky-200/18" aria-hidden="true" />
+              <div className="relative left-1/2 mt-8 w-screen -translate-x-1/2 overflow-hidden border-y border-sky-200/10 bg-[#071016]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(14,165,233,0.16),transparent_22rem)]" aria-hidden="true" />
                 <Image
-                  src={assetPath(media.src)}
+                  src={assetPath(media.desktopSrc ?? media.src)}
                   alt={media.alt}
-                  fill
-                  sizes="(min-width: 1024px) 58vw, 92vw"
-                  className="object-contain object-center p-2"
+                  width={1536}
+                  height={1024}
+                  sizes="100vw"
+                  className="relative h-auto w-full"
                   quality={78}
                 />
               </div>
             </div>
 
-            <div
-              className={`mt-5 grid gap-4 lg:items-start ${
-                hasEngineeringMetrics ? "lg:grid-cols-[18rem_minmax(0,1fr)_18rem]" : "lg:grid-cols-[minmax(0,1fr)_18rem]"
-              }`}
-            >
-              <div className="rounded-md border border-white/20 bg-slate-950/78 p-4 shadow-2xl shadow-black/24">
-                <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{media.overviewLabel}</p>
-                <div className="grid gap-3.5">
-                  {media.features.map((feature) => (
-                    <div key={feature.title} className="grid grid-cols-[2rem_1fr] gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/28 bg-black/20 text-xs text-sky-200">
-                        <span className="h-3 w-3 rounded-sm border border-current" aria-hidden="true" />
+            <div className="relative z-10 -mx-8 mt-0 border-t border-white/10 bg-[#050b0f] px-8 pt-8 lg:-mx-14 lg:px-14">
+              <div
+                className={`grid gap-4 lg:items-start ${
+                  hasEngineeringMetrics ? "lg:grid-cols-[18rem_minmax(0,1fr)_18rem]" : "lg:grid-cols-[minmax(0,1fr)_18rem]"
+                }`}
+              >
+                <div className="rounded-md border border-white/20 bg-[#070d13] p-4 shadow-2xl shadow-black/24">
+                  <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">{media.overviewLabel}</p>
+                  <div className="grid gap-3.5">
+                    {media.features.map((feature) => (
+                      <div key={feature.title} className="grid grid-cols-[2rem_1fr] gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/28 bg-black/30 text-xs text-sky-200">
+                          <span className="h-3 w-3 rounded-sm border border-current" aria-hidden="true" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-100">{feature.title}</p>
+                          <p className="mt-0.5 text-xs leading-5 text-slate-400">{feature.detail}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-slate-100">{feature.title}</p>
-                        <p className="mt-0.5 text-xs leading-5 text-slate-400">{feature.detail}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
+                {media.engineeringMetrics ? <EngineeringMetricsChart metrics={media.engineeringMetrics} /> : null}
 
-              <div className="grid gap-4">
-                <div className="rounded-md border border-white/14 bg-slate-950/78 px-4 py-3">
-                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
-                    {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
+                <div className="grid gap-4">
+                  <div className="rounded-md border border-white/14 bg-[#070d13] px-4 py-3">
+                    <p className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
+                      {media.impact.lead} <span className="text-sky-300">{media.impact.highlight}</span>
+                    </p>
+                  </div>
+                  <p className="mono-detail text-xs font-semibold uppercase leading-5 tracking-[0.18em] text-slate-400">
+                    {media.footer}
                   </p>
                 </div>
-                <p className="mono-detail text-xs font-semibold uppercase leading-5 tracking-[0.18em] text-slate-400">
-                  {media.footer}
-                </p>
               </div>
             </div>
           </div>

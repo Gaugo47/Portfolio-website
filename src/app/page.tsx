@@ -244,6 +244,7 @@ const content = {
         mediaLabel: "Interface web Créalab, contrôle de position, assistant IA et tutoriels machine.",
         media: {
           src: "/projects/projector-positioning-clean.webp",
+          desktopSrc: "/projects/projector-positioning-clean.png",
           alt: "Système hardware de positionnement motorisé pour projecteur",
           eyebrow: "Ingénierie en mouvement",
           title: "Créalab Augmenté",
@@ -625,6 +626,7 @@ const content = {
         mediaLabel: "Créalab web interface, position control, AI assistant, and machine tutorials.",
         media: {
           src: "/projects/projector-positioning-clean.webp",
+          desktopSrc: "/projects/projector-positioning-clean.png",
           alt: "Hardware system for motorized projector positioning",
           eyebrow: "Engineering in motion",
           title: "Augmented Créalab",
