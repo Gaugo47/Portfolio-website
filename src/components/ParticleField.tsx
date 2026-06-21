@@ -23,24 +23,28 @@ export function ParticleField() {
     if (!context) return;
 
     const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
     const reduceMotion = reduceMotionQuery.matches;
     let width = 0;
     let height = 0;
     let animation = 0;
+    let lowPowerMode = false;
+    let lastFrameTime = 0;
     let particles: Particle[] = [];
 
     const resize = () => {
-      const ratio = window.devicePixelRatio || 1;
+      lowPowerMode = coarsePointerQuery.matches || window.innerWidth < 768;
+      const ratio = lowPowerMode ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
       width = canvas.offsetWidth;
       height = canvas.offsetHeight;
       canvas.width = Math.floor(width * ratio);
       canvas.height = Math.floor(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-      const count = Math.min(92, Math.max(44, Math.floor(width / 24)));
+      const count = lowPowerMode ? Math.min(34, Math.max(18, Math.floor(width / 42))) : Math.min(92, Math.max(44, Math.floor(width / 24)));
       particles = Array.from({ length: count }, () => {
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 0.093 + 0.093;
+        const speed = lowPowerMode ? Math.random() * 0.055 + 0.045 : Math.random() * 0.093 + 0.093;
 
         return {
           x: Math.random() * width,
@@ -54,7 +58,13 @@ export function ParticleField() {
       });
     };
 
-    const draw = () => {
+    const draw = (time = 0) => {
+      if (lowPowerMode && !reduceMotion && time - lastFrameTime < 1000 / 24) {
+        animation = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastFrameTime = time;
+
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = "source-over";
 
@@ -111,10 +121,12 @@ export function ParticleField() {
     draw();
     window.addEventListener("resize", resize);
     reduceMotionQuery.addEventListener("change", resize);
+    coarsePointerQuery.addEventListener("change", resize);
 
     return () => {
       window.removeEventListener("resize", resize);
       reduceMotionQuery.removeEventListener("change", resize);
+      coarsePointerQuery.removeEventListener("change", resize);
       window.cancelAnimationFrame(animation);
     };
   }, []);

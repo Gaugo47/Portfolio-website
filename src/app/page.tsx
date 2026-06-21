@@ -833,7 +833,7 @@ export default function Home() {
 
   return (
     <main id="top" className="relative overflow-x-clip">
-      <section id="content" className="relative overflow-hidden bg-black/[0.88] px-5 pb-14 pt-7 md:min-h-[100svh] md:px-8 md:py-0">
+      <section id="content" className="relative min-h-[100svh] overflow-hidden bg-black/[0.88] px-5 pb-14 pt-7 md:px-8 md:py-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_44%,rgba(56,189,248,0.16),transparent_31%),linear-gradient(180deg,rgba(0,0,0,0.42),rgba(0,0,0,0.88))]" aria-hidden="true" />
 
         <div className="relative z-10 md:hidden">
@@ -878,48 +878,48 @@ export default function Home() {
           </div>
 
           <Reveal className="-mx-5 border-b border-white/10">
-            <div className="relative h-[34rem] overflow-hidden">
+            <div className="relative h-[21.5rem] overflow-hidden">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(56,189,248,0.28),transparent_42%)]" aria-hidden="true" />
-              <SplineScene scene={heroSplineScene} className="absolute left-1/2 top-[-3.75rem] h-[39rem] w-[39rem] -translate-x-1/2 scale-[1.08]" interactive />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black to-transparent" aria-hidden="true" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black via-black/88 to-transparent" aria-hidden="true" />
+              <SplineScene scene={heroSplineScene} className="pointer-events-none absolute left-1/2 top-[-1.75rem] h-[25.5rem] w-[25.5rem] -translate-x-1/2 scale-[0.96]" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black to-transparent" aria-hidden="true" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black via-black/88 to-transparent" aria-hidden="true" />
             </div>
           </Reveal>
 
-          <Reveal delay={0.08} className="relative z-10 -mt-24">
-            <p className="mono-detail text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-100">
+          <Reveal delay={0.08} className="relative z-10 -mt-10">
+            <p className="mono-detail text-[0.52rem] font-semibold uppercase tracking-[0.2em] text-sky-100">
               {language === "fr" ? "Etudiant ingenieur Robotique & IA" : "Robotics & AI Engineering Student"}
             </p>
-            <h1 className="mt-5 text-[clamp(4.15rem,18vw,6.4rem)] font-black uppercase leading-[0.86] tracking-[0] text-white">
+            <h1 className="mt-2 text-[clamp(2.55rem,12vw,3.95rem)] font-black uppercase leading-[0.86] tracking-[0] text-white">
               Gauthier Defoy
             </h1>
-            <p className="mt-8 text-balance text-[1.7rem] font-semibold leading-[1.18] text-white">
+            <p className="mt-3 text-balance text-[1.05rem] font-semibold leading-[1.12] text-white">
               {t.hero.title}
             </p>
-            <p className="mt-6 text-lg leading-8 text-slate-300">{t.hero.copy}</p>
+            <p className="mt-3 text-[0.82rem] leading-5 text-slate-300">{t.hero.copy}</p>
 
-            <div className="mt-9 flex flex-col gap-3">
+            <div className="mt-4 grid grid-cols-[1fr_auto] gap-2.5">
               <a
                 href="#projects"
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-3 rounded-full bg-white px-6 py-4 text-base font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-xs font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
               >
                 {t.hero.projectsCta}
-                <MoveRight className="h-5 w-5" />
+                <MoveRight className="h-3.5 w-3.5" />
               </a>
               <a
                 href="#contact"
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-3 rounded-full border border-white/[0.22] bg-white/[0.03] px-6 py-4 text-base font-semibold text-white transition-colors duration-200 hover:bg-white/[0.09]"
+                className="focus-ring inline-flex h-full w-12 cursor-pointer items-center justify-center rounded-full border border-white/[0.22] bg-white/[0.03] text-white transition-colors duration-200 hover:bg-white/[0.09]"
+                aria-label={t.hero.contactCta}
               >
-                {t.hero.contactCta}
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4" />
               </a>
             </div>
 
-            <div className="mt-7 grid grid-cols-3 gap-5 border-t border-white/12 pt-7">
+            <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/12 pt-4">
               {t.hero.credentials.map((credential) => (
-                <div key={credential.value} className="border-r border-white/12 pr-4 last:border-r-0 last:pr-0">
-                  <p className="text-lg font-semibold leading-none text-white">{credential.value}</p>
-                  <p className="mt-3 text-sm leading-5 text-slate-400">{credential.label}</p>
+                <div key={credential.value} className="border-r border-white/12 pr-2 last:border-r-0 last:pr-0">
+                  <p className="text-sm font-semibold leading-none text-white">{credential.value}</p>
+                  <p className="mt-1.5 text-[0.68rem] leading-3 text-slate-400">{credential.label}</p>
                 </div>
               ))}
             </div>

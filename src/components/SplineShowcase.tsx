@@ -52,7 +52,7 @@ export function SplineShowcase({ labels }: SplineShowcaseProps) {
           </div>
         </div>
 
-        <div className="relative min-h-[24rem] overflow-hidden border-t border-white/10 bg-black lg:min-h-full lg:border-l lg:border-t-0">
+        <div className="relative min-h-[18rem] overflow-hidden border-t border-white/10 bg-black md:min-h-[24rem] lg:min-h-full lg:border-l lg:border-t-0">
           <div className="absolute inset-0 opacity-40 interface-grid" aria-hidden="true" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(125,211,252,0.16),transparent_28rem)]" aria-hidden="true" />
           <SplineScene scene={sceneUrl} className="pointer-events-none absolute inset-0" />
