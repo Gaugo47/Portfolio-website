@@ -27,6 +27,7 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SplineShowcase } from "@/components/SplineShowcase";
 import { SplineScene } from "@/components/ui/splite";
+import { RefinedHome } from "@/components/RefinedHome";
 import { journeys } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
 
@@ -817,6 +818,10 @@ const pillarVisuals = [
 ];
 
 export default function Home() {
+  return <RefinedHome />;
+}
+
+function LegacyHome() {
   const [language, setLanguage] = useState<Language>("fr");
   const [mobileHeroMenuOpen, setMobileHeroMenuOpen] = useState(false);
   const t = content[language];
@@ -924,6 +929,7 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
+          <div className="h-[max(0px,calc(100svh-42rem))]" aria-hidden="true" />
         </div>
 
         <div className="relative z-10 mx-auto hidden min-h-[calc(100svh-7rem)] w-full max-w-[96rem] items-center gap-10 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(28rem,1.08fr)] lg:gap-14">
