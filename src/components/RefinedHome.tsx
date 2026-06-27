@@ -163,6 +163,17 @@ const portfolioCopy = {
         accent: "amber",
       },
       {
+        slug: "smart-screen",
+        title: "Smart Screen",
+        label: "Stage DaVinci Bot",
+        description:
+          "Plateforme web sur Raspberry Pi pour partager un écran vers une télévision lors des formations de l’association.",
+        role: "Développement web, réseau, WebRTC et support Raspberry Pi modélisé en 3D.",
+        stack: ["Raspberry Pi", "WebRTC", "WebSocket", "HTML/JS"],
+        image: "/projects/smart-screen-raspberry-stand.webp",
+        accent: "green",
+      },
+      {
         slug: "assistant-vocal-ia",
         title: "Assistant vocal IA",
         label: "IA locale",
@@ -415,6 +426,17 @@ const portfolioCopy = {
         stack: ["Robotics", "Mechanics", "Prototyping"],
         image: "/projects/davinci-bot-motor-assembly.webp",
         accent: "amber",
+      },
+      {
+        slug: "smart-screen",
+        title: "Smart Screen",
+        label: "DaVinci Bot internship",
+        description:
+          "Web platform on a Raspberry Pi to share a computer screen to a large TV during association training sessions.",
+        role: "Web development, networking, WebRTC, and 3D-modeled Raspberry Pi mount.",
+        stack: ["Raspberry Pi", "WebRTC", "WebSocket", "HTML/JS"],
+        image: "/projects/smart-screen-raspberry-stand.webp",
+        accent: "green",
       },
       {
         slug: "assistant-vocal-ia",
