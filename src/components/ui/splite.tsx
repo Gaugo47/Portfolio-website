@@ -21,12 +21,15 @@ interface SplineSceneProps {
   scene: string;
   className?: string;
   interactive?: boolean;
+  keepAliveMs?: number;
+  continuous?: boolean;
 }
 
-export function SplineScene({ scene, className, interactive = false }: SplineSceneProps) {
+export function SplineScene({ scene, className, interactive = false, keepAliveMs = 900, continuous = false }: SplineSceneProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const splineAppRef = useRef<Application | null>(null);
   const unloadTimerRef = useRef<number | null>(null);
+  const loadedAtRef = useRef(0);
   const [canUse3D, setCanUse3D] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -42,10 +45,11 @@ export function SplineScene({ scene, className, interactive = false }: SplineSce
 
   const handleLoad = useCallback((spline: Application) => {
     splineAppRef.current = spline;
-    spline.renderOnDemand = !interactive;
+    loadedAtRef.current = window.performance.now();
+    spline.renderOnDemand = !(interactive || continuous);
     spline.setGlobalEvents(interactive);
     spline.requestRender();
-  }, [interactive]);
+  }, [continuous, interactive]);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -105,11 +109,14 @@ export function SplineScene({ scene, className, interactive = false }: SplineSce
           return;
         }
 
-        splineAppRef.current?.stop();
+        const elapsedSinceLoad = loadedAtRef.current ? window.performance.now() - loadedAtRef.current : keepAliveMs;
+        const delayBeforeUnload = Math.max(keepAliveMs - elapsedSinceLoad, 0);
+
         unloadTimerRef.current = window.setTimeout(() => {
+          splineAppRef.current?.stop();
           disposeSpline();
           setIsMounted(false);
-        }, 900);
+        }, delayBeforeUnload);
       },
       { rootMargin: "180px 0px", threshold: 0.01 },
     );
@@ -120,7 +127,7 @@ export function SplineScene({ scene, className, interactive = false }: SplineSce
       observer.disconnect();
       disposeSpline();
     };
-  }, [canUse3D, disposeSpline]);
+  }, [canUse3D, disposeSpline, keepAliveMs]);
 
   return (
     <div ref={containerRef} className={className}>
@@ -132,7 +139,7 @@ export function SplineScene({ scene, className, interactive = false }: SplineSce
             </div>
           }
         >
-          <Spline scene={scene} className="h-full w-full" onLoad={handleLoad} renderOnDemand={!interactive} />
+          <Spline scene={scene} className="h-full w-full" onLoad={handleLoad} renderOnDemand={!(interactive || continuous)} />
         </Suspense>
       ) : canUse3D ? (
         <div className="flex h-full w-full items-center justify-center bg-black/18">

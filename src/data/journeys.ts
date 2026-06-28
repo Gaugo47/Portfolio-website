@@ -10,6 +10,10 @@ export type Journey = {
   year: string;
   from: JourneyPoint;
   to: JourneyPoint;
+  logo?: {
+    src: string;
+    alt: string;
+  };
   title: Record<Language, string>;
   description: Record<Language, string>;
 };
@@ -26,6 +30,10 @@ export const journeys: Journey[] = [
       city: "Nantes",
       lat: 47.2184,
       lng: -1.5536,
+    },
+    logo: {
+      src: "/logos/esilv.png",
+      alt: "Logo ESILV",
     },
     title: {
       fr: "Etudes d'ingenieur a l'ESILV Nantes",
@@ -47,6 +55,10 @@ export const journeys: Journey[] = [
       city: "Bangkok",
       lat: 13.7563,
       lng: 100.5018,
+    },
+    logo: {
+      src: "/logos/kasetsart-university.png",
+      alt: "Logo Kasetsart University",
     },
     title: {
       fr: "Semestre international a Kasetsart University",

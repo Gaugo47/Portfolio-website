@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Language } from "@/components/NavBar";
 import RotatingEarth, { type GlobeRoute } from "@/components/ui/wireframe-dotted-globe";
 import type { Journey } from "@/data/journeys";
+import { assetPath } from "@/lib/assetPath";
 
 type JourneyGlobeProps = {
   language: Language;
@@ -142,7 +143,10 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
           </div>
 
           <div className="relative">
-            <div className="absolute left-4 top-2 hidden h-[calc(100%-1rem)] w-px bg-white/10 md:block" aria-hidden="true" />
+            <div
+              className="absolute left-2 top-[32vh] hidden w-px bg-white/10 md:block md:bottom-[32vh] lg:top-[36vh] lg:bottom-[36vh]"
+              aria-hidden="true"
+            />
 
             <div className="grid gap-4 md:gap-0">
               {journeys.map((journey, index) => {
@@ -151,39 +155,55 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                 return (
                   <div
                     key={`${journey.year}-${journey.to.city}`}
-                    className="md:flex md:min-h-[64vh] md:items-center lg:min-h-[72vh]"
+                    className="relative md:grid md:min-h-[64vh] md:grid-cols-[1rem_minmax(0,1fr)] md:items-center md:gap-6 lg:min-h-[72vh]"
                     ref={(node) => {
                       cardRefs.current[index] = node;
                     }}
                     data-index={index}
                   >
+                    <span
+                      className={`absolute left-2 top-1/2 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border md:block ${
+                        isActive
+                          ? "border-emerald-200 bg-emerald-300 shadow-[0_0_22px_rgba(142,230,168,0.65)]"
+                          : "border-white/20 bg-slate-950"
+                      }`}
+                      aria-hidden="true"
+                    />
+
                     <article
-                      className={`relative rounded-lg border p-5 transition-colors duration-300 md:ml-10 ${
+                      className={`relative rounded-lg border p-5 transition-colors duration-300 md:col-start-2 ${
                         isActive
                           ? "border-emerald-200/35 bg-emerald-200/[0.08] shadow-2xl shadow-emerald-950/20"
                           : "border-white/10 bg-white/[0.035]"
                       }`}
                     >
-                      <span
-                        className={`absolute -left-[3.25rem] top-6 hidden h-4 w-4 rounded-full border md:block ${
-                          isActive
-                            ? "border-emerald-200 bg-emerald-300 shadow-[0_0_22px_rgba(142,230,168,0.65)]"
-                            : "border-white/20 bg-slate-950"
-                        }`}
-                        aria-hidden="true"
-                      />
+                      <div className="flex gap-4">
+                        {journey.logo ? (
+                          <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white p-1.5 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+                            <img
+                              src={assetPath(journey.logo.src)}
+                              alt={journey.logo.alt}
+                              className="h-full w-full object-contain"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                        ) : null}
 
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <p className="mono-detail text-sm font-semibold text-emerald-200">{journey.year}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <p className="mono-detail text-sm font-semibold text-emerald-200">{journey.year}</p>
 
-                        <p className="mono-detail rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                          {journey.from.city} - {journey.to.city}
-                        </p>
+                            <p className="mono-detail rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                              {journey.from.city} - {journey.to.city}
+                            </p>
+                          </div>
+
+                          <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">{journey.title[language]}</h3>
+
+                          <p className="mt-3 leading-7 text-slate-300">{journey.description[language]}</p>
+                        </div>
                       </div>
-
-                      <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">{journey.title[language]}</h3>
-
-                      <p className="mt-3 leading-7 text-slate-300">{journey.description[language]}</p>
                     </article>
                   </div>
                 );

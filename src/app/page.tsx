@@ -885,7 +885,12 @@ function LegacyHome() {
           <Reveal className="-mx-5 border-b border-white/10">
             <div className="relative h-[21.5rem] overflow-hidden">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(56,189,248,0.28),transparent_42%)]" aria-hidden="true" />
-              <SplineScene scene={heroSplineScene} className="pointer-events-none absolute left-1/2 top-[-1.75rem] h-[25.5rem] w-[25.5rem] -translate-x-1/2 scale-[0.96]" />
+              <SplineScene
+                scene={heroSplineScene}
+                className="pointer-events-none absolute left-1/2 top-[-1.75rem] h-[25.5rem] w-[25.5rem] -translate-x-1/2 scale-[0.96]"
+                continuous
+                keepAliveMs={9000}
+              />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black to-transparent" aria-hidden="true" />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black via-black/88 to-transparent" aria-hidden="true" />
             </div>
@@ -976,7 +981,7 @@ function LegacyHome() {
 
           <Reveal delay={0.08} className="relative hidden min-h-[34rem] md:block lg:min-h-[40rem]">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_56%_48%,rgba(125,211,252,0.18),transparent_34%),radial-gradient(circle_at_50%_75%,rgba(16,185,129,0.12),transparent_28%)]" aria-hidden="true" />
-            <SplineScene scene={heroSplineScene} className="absolute inset-0" interactive />
+            <SplineScene scene={heroSplineScene} className="absolute inset-0" interactive continuous keepAliveMs={9000} />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/70 to-transparent" aria-hidden="true" />
             <div className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-black to-transparent" aria-hidden="true" />
           </Reveal>

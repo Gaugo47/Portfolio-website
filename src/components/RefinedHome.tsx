@@ -11,7 +11,6 @@ import {
   Menu,
   MoveRight,
   Network,
-  Radar,
   Route,
   Sparkles,
   Wrench,
@@ -23,6 +22,7 @@ import { NavBar, type Language } from "@/components/NavBar";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SplineShowcase } from "@/components/SplineShowcase";
+import { AnimatedFeatureCard } from "@/components/ui/feature-card-1";
 import { SplineScene } from "@/components/ui/splite";
 import { journeys } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
@@ -250,12 +250,19 @@ const portfolioCopy = {
       route: "Trajet actif",
       simplified: "Version mobile simplifiée",
     },
+    trustTitle: "Ils m'ont fait confiance",
     journeySteps: [
-      { title: "ESILV", copy: "Formation ingénieur et socle scientifique." },
-      { title: "DaVinci Bot", copy: "Premiers projets robotiques et travail d’équipe." },
-      { title: "Pian", copy: "Automatisation logicielle et outils techniques." },
-      { title: "Kasetsart University", copy: "Ouverture internationale et spécialisation à venir." },
-      { title: "Projets personnels", copy: "Exploration robotique, IA et prototypage." },
+      { title: "ESILV", copy: "Formation ingénieur et socle scientifique.", logo: "/logos/esilv.png", logoAlt: "Logo ESILV" },
+      { title: "DaVinci Bot", copy: "Premiers projets robotiques et travail d’équipe.", logo: "/logos/davinci-bot.png", logoAlt: "Logo DaVinci Bot" },
+      { title: "Pian", copy: "Automatisation logicielle et outils techniques.", logo: "/logos/pian-entreprise.png", logoAlt: "Logo PIAN entreprise" },
+      { title: "DeVinci Créalab", copy: "Projet Créalab Augmenté et contexte atelier.", logo: "/logos/crealab-nantes.png", logoAlt: "Logo Créalab Nantes" },
+      { title: "IFT", copy: "Soutien institutionnel pour prototyper une idée technique.", logo: "/projects/ift-logo.png", logoAlt: "Logo IFT" },
+      {
+        title: "Kasetsart University",
+        copy: "Ouverture internationale et spécialisation à venir.",
+        logo: "/logos/kasetsart-university.png",
+        logoAlt: "Logo Kasetsart University",
+      },
     ],
     skillsHeader: {
       eyebrow: "Compétences",
@@ -514,12 +521,19 @@ const portfolioCopy = {
       route: "Active route",
       simplified: "Simplified mobile version",
     },
+    trustTitle: "They trusted me",
     journeySteps: [
-      { title: "ESILV", copy: "Engineering studies and scientific foundation." },
-      { title: "DaVinci Bot", copy: "First robotics projects and teamwork." },
-      { title: "Pian", copy: "Software automation and technical tools." },
-      { title: "Kasetsart University", copy: "International opening and upcoming specialization." },
-      { title: "Personal projects", copy: "Robotics, AI and prototyping exploration." },
+      { title: "ESILV", copy: "Engineering studies and scientific foundation.", logo: "/logos/esilv.png", logoAlt: "ESILV logo" },
+      { title: "DaVinci Bot", copy: "First robotics projects and teamwork.", logo: "/logos/davinci-bot.png", logoAlt: "DaVinci Bot logo" },
+      { title: "Pian", copy: "Software automation and technical tools.", logo: "/logos/pian-entreprise.png", logoAlt: "PIAN entreprise logo" },
+      { title: "DeVinci Créalab", copy: "Créalab Augmenté project and workshop context.", logo: "/logos/crealab-nantes.png", logoAlt: "Créalab Nantes logo" },
+      { title: "IFT", copy: "Institutional support to prototype a technical idea.", logo: "/projects/ift-logo.png", logoAlt: "IFT logo" },
+      {
+        title: "Kasetsart University",
+        copy: "International opening and upcoming specialization.",
+        logo: "/logos/kasetsart-university.png",
+        logoAlt: "Kasetsart University logo",
+      },
     ],
     skillsHeader: {
       eyebrow: "Skills",
@@ -577,7 +591,12 @@ const pillarVisuals = [
   { icon: Cpu, accent: "text-sky-200" },
   { icon: BrainCircuit, accent: "text-emerald-200" },
 ];
-const learningIcons = [Route, Wrench, Code2, Radar];
+const learningVisuals = [
+  { src: "/emoji/design.webp", alt: "Crayon et règle", color: "orange" as const },
+  { src: "/emoji/prototype.webp", alt: "Marteau et tournevis", color: "purple" as const },
+  { src: "/emoji/code.webp", alt: "Ordinateur avec du code", color: "blue" as const },
+  { src: "/emoji/iterate.webp", alt: "Flèche circulaire", color: "emerald" as const },
+];
 const skillIcons = [Wrench, CircuitBoard, Code2, Eye];
 
 const projectAccentClasses: Record<string, string> = {
@@ -648,7 +667,12 @@ export function RefinedHome() {
           <Reveal className="-mx-5 border-b border-white/10">
             <div className="relative h-[21.5rem] overflow-hidden">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(56,189,248,0.28),transparent_42%)]" aria-hidden="true" />
-              <SplineScene scene={heroSplineScene} className="pointer-events-none absolute left-1/2 top-[-1.75rem] h-[25.5rem] w-[25.5rem] -translate-x-1/2 scale-[0.96]" />
+              <SplineScene
+                scene={heroSplineScene}
+                className="pointer-events-none absolute left-1/2 top-[-1.75rem] h-[25.5rem] w-[25.5rem] -translate-x-1/2 scale-[0.96]"
+                continuous
+                keepAliveMs={9000}
+              />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black to-transparent" aria-hidden="true" />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black via-black/88 to-transparent" aria-hidden="true" />
             </div>
@@ -762,7 +786,7 @@ export function RefinedHome() {
 
           <Reveal delay={0.08} className="relative hidden min-h-[34rem] md:block lg:min-h-[40rem]">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_56%_48%,rgba(125,211,252,0.18),transparent_34%),radial-gradient(circle_at_50%_75%,rgba(16,185,129,0.12),transparent_28%)]" aria-hidden="true" />
-            <SplineScene scene={heroSplineScene} className="absolute inset-0" interactive />
+            <SplineScene scene={heroSplineScene} className="absolute inset-0" interactive continuous keepAliveMs={9000} />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/70 to-transparent" aria-hidden="true" />
             <div className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-black to-transparent" aria-hidden="true" />
           </Reveal>
@@ -921,15 +945,18 @@ export function RefinedHome() {
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {t.learnings.map((item, index) => {
-              const Icon = learningIcons[index] ?? Sparkles;
+              const visual = learningVisuals[index];
 
               return (
                 <Reveal key={item.title} delay={index * 0.04}>
-                  <div className="h-full rounded-lg border border-white/10 bg-white/[0.035] p-6">
-                    <Icon className="h-5 w-5 text-emerald-200" />
-                    <h3 className="mt-8 text-2xl font-semibold text-white">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">{item.copy}</p>
-                  </div>
+                  <AnimatedFeatureCard
+                    index={String(index + 1).padStart(3, "0")}
+                    tag={item.title}
+                    title={item.copy}
+                    imageSrc={assetPath(visual?.src ?? "/emoji/design.webp")}
+                    imageAlt={visual?.alt}
+                    color={visual?.color ?? "orange"}
+                  />
                 </Reveal>
               );
             })}
@@ -964,18 +991,45 @@ export function RefinedHome() {
       <LazyJourneyGlobe language={language} journeys={journeys} header={t.journeyHeader} labels={t.journeyLabels} />
 
       <section className="defer-render relative px-5 py-16 md:px-8 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-3 md:grid-cols-5">
-          {t.journeySteps.map((item, index) => (
-            <Reveal key={item.title} delay={index * 0.04}>
-              <div className="h-full rounded-lg border border-white/10 bg-white/[0.03] p-5">
-                <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{item.copy}</p>
-              </div>
-            </Reveal>
-          ))}
+        <div className="mx-auto max-w-7xl">
+          <Reveal>
+            <h2 className="mb-8 text-balance text-3xl font-semibold leading-tight text-white md:text-5xl">{t.trustTitle}</h2>
+          </Reveal>
+        </div>
+        <div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {t.journeySteps.map((item, index) => {
+            const logo = item.logo;
+            const logoAlt = item.logoAlt;
+
+            return (
+              <Reveal key={item.title} delay={index * 0.04}>
+                <div className="h-full rounded-lg border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex min-h-14 items-start justify-between gap-4">
+                    <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    {logo ? (
+                      <div className="flex h-14 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.28)]">
+                        <img
+                          src={assetPath(logo)}
+                          alt={logoAlt}
+                          className="h-full w-full object-contain"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] text-emerald-100">
+                        <Sparkles className="h-5 w-5" />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">{item.copy}</p>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
@@ -1040,7 +1094,7 @@ export function RefinedHome() {
       </section>
 
       <section id="contact" className="relative px-5 pb-12 pt-20 md:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 border-t border-white/10 pt-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+        <div className="mx-auto grid max-w-7xl gap-8 border-t border-white/10 pt-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(22rem,0.62fr)] lg:items-start">
           <Reveal>
             <div>
               <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{t.contact.eyebrow}</p>
@@ -1048,39 +1102,47 @@ export function RefinedHome() {
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{t.contact.copy}</p>
             </div>
           </Reveal>
-          <Reveal delay={0.1}>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
+          <div className="w-full rounded-2xl border border-white/[0.12] bg-white/[0.035] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.28)] backdrop-blur md:p-5 lg:justify-self-end">
+            <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+              <span className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+                {t.contact.eyebrow}
+              </span>
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.75)]" />
+            </div>
+            <div className="grid gap-3">
               <a
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
+                className="focus-ring inline-flex min-h-12 cursor-pointer items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
                 href={profileLinks.email}
               >
                 {t.contact.email}
                 <Mail className="h-4 w-4" />
               </a>
-              <a
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                href={profileLinks.linkedin}
-              >
-                {t.contact.linkedin}
-                <Network className="h-4 w-4" />
-              </a>
-              <a
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                href={profileLinks.github}
-              >
-                {t.contact.github}
-                <Code2 className="h-4 w-4" />
-              </a>
-              <a
-                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/[0.12] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                href={assetPath(profileLinks.cv)}
-                download
-              >
-                {t.contact.cv}
-                <Download className="h-4 w-4" />
-              </a>
+              <div className="grid gap-3">
+                <a
+                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+                  href={profileLinks.linkedin}
+                >
+                  {t.contact.linkedin}
+                  <Network className="h-4 w-4 shrink-0" />
+                </a>
+                <a
+                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+                  href={profileLinks.github}
+                >
+                  {t.contact.github}
+                  <Code2 className="h-4 w-4 shrink-0" />
+                </a>
+                <a
+                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+                  href={assetPath(profileLinks.cv)}
+                  download
+                >
+                  {t.contact.cv}
+                  <Download className="h-4 w-4 shrink-0" />
+                </a>
+              </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>
