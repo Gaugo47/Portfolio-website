@@ -1,6 +1,8 @@
 "use client";
 
 import { Code2, Mail, Network } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ScrambleHover } from "@/components/ui/scramble-hover";
 
 export type Language = "fr" | "en";
 
@@ -37,6 +39,49 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
     { label: labels.vision, href: "#vision" },
   ];
 
+  const [activeSection, setActiveSection] = useState<string>("");
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.getElementById(link.href.slice(1)))
+      .filter((node): node is HTMLElement => node !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        }
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+    // navLinks est recalculé à chaque rendu mais les ancres sont stables
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterVisible(entry.isIntersecting);
+      },
+      { threshold: 0.08 },
+    );
+
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <a
@@ -45,20 +90,35 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
       >
         {labels.skip}
       </a>
-      <header className="sticky top-3 z-50 px-3 py-3 md:top-5 md:px-6">
+      <header
+        className={`sticky top-3 z-50 px-3 py-3 transition-[opacity,transform] duration-300 md:top-5 md:px-6 ${
+          isFooterVisible ? "pointer-events-none -translate-y-6 opacity-0" : "opacity-100"
+        }`}
+      >
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-white/12 bg-[#05060a]/78 px-4 py-3 shadow-[0_18px_70px_rgba(0,0,0,0.34)] backdrop-blur-2xl"
         aria-label="Primary navigation"
       >
         <a className="focus-ring mono-detail rounded-full text-sm font-semibold uppercase tracking-[0.22em] text-white" href="#top">
-          {labels.brand}
+          <ScrambleHover
+            text={labels.brand}
+            useOriginalCharsOnly
+            scrambleSpeed={34}
+            maxIterations={14}
+            scrambledClassName="text-[#7cc8ef]"
+          />
         </a>
         <div className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="focus-ring cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition-colors duration-200 hover:bg-white/[0.07] hover:text-white"
+              aria-current={activeSection === link.href ? "true" : undefined}
+              className={`focus-ring cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                activeSection === link.href
+                  ? "bg-white/[0.09] text-white"
+                  : "text-slate-300 hover:bg-white/[0.07] hover:text-white"
+              }`}
             >
               {link.label}
             </a>
@@ -96,7 +156,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
           </a>
           <a
             href={links.email}
-            className="focus-ring cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
+            className="focus-ring cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
           >
             <span className="hidden sm:inline">{labels.contact}</span>
             <Mail className="h-4 w-4 sm:hidden" />

@@ -7,10 +7,10 @@ const Spline = lazy(() => import("@splinetool/react-spline"));
 
 function SplineFallback() {
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#020617]">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#05070c]">
       <div className="absolute inset-0 opacity-45 interface-grid" aria-hidden="true" />
-      <div className="absolute h-52 w-52 rounded-full border border-sky-200/18 bg-sky-300/[0.06] shadow-[0_0_80px_rgba(125,211,252,0.18)]" />
-      <div className="relative grid h-28 w-28 place-items-center rounded-full border border-emerald-200/20 bg-black/35 shadow-[0_0_48px_rgba(142,230,168,0.16)]">
+      <div className="absolute h-52 w-52 rounded-full border border-[#7cc8ef]/18 bg-[#7cc8ef]/[0.06] shadow-[0_0_80px_rgba(124,200,239,0.18)]" />
+      <div className="relative grid h-28 w-28 place-items-center rounded-full border border-[#7cc8ef]/20 bg-black/35 shadow-[0_0_48px_rgba(124,200,239,0.16)]">
         <div className="h-12 w-12 rounded-md border border-sky-200/50 bg-sky-200/[0.08]" />
       </div>
     </div>

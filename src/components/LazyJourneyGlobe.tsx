@@ -24,8 +24,8 @@ function JourneyFallback({ header }: Pick<LazyJourneyGlobeProps, "header">) {
     <section id="journey" className="relative overflow-x-clip px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 grid max-w-7xl gap-5 border-t border-white/10 pt-7 md:mb-16 md:grid-cols-[0.32fr_0.68fr] md:gap-10 md:pt-9">
-          <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
-            <span className="h-px w-10 bg-emerald-200/45" aria-hidden="true" />
+          <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
+            <span className="h-px w-10 bg-[#7cc8ef]/40" aria-hidden="true" />
             {header.eyebrow}
           </p>
           <div>

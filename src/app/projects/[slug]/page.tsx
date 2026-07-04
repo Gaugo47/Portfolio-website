@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, BarChart3, ExternalLink, Layers3 } from "lucide-react";
+import { MacbookScrollShowcase } from "@/components/MacbookScrollShowcase";
 import { getProjectDetail, projectDetails } from "@/data/projectDetails";
 import { assetPath } from "@/lib/assetPath";
 
@@ -56,7 +57,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const displayedGallery = project.gallery?.filter((item) => !versionOneMediaSources.has(item.src));
 
   return (
-    <main className="relative min-h-screen overflow-x-clip px-5 py-7 md:px-8 md:py-10">
+    <main className="relative min-h-screen overflow-x-visible px-5 py-7 md:px-8 md:py-10">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_76%_12%,rgba(56,189,248,0.16),transparent_28rem),radial-gradient(circle_at_18%_18%,rgba(16,185,129,0.1),transparent_24rem),linear-gradient(180deg,#020617_0%,#050816_46%,#020617_100%)]" />
 
       <div className="mx-auto max-w-7xl">
@@ -70,19 +71,28 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </a>
           <a
             href={assetPath("/#contact")}
-            className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
+            className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
           >
             Discuter du projet
             <ExternalLink className="h-4 w-4" />
           </a>
         </nav>
 
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+        {project.heroImage && project.heroVariant === "macbook-scroll" ? (
+          <MacbookScrollShowcase
+            src={project.heroImage}
+            alt={project.imageAlt ?? project.title}
+            eyebrow={project.label}
+            title={project.title}
+          />
+        ) : null}
+
+        <section className={`grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end ${project.heroVariant === "macbook-scroll" ? "mt-16" : ""}`}>
           <div>
             <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-sky-200/80">
               {project.label}
             </p>
-            <h1 className="mt-5 text-balance text-5xl font-black uppercase leading-[0.86] tracking-[0] text-white md:text-7xl">
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.0] tracking-[-0.03em] text-white md:text-7xl">
               {project.title}
             </h1>
             <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
@@ -117,7 +127,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   />
                 </div>
                 <div>
-                  <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-emerald-200/80">
+                  <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#7cc8ef]/80">
                     {project.support.eyebrow}
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">{project.support.title}</h2>
@@ -128,7 +138,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           ) : null}
         </section>
 
-        {project.heroImage ? (
+        {project.heroVariant === "macbook-scroll" ? null : project.heroImage ? (
           <figure className="mt-10 overflow-hidden rounded-lg border border-white/10 bg-[#071016] shadow-[0_36px_110px_rgba(0,0,0,0.32)]">
             <img
               src={assetPath(project.heroImage)}
@@ -171,7 +181,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <section className="mt-16 overflow-hidden rounded-lg border border-white/10 bg-[#050b0f] shadow-[0_36px_110px_rgba(0,0,0,0.28)]">
             <div className="grid gap-8 p-6 md:p-8 lg:grid-cols-[0.78fr_1.22fr] lg:p-10">
               <div>
-                <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
+                <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
                   Réduction des coûts
                 </p>
                 <h2 className="mt-4 text-balance text-4xl font-semibold leading-[0.98] text-white md:text-5xl">
@@ -180,14 +190,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <p className="mt-5 text-base leading-7 text-slate-300">
                   {costReduction.note}
                 </p>
-                <div className="mt-6 rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] p-4">
-                  <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-100/80">
+                <div className="mt-6 rounded-md border border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.08] p-4">
+                  <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#a7d9f5]/80">
                     {costReduction.saving.label}
                   </p>
                   <p className="mt-2 text-4xl font-semibold text-white">
                     {formatEuros(costReduction.saving.value)}
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-emerald-100/80">
+                  <p className="mt-2 text-sm leading-6 text-[#a7d9f5]/80">
                     {costReduction.saving.detail}
                   </p>
                 </div>
@@ -219,8 +229,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     },
                     {
                       ...costReduction.optimized,
-                      barClassName: "bg-gradient-to-r from-emerald-400 to-sky-300 shadow-[0_0_22px_rgba(125,211,252,0.34)]",
-                      textClassName: "text-emerald-100",
+                      barClassName: "bg-gradient-to-r from-[#3193c9] to-[#a7d9f5] shadow-[0_0_22px_rgba(125,211,252,0.34)]",
+                      textClassName: "text-[#a7d9f5]",
                     },
                   ].map((item) => (
                     <div key={item.label}>
@@ -258,7 +268,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     <p className="mono-detail text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-slate-500">
                       Après
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-emerald-100">
+                    <p className="mt-1 text-lg font-semibold text-[#a7d9f5]">
                       {formatEuros(costReduction.optimized.totalCost)}
                     </p>
                   </div>
@@ -281,8 +291,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <div className="grid gap-8 border-b border-white/10 p-6 md:p-8 lg:grid-cols-[0.72fr_1.28fr] lg:p-10">
               <div>
                 <div className="flex items-center gap-2">
-                  <Layers3 className="h-5 w-5 text-emerald-200" aria-hidden="true" />
-                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
+                  <Layers3 className="h-5 w-5 text-[#7cc8ef]" aria-hidden="true" />
+                  <p className="mono-detail text-xs font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
                     {project.versionOne.label}
                   </p>
                 </div>
@@ -344,7 +354,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     {engineeringMetrics.title}
                   </h2>
                 </div>
-                <span className="mono-detail w-fit rounded-full border border-emerald-200/18 bg-emerald-200/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-100">
+                <span className="mono-detail w-fit rounded-full border border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#a7d9f5]">
                   {engineeringMetrics.weight.reductionLabel}
                 </span>
               </div>
@@ -404,7 +414,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                       label: engineeringMetrics.weight.afterLabel,
                       value: engineeringMetrics.weight.afterKg,
                       displayValue: engineeringMetrics.weight.afterValue,
-                      className: "bg-gradient-to-t from-emerald-400 to-sky-300 shadow-[0_0_22px_rgba(125,211,252,0.34)]",
+                      className: "bg-gradient-to-t from-[#3193c9] to-[#a7d9f5] shadow-[0_0_22px_rgba(125,211,252,0.34)]",
                     },
                   ].map((bar) => (
                     <div key={bar.label} className="flex h-60 min-w-0 flex-col justify-end">
@@ -479,12 +489,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                       <p className="mono-detail text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-slate-500">V1</p>
                       <p className="mt-2 text-2xl font-semibold text-slate-100">100%</p>
                     </div>
-                    <div className="mono-detail rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] px-3 py-2 text-lg font-semibold text-emerald-100">
+                    <div className="mono-detail rounded-md border border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.08] px-3 py-2 text-lg font-semibold text-[#a7d9f5]">
                       {engineeringMetrics.cost.value}
                     </div>
                     <div className="rounded-md border border-white/10 bg-black/24 p-3">
                       <p className="mono-detail text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-slate-500">V2</p>
-                      <p className="mt-2 text-2xl font-semibold text-emerald-100">≈17%</p>
+                      <p className="mt-2 text-2xl font-semibold text-[#a7d9f5]">≈17%</p>
                     </div>
                   </div>
                   <p className="mt-4 text-sm leading-6 text-slate-300">{engineeringMetrics.cost.detail}</p>
@@ -556,7 +566,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <section className="mt-16 grid gap-4 md:grid-cols-2">
           {displayedSections.map((section) => (
             <article key={section.title} className="rounded-lg border border-white/10 bg-[#080a10]/72 p-6">
-              <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-emerald-200/80">
+              <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#7cc8ef]/80">
                 {section.title}
               </p>
               <p className="mt-4 text-base leading-7 text-slate-300">{section.body}</p>
@@ -570,7 +580,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               Apprentissages
             </p>
             <h2 className="mt-4 max-w-3xl text-balance text-4xl font-semibold leading-[0.98] text-white md:text-5xl">
-              Ce que ce projet m’a appris
+              Ce que ce projet <span className="serif-accent text-[#a7d9f5]">m’a appris</span>
             </h2>
           </div>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -580,10 +590,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 className="flex min-h-36 flex-col rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.055] to-white/[0.025] p-5"
               >
                 <div className="flex items-center gap-3">
-                  <div className="mono-detail flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] text-xs font-semibold text-emerald-100">
+                  <div className="mono-detail flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.08] text-xs font-semibold text-[#a7d9f5]">
                     {String(index + 1).padStart(2, "0")}
                   </div>
-                  <div className="h-px flex-1 bg-gradient-to-r from-emerald-200/24 to-transparent" />
+                  <div className="h-px flex-1 bg-gradient-to-r from-[#7cc8ef]/24 to-transparent" />
                 </div>
                 <p className="mt-7 text-sm font-medium leading-6 text-slate-200 md:text-base md:leading-7">{learning}</p>
               </div>
@@ -599,7 +609,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   Galerie
                 </p>
                 <h2 className="mt-4 text-balance text-4xl font-semibold leading-[0.98] text-white md:text-5xl">
-                  Captures et éléments visuels du projet
+                  Captures et <span className="serif-accent text-[#a7d9f5]">éléments visuels</span> du projet
                 </h2>
               </div>
               <p className="max-w-xl text-sm leading-6 text-slate-400">

@@ -4,6 +4,7 @@ export type ProjectDetail = {
   label: string;
   summary: string;
   heroImage?: string;
+  heroVariant?: "macbook-scroll";
   imageAlt?: string;
   support?: {
     logo: string;
@@ -543,6 +544,9 @@ export const projectDetails: ProjectDetail[] = [
     label: "Automatisation",
     summary:
       "Outil de génération de plans d’expériences pour structurer plus rapidement des essais et scénarios de test.",
+    heroImage: "/projects/auto-doe-interface.webp",
+    heroVariant: "macbook-scroll",
+    imageAlt: "Interface du générateur automatique de DOE avec catalogue de matériaux et génération PDF",
     role: "Structuration de la logique, génération des sorties et réflexion sur l’usage par un utilisateur technique.",
     stack: ["Python", "Automatisation", "Données", "Interface"],
     sections: [

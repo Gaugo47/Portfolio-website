@@ -16,6 +16,10 @@ export type Journey = {
   };
   title: Record<Language, string>;
   description: Record<Language, string>;
+  courses?: {
+    intro: Record<Language, string>;
+    items: string[];
+  };
 };
 
 export const journeys: Journey[] = [
@@ -65,8 +69,20 @@ export const journeys: Journey[] = [
       en: "International semester at Kasetsart University",
     },
     description: {
-      fr: "Mobilite academique en Thailande pour ouvrir mon approche ingenieur a un contexte international.",
-      en: "Academic mobility in Thailand to broaden my engineering practice in an international context.",
+      fr: "Mobilite academique en Thailande avec des cours suivis entierement en anglais.",
+      en: "Academic mobility in Thailand with courses completed entirely in English.",
+    },
+    courses: {
+      intro: {
+        fr: "Cours suivis :",
+        en: "Courses completed:",
+      },
+      items: [
+        "Applied Probability and Statistics",
+        "Machine vision in Robotics",
+        "Industrial Automation and Control",
+        "Introduction to Finite Element Method",
+      ],
     },
   },
   {

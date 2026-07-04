@@ -17,9 +17,11 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { AsciiHandsFinale } from "@/components/AsciiHandsFinale";
 import { LazyJourneyGlobe } from "@/components/LazyJourneyGlobe";
 import { NavBar, type Language } from "@/components/NavBar";
 import { Reveal } from "@/components/Reveal";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SplineShowcase } from "@/components/SplineShowcase";
 import { AnimatedFeatureCard } from "@/components/ui/feature-card-1";
@@ -28,7 +30,7 @@ import { journeys } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
 
 const profileLinks = {
-  github: "https://github.com/",
+  github: "https://github.com/Gaugo47",
   linkedin: "https://www.linkedin.com/in/gauthier-defoy/",
   email: "mailto:gauthier.defoy@edu.devinci.fr",
   cv: "/cv-gauthier-defoy.pdf",
@@ -52,10 +54,12 @@ const portfolioCopy = {
       linkedin: "Profil LinkedIn de Gauthier Defoy",
     },
     hero: {
-      badge: "Gauthier Defoy · Étudiant ingénieur à l’ESILV",
-      title: "De l’idée au prototype fonctionnel.",
+      name: "Gauthier Defoy",
+      badge: "Étudiant ingénieur · ESILV — Robotique, IA & systèmes embarqués",
+      title: "De l’idée au",
+      titleAccent: "prototype fonctionnel.",
       copy:
-        "Étudiant ingénieur à l’ESILV, passionné par la robotique, les systèmes embarqués et l’intelligence artificielle. Je conçois des projets mêlant mécanique, électronique et logiciel pour transformer des concepts en systèmes réels.",
+        "Étudiant ingénieur à l’ESILV, je conçois des systèmes qui mêlent mécanique, électronique, logiciel et IA locale. J’aime transformer une idée en prototype réel : de la conception CAO au code embarqué, jusqu’à la démonstration.",
       projectsCta: "Voir mes projets",
       cvCta: "Télécharger mon CV",
       contactCta: "Me contacter",
@@ -67,30 +71,31 @@ const portfolioCopy = {
         { label: "Email", href: profileLinks.email },
       ],
       credentials: [
-        { value: "ESILV", label: "Formation ingénieur" },
-        { value: "Robotique", label: "Spécialisation en construction" },
-        { value: "Prototypage", label: "Mécanique, code, IA" },
+        { value: "ESILV", label: "Cycle ingénieur · 2023–2028" },
+        { value: "TOEFL C1", label: "Anglais · 653/677" },
+        { value: "BIA", label: "Mention Très Bien" },
       ],
     },
     proof: [
-      { value: "Prototypes", label: "mécatroniques" },
-      { value: "IA", label: "outils & automatisation" },
-      { value: "Embarqué", label: "capteurs, moteurs, ESP32" },
-      { value: "Approche", label: "multidisciplinaire" },
+      { value: "6+", label: "projets d’ingénierie menés" },
+      { value: "−52%", label: "de masse sur la structure Créalab v2" },
+      { value: "3 domaines", label: "mécanique · électronique · IA" },
+      { value: "100% local", label: "IA embarquée, sans cloud" },
     ],
     interface: {
-      eyebrow: "Laboratoire visuel",
-      title: "Un portfolio qui montre une direction, pas une prétention.",
+      eyebrow: "Système en direct",
+      title: "Une stack qui relie mécanique, électronique, logiciel et IA.",
       modules: ["Mécanique", "Électronique", "Logiciel", "IA locale"],
-      moduleLabel: "Exploration",
+      moduleLabel: "Couche",
       copy:
-        "La scène 3D garde l’ambiance futuriste du portfolio, tout en servant une idée simple : apprendre vite, prototyper concrètement et relier plusieurs disciplines d’ingénierie.",
+        "La scène 3D reflète ma façon de travailler : relier plusieurs disciplines d’ingénierie pour transformer une idée en système réel, réactif et démontrable.",
     },
     systemsHeader: {
       eyebrow: "Ce que je construis",
-      title: "Trois terrains d’exploration techniques.",
+      title: "Trois terrains où je fais fonctionner des",
+      titleAccent: "systèmes réels.",
       copy:
-        "Mes projets ne sont pas présentés comme des produits industriels finis. Ce sont des prototypes sérieux, utiles pour apprendre, tester et rendre une idée visible.",
+        "De la mécanique au logiciel embarqué, je conçois, prototype et démontre des systèmes complets — pensés pour être manipulés, pas seulement décrits.",
     },
     pillars: [
       {
@@ -130,9 +135,10 @@ const portfolioCopy = {
     },
     projectsHeader: {
       eyebrow: "Projets",
-      title: "Des projets d’apprentissage, de prototypage et d’ingénierie.",
+      title: "Des systèmes conçus, prototypés et menés",
+      titleAccent: "jusqu’au résultat.",
       copy:
-        "Chaque carte met en avant le rôle, les technologies et l’intérêt du projet, sans donner l’impression d’un produit déjà industrialisé.",
+        "Chaque projet expose le problème, mon rôle, la stack technique et le résultat concret obtenu — du prototype mécanique à l’IA embarquée.",
     },
     projectLabels: {
       role: "Mon rôle",
@@ -191,17 +197,8 @@ const portfolioCopy = {
           "Outil pensé pour accélérer la génération structurée de plans d’expériences.",
         role: "Structuration logique, génération et interface d’usage.",
         stack: ["Python", "Automatisation", "Données"],
+        image: "/projects/auto-doe-interface.webp",
         accent: "cyan",
-      },
-      {
-        slug: "globe-interactif-parcours",
-        title: "Globe interactif de parcours",
-        label: "Data visualisation",
-        description:
-          "Visualisation interactive du parcours académique et international dans le portfolio.",
-        role: "Intégration front-end, animation et optimisation mobile.",
-        stack: ["D3", "Canvas", "TypeScript"],
-        accent: "green",
       },
       {
         slug: "lampe-connectee-modelisee",
@@ -216,10 +213,11 @@ const portfolioCopy = {
       },
     ],
     learningHeader: {
-      eyebrow: "Apprentissages",
-      title: "Ce que mes projets m’ont appris",
+      eyebrow: "Ma méthode",
+      title: "Une manière de travailler qui se répète sur",
+      titleAccent: "chaque projet",
       copy:
-        "Ces projets montrent surtout une manière de progresser : comprendre, construire, tester, puis améliorer.",
+        "Un même réflexe d’ingénieur d’un projet à l’autre : comprendre le besoin, construire une première version, la tester en réel, puis l’améliorer.",
     },
     learnings: [
       { title: "Concevoir", copy: "Passer d’une idée à une architecture technique claire." },
@@ -266,9 +264,10 @@ const portfolioCopy = {
     ],
     skillsHeader: {
       eyebrow: "Compétences",
-      title: "Des outils que j’utilise ou que j’explore.",
+      title: "Les outils avec lesquels je conçois",
+      titleAccent: "et je livre.",
       copy:
-        "La grille est organisée par familles pour montrer les directions de progression sans surjouer une maîtrise totale.",
+        "Organisées par familles : de la conception mécanique au logiciel, jusqu’à la vision par ordinateur et l’IA embarquée.",
     },
     skills: [
       {
@@ -303,13 +302,19 @@ const portfolioCopy = {
     },
     contact: {
       eyebrow: "Contact",
-      title: "Construisons quelque chose ensemble.",
+      title: "Construisons quelque chose",
+      titleAccent: "ensemble.",
       copy:
         "Je suis ouvert aux stages, collaborations, projets techniques et opportunités liées à la robotique, au prototypage et aux systèmes intelligents.",
       email: "Me contacter",
       github: "GitHub",
       linkedin: "LinkedIn",
       cv: "Télécharger mon CV",
+    },
+    footer: {
+      note: "Conçu et développé par Gauthier Defoy",
+      rights: "© 2026 Gauthier Defoy",
+      backToTop: "Haut de page",
     },
   },
   en: {
@@ -327,10 +332,12 @@ const portfolioCopy = {
       linkedin: "Gauthier Defoy LinkedIn profile",
     },
     hero: {
-      badge: "Gauthier Defoy · ESILV engineering student",
-      title: "From idea to working prototype.",
+      name: "Gauthier Defoy",
+      badge: "Engineering student · ESILV — Robotics, AI & embedded systems",
+      title: "From idea to",
+      titleAccent: "working prototype.",
       copy:
-        "Engineering student at ESILV, passionate about robotics, embedded systems and artificial intelligence. I build projects combining mechanics, electronics and software to turn concepts into real systems.",
+        "Engineering student at ESILV, I build systems that blend mechanics, electronics, software and local AI. I turn ideas into real prototypes — from CAD design to embedded code, all the way to a working demo.",
       projectsCta: "View my projects",
       cvCta: "Download my resume",
       contactCta: "Contact me",
@@ -342,30 +349,31 @@ const portfolioCopy = {
         { label: "Email", href: profileLinks.email },
       ],
       credentials: [
-        { value: "ESILV", label: "Engineering program" },
-        { value: "Robotics", label: "Specialization in progress" },
-        { value: "Prototyping", label: "Mechanics, code, AI" },
+        { value: "ESILV", label: "Engineering · 2023–2028" },
+        { value: "TOEFL C1", label: "English · 653/677" },
+        { value: "BIA", label: "Highest honors" },
       ],
     },
     proof: [
-      { value: "Prototypes", label: "mechatronics" },
-      { value: "AI", label: "tools & automation" },
-      { value: "Embedded", label: "sensors, motors, ESP32" },
-      { value: "Approach", label: "multidisciplinary" },
+      { value: "6+", label: "engineering projects delivered" },
+      { value: "−52%", label: "mass cut on Créalab structure v2" },
+      { value: "3 domains", label: "mechanics · electronics · AI" },
+      { value: "100% local", label: "on-device AI, no cloud" },
     ],
     interface: {
-      eyebrow: "Visual Lab",
-      title: "A portfolio that shows direction, not overclaiming.",
+      eyebrow: "Live system",
+      title: "A stack that connects mechanics, electronics, software and AI.",
       modules: ["Mechanics", "Electronics", "Software", "Local AI"],
-      moduleLabel: "Exploration",
+      moduleLabel: "Layer",
       copy:
-        "The 3D scene keeps the futuristic feel of the portfolio while serving a simple idea: learn fast, prototype concretely, and connect several engineering disciplines.",
+        "The 3D scene mirrors how I work: connecting several engineering disciplines to turn an idea into a real system — responsive and ready to demo.",
     },
     systemsHeader: {
       eyebrow: "What I Build",
-      title: "Three technical exploration areas.",
+      title: "Three areas where I make real",
+      titleAccent: "systems work.",
       copy:
-        "The projects are not presented as finished industrial products. They are serious prototypes used to learn, test and make an idea visible.",
+        "From mechanics to embedded software, I design, prototype and demo complete systems — built to be handled, not just described.",
     },
     pillars: [
       {
@@ -402,9 +410,10 @@ const portfolioCopy = {
     },
     projectsHeader: {
       eyebrow: "Projects",
-      title: "Learning, prototyping and engineering projects.",
+      title: "Systems designed, prototyped and",
+      titleAccent: "taken to a result.",
       copy:
-        "Each card highlights the role, technologies and technical interest without presenting the project as an already industrialized product.",
+        "Each project lays out the problem, my role, the tech stack and the concrete result delivered — from mechanical prototype to embedded AI.",
     },
     projectLabels: {
       role: "My role",
@@ -463,17 +472,8 @@ const portfolioCopy = {
           "Tool designed to accelerate structured design-of-experiments generation.",
         role: "Logic structuring, generation and usage interface.",
         stack: ["Python", "Automation", "Data"],
+        image: "/projects/auto-doe-interface.webp",
         accent: "cyan",
-      },
-      {
-        slug: "globe-interactif-parcours",
-        title: "Interactive journey globe",
-        label: "Data visualization",
-        description:
-          "Interactive visualization of the academic and international journey inside the portfolio.",
-        role: "Front-end integration, animation and mobile optimization.",
-        stack: ["D3", "Canvas", "TypeScript"],
-        accent: "green",
       },
       {
         slug: "lampe-connectee-modelisee",
@@ -488,9 +488,10 @@ const portfolioCopy = {
       },
     ],
     learningHeader: {
-      eyebrow: "Learnings",
-      title: "What these projects taught me",
-      copy: "These projects mainly show a way to progress: understand, build, test and improve.",
+      eyebrow: "My method",
+      title: "A way of working that repeats across",
+      titleAccent: "every project",
+      copy: "The same engineering reflex from one project to the next: understand the need, build a first version, test it for real, then improve.",
     },
     learnings: [
       { title: "Design", copy: "Move from an idea to a clear technical architecture." },
@@ -537,9 +538,10 @@ const portfolioCopy = {
     ],
     skillsHeader: {
       eyebrow: "Skills",
-      title: "Tools I use or explore.",
+      title: "The tools I",
+      titleAccent: "design and ship with.",
       copy:
-        "The grid is organized by families to show progression directions without overplaying complete mastery.",
+        "Organized by families: from mechanical design to software, all the way to computer vision and embedded AI.",
     },
     skills: [
       {
@@ -574,7 +576,8 @@ const portfolioCopy = {
     },
     contact: {
       eyebrow: "Contact",
-      title: "Let’s build something together.",
+      title: "Let’s build something",
+      titleAccent: "together.",
       copy:
         "I am open to internships, collaborations, technical projects and opportunities related to robotics, prototyping and intelligent systems.",
       email: "Contact me",
@@ -582,14 +585,19 @@ const portfolioCopy = {
       linkedin: "LinkedIn",
       cv: "Download my resume",
     },
+    footer: {
+      note: "Designed and built by Gauthier Defoy",
+      rights: "© 2026 Gauthier Defoy",
+      backToTop: "Back to top",
+    },
   },
 };
 
 const proofIcons = [Wrench, BrainCircuit, CircuitBoard, Route];
 const pillarVisuals = [
-  { icon: Wrench, accent: "text-amber-200" },
-  { icon: Cpu, accent: "text-sky-200" },
-  { icon: BrainCircuit, accent: "text-emerald-200" },
+  { icon: Wrench, accent: "text-[#a7d9f5]" },
+  { icon: Cpu, accent: "text-[#a7d9f5]" },
+  { icon: BrainCircuit, accent: "text-[#a7d9f5]" },
 ];
 const learningVisuals = [
   { src: "/emoji/design.webp", alt: "Crayon et règle", color: "orange" as const },
@@ -600,9 +608,9 @@ const learningVisuals = [
 const skillIcons = [Wrench, CircuitBoard, Code2, Eye];
 
 const projectAccentClasses: Record<string, string> = {
-  green: "border-emerald-200/18 bg-emerald-200/[0.07] text-emerald-100",
-  cyan: "border-sky-200/18 bg-sky-200/[0.07] text-sky-100",
-  amber: "border-amber-200/18 bg-amber-200/[0.07] text-amber-100",
+  green: "border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.07] text-[#a7d9f5]",
+  cyan: "border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.07] text-[#a7d9f5]",
+  amber: "border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.07] text-[#a7d9f5]",
 };
 
 export function RefinedHome() {
@@ -620,12 +628,13 @@ export function RefinedHome() {
 
   return (
     <main id="top" className="relative overflow-x-clip">
+      <ScrollProgress />
       <section id="content" className="relative min-h-[100svh] overflow-hidden bg-black/[0.9] px-5 pb-14 pt-7 md:px-8 md:py-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_44%,rgba(56,189,248,0.16),transparent_31%),radial-gradient(circle_at_28%_24%,rgba(245,158,11,0.1),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.34),rgba(0,0,0,0.9))]" aria-hidden="true" />
 
         <div className="relative z-10 md:hidden">
           <div className="relative z-40 flex items-center justify-between border-b border-white/10 pb-7">
-            <a href="#top" className="focus-ring mono-detail text-2xl font-black uppercase tracking-[0] text-white">
+            <a href="#top" className="focus-ring mono-detail text-2xl font-bold uppercase tracking-[0.06em] text-white">
               GD
             </a>
             <div className="relative">
@@ -682,8 +691,9 @@ export function RefinedHome() {
             <p className="mono-detail text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-sky-100">
               {t.hero.badge}
             </p>
-            <h1 className="mt-3 text-balance text-[clamp(2.85rem,13vw,4.45rem)] font-black uppercase leading-[0.86] tracking-[0] text-white">
-              {t.hero.title}
+            <p className="mt-2 text-base font-semibold tracking-tight text-white">{t.hero.name}</p>
+            <h1 className="mt-2 text-balance text-[clamp(2.5rem,11vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-white">
+              {t.hero.title} <span className="serif-accent text-[#a7d9f5]">{t.hero.titleAccent}</span>
             </h1>
             <p className="mt-4 text-[0.9rem] leading-6 text-slate-300">{t.hero.copy}</p>
 
@@ -731,11 +741,20 @@ export function RefinedHome() {
 
         <div className="relative z-10 mx-auto hidden min-h-[calc(100svh-7rem)] w-full max-w-[96rem] items-center gap-10 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(28rem,1.08fr)] lg:gap-14">
           <Reveal className="max-w-3xl">
-            <p className="mono-detail text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-sky-200">
-              {t.hero.badge}
-            </p>
-            <h1 className="mt-5 text-balance text-[clamp(4.2rem,7.3vw,8.3rem)] font-black uppercase leading-[0.86] tracking-[0] text-white">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2">
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7cc8ef] opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7cc8ef]" />
+              </span>
+              <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-200">
+                {t.hero.badge}
+              </p>
+            </div>
+            <p className="mt-6 text-xl font-semibold tracking-tight text-white md:text-2xl">{t.hero.name}</p>
+            <h1 className="mt-3 text-balance text-[clamp(3.4rem,5.9vw,6.6rem)] font-semibold leading-[1.0] tracking-[-0.035em] text-white">
               {t.hero.title}
+              <br />
+              <span className="serif-accent text-[#a7d9f5]">{t.hero.titleAccent}</span>
             </h1>
             <p className="mt-7 max-w-2xl text-base leading-7 text-slate-300 md:text-lg md:leading-8">{t.hero.copy}</p>
 
@@ -802,10 +821,12 @@ export function RefinedHome() {
 
             return (
               <Reveal key={item.value} delay={index * 0.04}>
-                <div className="h-full rounded-lg border border-white/10 bg-white/[0.035] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.18)]">
-                  <Icon className="h-5 w-5 text-sky-200" />
-                  <p className="mt-6 text-2xl font-semibold text-white">{item.value}</p>
-                  <p className="mt-1 text-sm text-slate-400">{item.label}</p>
+                <div className="group h-full rounded-lg border border-white/10 bg-white/[0.03] p-5 shadow-[0_24px_80px_rgba(2,8,20,0.3)] transition-colors duration-200 hover:border-[#7cc8ef]/25 hover:bg-white/[0.05]">
+                  <Icon className="h-5 w-5 text-[#7cc8ef] transition-transform duration-300 group-hover:scale-110" />
+                  <p className="mono-detail mt-6 text-3xl font-semibold leading-none tracking-tight text-white md:text-4xl">
+                    {item.value}
+                  </p>
+                  <p className="mt-2 text-sm leading-5 text-slate-400">{item.label}</p>
                 </div>
               </Reveal>
             );
@@ -818,7 +839,7 @@ export function RefinedHome() {
       <section id="systems" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <SectionHeader eyebrow={t.systemsHeader.eyebrow} title={t.systemsHeader.title} copy={t.systemsHeader.copy} />
+            <SectionHeader eyebrow={t.systemsHeader.eyebrow} title={t.systemsHeader.title} titleAccent={t.systemsHeader.titleAccent} copy={t.systemsHeader.copy} />
           </Reveal>
           <div className="grid gap-4 lg:grid-cols-3">
             {t.pillars.map((pillar, index) => {
@@ -868,11 +889,18 @@ export function RefinedHome() {
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
               {t.featuredProject.technologies.map((item) => (
-                <span key={item} className="rounded-full border border-sky-200/16 bg-sky-200/[0.07] px-3 py-1.5 text-sm text-sky-100">
+                <span key={item} className="rounded-full border border-[#7cc8ef]/16 bg-[#7cc8ef]/[0.07] px-3 py-1.5 text-sm text-[#a7d9f5]">
                   {item}
                 </span>
               ))}
             </div>
+            <a
+              href={assetPath("/projects/systeme-motorise-projection")}
+              className="focus-ring mt-8 inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-white/[0.18] bg-white/[0.04] px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-[#7cc8ef]/40 hover:bg-white/[0.08]"
+            >
+              {t.projectLabels.cta}
+              <MoveRight className="h-4 w-4" />
+            </a>
           </Reveal>
         </div>
       </section>
@@ -880,18 +908,21 @@ export function RefinedHome() {
       <section id="projects" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <SectionHeader eyebrow={t.projectsHeader.eyebrow} title={t.projectsHeader.title} copy={t.projectsHeader.copy} />
+            <SectionHeader eyebrow={t.projectsHeader.eyebrow} title={t.projectsHeader.title} titleAccent={t.projectsHeader.titleAccent} copy={t.projectsHeader.copy} />
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {t.projects.map((project, index) => (
               <Reveal key={project.title} delay={index * 0.04}>
-                <article className="flex h-full min-h-[28rem] flex-col overflow-hidden rounded-lg border border-white/10 bg-[#07080d]/78 shadow-[0_30px_90px_rgba(0,0,0,0.22)] transition-colors duration-200 hover:border-white/[0.22] hover:bg-white/[0.055]">
-                  <div className="relative h-40 border-b border-white/10 bg-[#071016]">
+                <a
+                  href={assetPath(`/projects/${project.slug}`)}
+                  className="focus-ring group flex h-full min-h-[28rem] cursor-pointer flex-col overflow-hidden rounded-lg border border-white/10 bg-[#07090e]/80 shadow-[0_30px_90px_rgba(2,8,20,0.32)] transition-[border-color,transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-[#7cc8ef]/30 hover:shadow-[0_36px_110px_rgba(2,8,20,0.45)] motion-reduce:transform-none"
+                >
+                  <div className="relative h-48 overflow-hidden border-b border-white/10 bg-[#080d14]">
                     {project.image ? (
                       <img
                         src={assetPath(project.image)}
                         alt={project.title}
-                        className="h-full w-full object-cover object-center"
+                        className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transform-none"
                         loading="lazy"
                         decoding="async"
                       />
@@ -902,36 +933,36 @@ export function RefinedHome() {
                         </div>
                       </div>
                     )}
-                    <div className="absolute left-4 top-4 rounded-full border border-white/14 bg-black/45 px-3 py-1.5 text-xs font-semibold text-slate-100 backdrop-blur">
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#07090e]/70 via-transparent to-transparent" aria-hidden="true" />
+                    <div className="absolute left-4 top-4 rounded-full border border-white/14 bg-black/50 px-3 py-1.5 text-xs font-semibold text-slate-100 backdrop-blur">
                       {project.label}
                     </div>
+                    <span className="mono-detail absolute right-4 top-4 rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-[0.65rem] font-semibold text-slate-300 backdrop-blur">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <h3 className="text-2xl font-semibold leading-tight text-white">{project.title}</h3>
+                    <h3 className="text-2xl font-semibold leading-tight tracking-[-0.01em] text-white">{project.title}</h3>
                     <p className="mt-3 text-sm leading-6 text-slate-300">{project.description}</p>
-                    <div className="mt-5">
+                    <div className="mt-5 border-t border-white/[0.07] pt-4">
                       <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">{t.projectLabels.role}</p>
                       <p className="mt-2 text-sm leading-6 text-slate-200">{project.role}</p>
                     </div>
-                    <div className="mt-5">
-                      <p className="mono-detail text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">{t.projectLabels.tech}</p>
-                      <div className="mt-2 flex flex-wrap gap-2">
+                    <div className="mt-4">
+                      <div className="flex flex-wrap gap-2">
                         {project.stack.map((item) => (
-                          <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
+                          <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
                             {item}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <a
-                      href={assetPath(`/projects/${project.slug}`)}
-                      className="focus-ring mt-auto inline-flex w-fit cursor-pointer items-center gap-2 pt-6 text-sm font-semibold text-sky-100 transition-colors duration-200 hover:text-white"
-                    >
+                    <span className="mt-auto inline-flex w-fit items-center gap-2 pt-6 text-sm font-semibold text-[#a7d9f5] transition-colors duration-200 group-hover:text-white">
                       {t.projectLabels.cta}
-                      <MoveRight className="h-4 w-4" />
-                    </a>
+                      <MoveRight className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 motion-reduce:transform-none" />
+                    </span>
                   </div>
-                </article>
+                </a>
               </Reveal>
             ))}
           </div>
@@ -941,7 +972,7 @@ export function RefinedHome() {
       <section className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <SectionHeader eyebrow={t.learningHeader.eyebrow} title={t.learningHeader.title} copy={t.learningHeader.copy} />
+            <SectionHeader eyebrow={t.learningHeader.eyebrow} title={t.learningHeader.title} titleAccent={t.learningHeader.titleAccent} copy={t.learningHeader.copy} />
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {t.learnings.map((item, index) => {
@@ -968,7 +999,7 @@ export function RefinedHome() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.75fr_1.25fr]">
           <Reveal>
             <div>
-              <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">{t.method.eyebrow}</p>
+              <p className="mono-detail mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">{t.method.eyebrow}</p>
               <h2 className="text-balance text-4xl font-semibold leading-[0.98] text-white md:text-6xl">{t.method.title}</h2>
               <p className="mt-5 text-lg leading-8 text-slate-300">{t.method.copy}</p>
             </div>
@@ -976,8 +1007,8 @@ export function RefinedHome() {
           <div className="grid gap-3">
             {t.method.items.map((item, index) => (
               <Reveal key={item} delay={index * 0.04}>
-                <div className="grid gap-4 rounded-lg border border-white/10 bg-[#080a10]/72 p-5 transition-colors duration-200 hover:border-emerald-200/25 hover:bg-white/[0.055] sm:grid-cols-[4rem_1fr] sm:items-center">
-                  <div className="mono-detail flex h-12 w-12 items-center justify-center rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] text-sm font-semibold text-emerald-100">
+                <div className="grid gap-4 rounded-lg border border-white/10 bg-[#080a10]/72 p-5 transition-colors duration-200 hover:border-[#7cc8ef]/30 hover:bg-white/[0.055] sm:grid-cols-[4rem_1fr] sm:items-center">
+                  <div className="mono-detail flex h-12 w-12 items-center justify-center rounded-md border border-[#7cc8ef]/20 bg-[#7cc8ef]/[0.08] text-sm font-semibold text-[#a7d9f5]">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                   <p className="text-xl font-semibold text-white">{item}</p>
@@ -1019,7 +1050,7 @@ export function RefinedHome() {
                         />
                       </div>
                     ) : (
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-emerald-200/18 bg-emerald-200/[0.08] text-emerald-100">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/[0.05] text-[#a7d9f5]">
                         <Sparkles className="h-5 w-5" />
                       </div>
                     )}
@@ -1036,7 +1067,7 @@ export function RefinedHome() {
       <section id="education" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <SectionHeader eyebrow={t.skillsHeader.eyebrow} title={t.skillsHeader.title} copy={t.skillsHeader.copy} />
+            <SectionHeader eyebrow={t.skillsHeader.eyebrow} title={t.skillsHeader.title} titleAccent={t.skillsHeader.titleAccent} copy={t.skillsHeader.copy} />
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2">
             {t.skills.map((group, index) => {
@@ -1044,10 +1075,10 @@ export function RefinedHome() {
 
               return (
                 <Reveal key={group.title} delay={index * 0.05}>
-                  <article className="h-full rounded-lg border border-white/10 bg-[#080a10]/72 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] transition-colors duration-200 hover:border-emerald-200/35 hover:bg-white/[0.055]">
+                  <article className="h-full rounded-lg border border-white/10 bg-[#080a10]/72 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.18)] transition-colors duration-200 hover:border-[#7cc8ef]/35 hover:bg-white/[0.055]">
                     <div className="mb-7 flex items-center gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-md border border-white/10 bg-white/5">
-                        <Icon className="h-5 w-5 text-emerald-200" />
+                        <Icon className="h-5 w-5 text-[#7cc8ef]" />
                       </div>
                       <h3 className="text-2xl font-semibold text-white">{group.title}</h3>
                     </div>
@@ -1070,13 +1101,13 @@ export function RefinedHome() {
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <Reveal>
             <div className="h-full rounded-lg border border-white/10 bg-[#07080d]/82 p-8 shadow-[0_40px_120px_rgba(0,0,0,0.26)] md:p-10">
-              <Sparkles className="h-7 w-7 text-emerald-200" />
-              <p className="mono-detail mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200/80">{t.current.eyebrow}</p>
+              <Sparkles className="h-7 w-7 text-[#7cc8ef]" />
+              <p className="mono-detail mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">{t.current.eyebrow}</p>
               <h2 className="mt-4 text-balance text-4xl font-semibold leading-[0.98] text-white md:text-5xl">{t.current.title}</h2>
               <p className="mt-6 text-lg leading-8 text-slate-300">{t.current.copy}</p>
               <div className="mt-7 flex flex-wrap gap-2">
                 {t.current.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-emerald-200/16 bg-emerald-200/[0.07] px-3 py-1.5 text-sm text-emerald-100">
+                  <span key={tag} className="rounded-full border border-[#7cc8ef]/18 bg-[#7cc8ef]/[0.07] px-3 py-1.5 text-sm text-[#a7d9f5]">
                     {tag}
                   </span>
                 ))}
@@ -1098,20 +1129,22 @@ export function RefinedHome() {
           <Reveal>
             <div>
               <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{t.contact.eyebrow}</p>
-              <h2 className="text-balance text-4xl font-semibold leading-[0.98] text-white md:text-6xl">{t.contact.title}</h2>
+              <h2 className="text-balance text-4xl font-semibold leading-[0.98] text-white md:text-6xl">
+                {t.contact.title} <span className="serif-accent text-[#a7d9f5]">{t.contact.titleAccent}</span>
+              </h2>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{t.contact.copy}</p>
             </div>
           </Reveal>
           <div className="w-full rounded-2xl border border-white/[0.12] bg-white/[0.035] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.28)] backdrop-blur md:p-5 lg:justify-self-end">
             <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+              <span className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-[#7cc8ef]/80">
                 {t.contact.eyebrow}
               </span>
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.75)]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#7cc8ef] shadow-[0_0_18px_rgba(124,200,239,0.75)]" />
             </div>
             <div className="grid gap-3">
               <a
-                className="focus-ring inline-flex min-h-12 cursor-pointer items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-emerald-200"
+                className="focus-ring inline-flex min-h-12 cursor-pointer items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
                 href={profileLinks.email}
               >
                 {t.contact.email}
@@ -1145,6 +1178,15 @@ export function RefinedHome() {
           </div>
         </div>
       </section>
+
+      <AsciiHandsFinale
+        firstName="Gauthier"
+        lastName="Defoy."
+        quickLinks={t.hero.quickLinks}
+        rights={t.footer.rights}
+        note={t.footer.note}
+        backToTop={t.footer.backToTop}
+      />
     </main>
   );
 }

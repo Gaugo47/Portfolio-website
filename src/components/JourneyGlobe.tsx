@@ -30,7 +30,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
       journeys.map((journey, index) => ({
         from: journey.from,
         to: journey.to,
-        color: index % 2 === 0 ? "#7dd3fc" : "#8ee6a8",
+        color: index % 2 === 0 ? "#7cc8ef" : "#c4e4f6",
       })),
     [journeys],
   );
@@ -90,8 +90,8 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
 
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 grid max-w-7xl gap-5 border-t border-white/10 pt-7 md:mb-16 md:grid-cols-[0.32fr_0.68fr] md:gap-10 md:pt-9">
-          <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
-            <span className="h-px w-10 bg-emerald-200/45" aria-hidden="true" />
+          <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
+            <span className="h-px w-10 bg-[#7cc8ef]/40" aria-hidden="true" />
             {header.eyebrow}
           </p>
 
@@ -133,7 +133,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                 {activeJourney ? (
                   <div className="mono-detail absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between rounded-md border border-white/10 bg-black/48 px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-300 backdrop-blur-md">
                     <span>{labels.route}</span>
-                    <span className="text-emerald-200">
+                    <span className="text-[#a7d9f5]">
                       {activeJourney.from.city} - {activeJourney.to.city}
                     </span>
                   </div>
@@ -164,7 +164,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                     <span
                       className={`absolute left-2 top-1/2 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border md:block ${
                         isActive
-                          ? "border-emerald-200 bg-emerald-300 shadow-[0_0_22px_rgba(142,230,168,0.65)]"
+                          ? "border-[#a7d9f5] bg-[#7cc8ef] shadow-[0_0_22px_rgba(124,200,239,0.65)]"
                           : "border-white/20 bg-slate-950"
                       }`}
                       aria-hidden="true"
@@ -173,7 +173,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                     <article
                       className={`relative rounded-lg border p-5 transition-colors duration-300 md:col-start-2 ${
                         isActive
-                          ? "border-emerald-200/35 bg-emerald-200/[0.08] shadow-2xl shadow-emerald-950/20"
+                          ? "border-[#7cc8ef]/35 bg-[#7cc8ef]/[0.08] shadow-2xl shadow-sky-950/20"
                           : "border-white/10 bg-white/[0.035]"
                       }`}
                     >
@@ -192,7 +192,7 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
 
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center justify-between gap-3">
-                            <p className="mono-detail text-sm font-semibold text-emerald-200">{journey.year}</p>
+                            <p className="mono-detail text-sm font-semibold text-[#a7d9f5]">{journey.year}</p>
 
                             <p className="mono-detail rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                               {journey.from.city} - {journey.to.city}
@@ -202,6 +202,21 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                           <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">{journey.title[language]}</h3>
 
                           <p className="mt-3 leading-7 text-slate-300">{journey.description[language]}</p>
+                          {journey.courses ? (
+                            <div className="mt-5 border-t border-white/10 pt-4">
+                              <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#a7d9f5]">
+                                {journey.courses.intro[language]}
+                              </p>
+                              <ul className="mt-3 grid gap-2 text-sm leading-5 text-slate-300 sm:grid-cols-2">
+                                {journey.courses.items.map((course) => (
+                                  <li key={course} className="flex gap-2">
+                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#7cc8ef]/80" />
+                                    <span>{course}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </article>

@@ -109,23 +109,23 @@ export function SitePreloader() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] grid place-items-center bg-[#020617] text-white">
+    <div className="fixed inset-0 z-[999] grid place-items-center bg-[#05070c] text-white">
       <div className="w-[min(34rem,82vw)]">
         <div className="mb-5 flex items-end justify-between gap-6">
           <div>
-            <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-emerald-200/80">
+            <p className="mono-detail text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
               Chargement des assets
             </p>
             <p className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Préparation du portfolio
+              Préparation du <span className="serif-accent text-[#a7d9f5]">portfolio</span>
             </p>
           </div>
-          <p className="mono-detail text-sm font-semibold text-sky-200">{progress}%</p>
+          <p className="mono-detail text-sm font-semibold text-[#a7d9f5]">{progress}%</p>
         </div>
 
         <div className="h-px w-full overflow-hidden rounded-full bg-white/10">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-emerald-200 via-sky-300 to-blue-500 shadow-[0_0_24px_rgba(125,211,252,0.65)] transition-[width] duration-300 ease-out"
+            className="h-full rounded-full bg-[#7cc8ef] shadow-[0_0_24px_rgba(124,200,239,0.6)] transition-[width] duration-300 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>

@@ -24,27 +24,27 @@ const colorVariants: Record<
   }
 > = {
   orange: {
-    surface: "from-[#2a281f] via-[#1d1c18] to-[#11110f]",
-    glow: "bg-amber-300/14",
-    tag: "text-amber-500",
+    surface: "from-[#1c2229] via-[#141a20] to-[#0c1015]",
+    glow: "bg-[#7cc8ef]/12",
+    tag: "text-[#1d6c99]",
     image: "h-32 w-32",
   },
   purple: {
-    surface: "from-[#25222e] via-[#1a1922] to-[#101015]",
-    glow: "bg-violet-300/14",
-    tag: "text-violet-500",
+    surface: "from-[#1c2229] via-[#141a20] to-[#0c1015]",
+    glow: "bg-[#7cc8ef]/12",
+    tag: "text-[#1d6c99]",
     image: "h-36 w-36",
   },
   blue: {
-    surface: "from-[#20262c] via-[#171d22] to-[#0f1216]",
-    glow: "bg-sky-300/14",
-    tag: "text-sky-500",
+    surface: "from-[#1c2229] via-[#141a20] to-[#0c1015]",
+    glow: "bg-[#7cc8ef]/12",
+    tag: "text-[#1d6c99]",
     image: "h-44 w-44",
   },
   emerald: {
-    surface: "from-[#1f2a27] via-[#171f1d] to-[#0f1412]",
-    glow: "bg-emerald-300/14",
-    tag: "text-emerald-500",
+    surface: "from-[#1c2229] via-[#141a20] to-[#0c1015]",
+    glow: "bg-[#7cc8ef]/12",
+    tag: "text-[#1d6c99]",
     image: "h-32 w-32",
   },
 };
@@ -72,7 +72,7 @@ const AnimatedFeatureCard = React.forwardRef<HTMLDivElement, AnimatedFeatureCard
         />
 
         <div className="relative z-10 flex w-full flex-col">
-          <p className="mono-detail text-sm font-black text-slate-300">{index}</p>
+          <p className="mono-detail text-sm font-semibold tracking-[0.1em] text-slate-400">{index}</p>
 
           <div className="flex min-h-40 flex-1 items-center justify-center pt-5">
             <img
@@ -88,7 +88,7 @@ const AnimatedFeatureCard = React.forwardRef<HTMLDivElement, AnimatedFeatureCard
           </div>
 
           <div className="rounded-lg border border-white/10 bg-black/72 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.32)] backdrop-blur-sm">
-            <span className={cn("inline-flex rounded-full bg-white px-3 py-1 text-[0.68rem] font-black uppercase leading-none", variant.tag)}>
+            <span className={cn("mono-detail inline-flex rounded-full bg-white px-3 py-1 text-[0.68rem] font-semibold uppercase leading-none tracking-[0.14em]", variant.tag)}>
               {tag}
             </span>
             <p className="mt-3 text-[0.98rem] font-semibold leading-6 text-white">{title}</p>
