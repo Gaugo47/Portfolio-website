@@ -125,7 +125,7 @@ export function MacbookScrollShowcase({ src, alt, title, eyebrow }: MacbookScrol
   return (
     <div
       ref={sectionRef}
-      className="relative z-0 flex min-h-[108vh] shrink-0 origin-top flex-col items-center justify-start overflow-visible pt-14 pb-24 [perspective:800px] sm:min-h-[120vh] md:min-h-[135vh] md:pt-14 md:pb-28 lg:min-h-[125vh] lg:pt-10"
+      className="macbook-scroll-showcase relative z-0 flex min-h-[108vh] shrink-0 origin-top flex-col items-center justify-start overflow-visible pt-14 pb-24 [perspective:800px] sm:min-h-[120vh] md:min-h-[135vh] md:pt-14 md:pb-28 lg:min-h-[125vh] lg:pt-10"
       style={{ transform: "scale(min(calc((100vw - 3.25rem) / 32rem), 1))" }}
     >
       <div ref={textRef} className="mb-14 text-center will-change-transform md:mb-16">

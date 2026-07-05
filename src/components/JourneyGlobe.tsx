@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Language } from "@/components/NavBar";
+import { Globe as CobeGlobe } from "@/components/ui/cobe-globe";
 import RotatingEarth, { type GlobeRoute } from "@/components/ui/wireframe-dotted-globe";
 import type { Journey } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
@@ -20,9 +21,19 @@ type JourneyGlobeProps = {
   };
 };
 
+function pointId(city: string, lat: number, lng: number) {
+  return `${city}-${lat}-${lng}`
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlobeProps) {
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLightTheme, setIsLightTheme] = useState(false);
   const activeJourney = journeys[activeIndex] ?? journeys[0];
 
   const routes = useMemo<GlobeRoute[]>(
@@ -34,6 +45,49 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
       })),
     [journeys],
   );
+
+  const cobeMarkers = useMemo(() => {
+    const markerMap = new Map<string, { id: string; location: [number, number]; label: string }>();
+
+    journeys.forEach((journey) => {
+      const points = [journey.from, journey.to];
+      points.forEach((point) => {
+        const id = pointId(point.city, point.lat, point.lng);
+        if (!markerMap.has(id)) {
+          markerMap.set(id, {
+            id,
+            location: [point.lat, point.lng],
+            label: point.city,
+          });
+        }
+      });
+    });
+
+    return Array.from(markerMap.values());
+  }, [journeys]);
+
+  const cobeArcs = useMemo(
+    () =>
+      journeys.map((journey, index) => ({
+        id: `journey-${index}`,
+        from: [journey.from.lat, journey.from.lng] as [number, number],
+        to: [journey.to.lat, journey.to.lng] as [number, number],
+        label: `${journey.from.city} - ${journey.to.city}`,
+      })),
+    [journeys],
+  );
+
+  useEffect(() => {
+    const syncTheme = () => {
+      setIsLightTheme(document.documentElement.classList.contains("light"));
+    };
+
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (journeys.length === 0) return;
@@ -118,16 +172,35 @@ export function JourneyGlobe({ language, journeys, header, labels }: JourneyGlob
                   role="img"
                   aria-label={`${activeJourney?.from.city ?? ""} to ${activeJourney?.to.city ?? ""}`}
                 >
-                  <RotatingEarth
-                    width={820}
-                    height={620}
-                    routes={routes}
-                    activeRouteIndex={activeIndex}
-                    interactionLabel={
-                      language === "fr" ? "Faire glisser pour tourner" : "Drag to rotate"
-                    }
-                    className="mx-auto"
-                  />
+                  {isLightTheme ? (
+                    <div className="mx-auto flex min-h-[24rem] w-full max-w-[34rem] items-center justify-center md:min-h-[34rem]">
+                      <CobeGlobe
+                        markers={cobeMarkers}
+                        arcs={cobeArcs}
+                        markerColor={[0.22, 0.38, 0.78]}
+                        baseColor={[1, 1, 1]}
+                        arcColor={[0.08, 0.24, 0.68]}
+                        glowColor={[0.94, 0.93, 0.91]}
+                        dark={0}
+                        mapBrightness={10}
+                        markerSize={0.026}
+                        markerElevation={0.012}
+                        arcWidth={0.82}
+                        arcHeight={0.28}
+                        theta={0.2}
+                        className="w-full"
+                      />
+                    </div>
+                  ) : (
+                    <RotatingEarth
+                      width={820}
+                      height={620}
+                      routes={routes}
+                      activeRouteIndex={activeIndex}
+                      interactionLabel={language === "fr" ? "Faire glisser pour tourner" : "Drag to rotate"}
+                      className="mx-auto"
+                    />
+                  )}
                 </div>
 
                 {activeJourney ? (

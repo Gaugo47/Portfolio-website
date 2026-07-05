@@ -23,7 +23,12 @@ const HAND_RIGHT_SRC = "/footer/hand-robot.png";
 const HAND_LEFT_FALLBACK = "\u{1FAF1}"; // 🫱 main tendue vers la droite
 const HAND_RIGHT_FALLBACK = "\u{1FAF2}"; // 🫲 main tendue vers la gauche
 const DESKTOP_COLS = 92;
-const MOBILE_COLS = 76;
+const MOBILE_COLS = 46;
+// Ratio largeur/hauteur d'une cellule de caractère (dépend du letter-spacing CSS) :
+// desktop 0.6em + 0.5em d'espacement = 1.1em large pour 1.1em haut -> carré ;
+// mobile 0.6em + 0.1em = 0.7em large pour 0.96em haut -> cellules plus hautes que larges.
+const DESKTOP_CHAR_ASPECT = 1;
+const MOBILE_CHAR_ASPECT = 0.73;
 
 type AsciiResult = { text: string; poolGrid: number[][] };
 
@@ -38,7 +43,8 @@ function isEmptyPixel(r: number, g: number, b: number, a: number) {
 
 // Convertit un canvas source (image rasterisée) en grille ASCII :
 // détecte la boîte englobante du sujet, la recadre, puis mappe l'obscurité -> densité.
-function rasterToAscii(srcCanvas: HTMLCanvasElement, cols: number): AsciiResult | null {
+// charAspect corrige la déformation due aux cellules de caractères non carrées.
+function rasterToAscii(srcCanvas: HTMLCanvasElement, cols: number, charAspect: number): AsciiResult | null {
   const sw = srcCanvas.width;
   const sh = srcCanvas.height;
   const sctx = srcCanvas.getContext("2d", { willReadFrequently: true });
@@ -64,7 +70,7 @@ function rasterToAscii(srcCanvas: HTMLCanvasElement, cols: number): AsciiResult 
 
   const boxW = maxX - minX + 1;
   const boxH = maxY - minY + 1;
-  const rows = Math.max(8, Math.round(cols * (boxH / boxW)));
+  const rows = Math.max(8, Math.round(cols * (boxH / boxW) * charAspect));
   const small = document.createElement("canvas");
   small.width = cols;
   small.height = rows;
@@ -109,7 +115,7 @@ function rasterToAscii(srcCanvas: HTMLCanvasElement, cols: number): AsciiResult 
 }
 
 // Rasterise une image chargée (avec miroir optionnel) puis la convertit en ASCII
-function imageToAscii(img: HTMLImageElement, cols: number, mirror: boolean): AsciiResult | null {
+function imageToAscii(img: HTMLImageElement, cols: number, mirror: boolean, charAspect: number): AsciiResult | null {
   const maxDim = 620;
   const scale = Math.min(maxDim / img.width, maxDim / img.height, 1) || 1;
   const w = Math.max(1, Math.round(img.width * scale));
@@ -126,11 +132,11 @@ function imageToAscii(img: HTMLImageElement, cols: number, mirror: boolean): Asc
   }
   ctx.drawImage(img, 0, 0, w, h);
   ctx.restore();
-  return rasterToAscii(c, cols);
+  return rasterToAscii(c, cols, charAspect);
 }
 
 // Fallback : rasterise un emoji puis le convertit (rejette le tofu monochrome)
-function emojiToAscii(emoji: string, cols: number, mirror: boolean): AsciiResult | null {
+function emojiToAscii(emoji: string, cols: number, mirror: boolean, charAspect: number): AsciiResult | null {
   const size = 480;
   const c = document.createElement("canvas");
   c.width = size;
@@ -158,7 +164,7 @@ function emojiToAscii(emoji: string, cols: number, mirror: boolean): AsciiResult
     }
   }
   if (opaque === 0 || colorful / opaque < 0.06) return null;
-  return rasterToAscii(c, cols);
+  return rasterToAscii(c, cols, charAspect);
 }
 
 // Effet "décodage" au survol de l'ASCII : les cellules proches du curseur
@@ -215,7 +221,7 @@ function attachScramble(preEl: HTMLPreElement, poolGrid: number[][], disposers: 
           anyActive = true;
           const pool = POOLS[POOLS.length - 1 - poolIndex];
           const ch = pool[Math.floor(Math.random() * pool.length)];
-          html += `<span style="color:#05070c;background:#7cc8ef">${esc(ch)}</span>`;
+          html += `<span style="color:var(--background);background:var(--ascii)">${esc(ch)}</span>`;
         } else {
           html += esc(origGrid?.[y]?.[x] ?? " ");
         }
@@ -271,27 +277,31 @@ function attachScramble(preEl: HTMLPreElement, poolGrid: number[][], disposers: 
   });
 }
 
-// Lien avec roulement de caractères au survol (deux copies empilées, décalage par lettre)
-function RollLink({ href, label, accent }: { href: string; label: string; accent?: boolean }) {
+// Lien avec roulement de caractères au survol — mêmes réglages que le footer
+// de lukebaffait.fr : 0.6s cubic-bezier(0.87,0,0.13,1), délai 28ms par lettre.
+function RollLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className="focus-ring group relative inline-flex cursor-pointer overflow-hidden text-xs font-semibold text-slate-400">
+    <a
+      href={href}
+      className="focus-ring group relative inline-flex cursor-pointer overflow-hidden text-sm font-semibold uppercase leading-[1.2] text-white/80 md:text-[1.05rem]"
+    >
       <span className="sr-only">{label}</span>
+      {/* Les espaces sont des U+00A0 (insécables) : un espace normal seul dans un
+          inline-block s'effondre à largeur nulle et colle les mots entre eux. */}
       <span aria-hidden="true" className="flex">
         {Array.from(label).map((ch, i) => (
           <span key={i} className="relative inline-block overflow-hidden">
             <span
-              className="block transition-transform duration-300 ease-out group-hover:-translate-y-full motion-reduce:transform-none"
-              style={{ transitionDelay: `${i * 16}ms` }}
+              className="block transition-transform duration-[600ms] ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:-translate-y-full motion-reduce:transform-none"
+              style={{ transitionDelay: `${i * 28}ms` }}
             >
-              {ch === " " ? " " : ch}
+              {ch === " " ? " " : ch}
             </span>
             <span
-              className={`absolute left-0 top-full block transition-transform duration-300 ease-out group-hover:-translate-y-full motion-reduce:hidden ${
-                accent ? "text-[#a7d9f5]" : "text-white"
-              }`}
-              style={{ transitionDelay: `${i * 16}ms` }}
+              className="absolute left-0 top-full block transition-transform duration-[600ms] ease-[cubic-bezier(0.87,0,0.13,1)] group-hover:-translate-y-full motion-reduce:hidden"
+              style={{ transitionDelay: `${i * 28}ms` }}
             >
-              {ch === " " ? " " : ch}
+              {ch === " " ? " " : ch}
             </span>
           </span>
         ))}
@@ -303,10 +313,10 @@ function RollLink({ href, label, accent }: { href: string; label: string; accent
 const preStyle: React.CSSProperties = {
   fontFamily: 'var(--font-mono), "SFMono-Regular", Consolas, monospace',
   fontWeight: 500,
-  color: "#7cc8ef",
+  color: "var(--ascii)",
   opacity: 0.78,
   whiteSpace: "pre",
-  textShadow: "0 0 24px rgba(124, 200, 239, 0.18)",
+  textShadow: "var(--ascii-glow)",
 };
 
 export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note, backToTop }: AsciiHandsFinaleProps) {
@@ -334,13 +344,18 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
       preEl.textContent = result.text;
       if (!reduceMotion) attachScramble(preEl, result.poolGrid, disposers);
     };
-    const getCols = () => (window.innerWidth < 768 ? MOBILE_COLS : DESKTOP_COLS);
+    // Aligné sur le breakpoint sm (640px) de .ascii-hand-pre dans globals.css
+    const getGrid = () =>
+      window.innerWidth < 640
+        ? { cols: MOBILE_COLS, aspect: MOBILE_CHAR_ASPECT }
+        : { cols: DESKTOP_COLS, aspect: DESKTOP_CHAR_ASPECT };
 
     // Charge l'image de main ; bascule sur l'emoji si le fichier est absent
     const loadHand = (preEl: HTMLPreElement, src: string, fallbackEmoji: string, fallbackMirror: boolean) => {
       const img = new Image();
-      img.onload = () => render(preEl, imageToAscii(img, getCols(), false));
-      img.onerror = () => render(preEl, emojiToAscii(fallbackEmoji, getCols(), fallbackMirror));
+      const { cols, aspect } = getGrid();
+      img.onload = () => render(preEl, imageToAscii(img, cols, false, aspect));
+      img.onerror = () => render(preEl, emojiToAscii(fallbackEmoji, cols, fallbackMirror, aspect));
       img.src = assetPath(src);
     };
     loadHand(leftPre, HAND_LEFT_SRC, HAND_LEFT_FALLBACK, false);
@@ -356,6 +371,8 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
     }
 
     if (reduceMotion) {
+      // Pas d'animation : on supprime la piste de scroll dédiée à l'épinglage
+      section.style.height = "auto";
       return () => {
         disposers.forEach((dispose) => dispose());
       };
@@ -364,8 +381,18 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
     leftWrap.style.transform = "translateX(-100%)";
     rightWrap.style.transform = "translateX(100%)";
     ordered.forEach((el) => {
-      el.style.transform = "translateY(115%)";
+      el.style.transform = "translateY(110%)";
     });
+
+    // Timing du nom identique au footer de lukebaffait.fr : timeline GSAP scrubée
+    // (stagger each 0.04, tween 0.5s, ease power3.out) transposée en fractions de progression.
+    // La finale est épinglée (sticky) : l'approche occupe ~0..0.59 de la progression,
+    // puis ~0.59..1 se déroule à l'écran pendant la piste de scroll dédiée.
+    const NAME_START = 0.6;
+    const NAME_SPAN = 0.38;
+    const STAGGER_EACH = 0.04;
+    const TWEEN_DURATION = 0.5;
+    const timelineTotal = (ordered.length - 1) * STAGGER_EACH + TWEEN_DURATION;
 
     // Scrub au scroll : mains qui glissent depuis les bords + lettres qui montent
     let frame = 0;
@@ -373,15 +400,16 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
       frame = 0;
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      const den = Math.min(rect.height, vh * 0.9);
-      const progress = clamp01((vh - rect.top) / den);
-      const slide = clamp01(progress / 0.62);
+      const progress = clamp01((vh - rect.top) / rect.height);
+      const slide = clamp01(progress / 0.55);
       leftWrap.style.transform = `translateX(${(slide - 1) * 100}%)`;
       rightWrap.style.transform = `translateX(${(1 - slide) * 100}%)`;
       ordered.forEach((el, i) => {
-        const local = clamp01((progress - 0.34 - i * 0.017) / 0.3);
-        const eased = 1 - Math.pow(1 - local, 3);
-        el.style.transform = `translateY(${(1 - eased) * 115}%)`;
+        const offset = ((i * STAGGER_EACH) / timelineTotal) * NAME_SPAN;
+        const window_ = (TWEEN_DURATION / timelineTotal) * NAME_SPAN;
+        const local = clamp01((progress - NAME_START - offset) / window_);
+        const eased = 1 - Math.pow(1 - local, 4);
+        el.style.transform = `translateY(${(1 - eased) * 110}%)`;
       });
     };
     const requestUpdate = () => {
@@ -441,59 +469,67 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
   }, []);
 
   return (
-    <footer ref={sectionRef} className="relative overflow-hidden px-5 pb-4 pt-12 md:px-8 md:pt-16">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="mono-detail text-xs text-slate-500">{rights}</p>
-          <p className="mt-1 text-xs text-slate-500">{note}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-5">
-          {quickLinks.map((link) => (
-            <RollLink key={link.label} href={link.href} label={link.label} />
-          ))}
-          <RollLink href="#top" label={`${backToTop} ↑`} accent />
-        </div>
-      </div>
-
-      <div className="relative left-1/2 mt-6 h-[38vh] min-h-[15rem] w-screen -translate-x-1/2 sm:left-auto sm:h-[34vh] sm:min-h-[15rem] sm:w-auto sm:translate-x-0 md:h-[46vh]" aria-hidden="true">
-        <div className="absolute inset-0 flex justify-between">
-          <div ref={leftWrapRef} className="flex h-full w-1/2 origin-left items-center justify-start overflow-hidden will-change-transform">
-            <pre ref={leftPreRef} className="ascii-hand-pre pointer-events-auto select-none" style={preStyle} />
+    <footer ref={sectionRef} className="relative h-[170svh]">
+      <div className="sticky top-0 flex h-svh flex-col overflow-visible px-5 pb-5 pt-8 md:px-8 md:pb-6 md:pt-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="mono-detail text-xs text-slate-500">{rights}</p>
+            <p className="mt-1 text-xs text-slate-500">{note}</p>
           </div>
-          <div ref={rightWrapRef} className="flex h-full w-1/2 origin-right items-center justify-end overflow-hidden will-change-transform">
-            <pre ref={rightPreRef} className="ascii-hand-pre pointer-events-auto select-none" style={preStyle} />
+          <div className="flex flex-wrap items-center gap-5">
+            {quickLinks.map((link) => (
+              <RollLink key={link.label} href={link.href} label={link.label} />
+            ))}
+            <RollLink href="#top" label={`${backToTop} ↑`} />
           </div>
         </div>
-      </div>
 
-      <div
-        ref={nameRef}
-        role="img"
-        aria-label={`${firstName} ${lastName}`}
-        className="mx-auto flex w-full max-w-[110rem] items-end justify-between gap-[0.4em] whitespace-nowrap pb-2 text-[10.5vw] leading-[0.95]"
-      >
-        <span
-          aria-hidden="true"
-          className="font-semibold tracking-[-0.05em] text-white"
-          style={{ fontFamily: "var(--font-display), Inter, ui-sans-serif, system-ui, sans-serif" }}
+        <div className="relative min-h-0 flex-1" aria-hidden="true">
+          <div className="absolute inset-0 sm:flex sm:justify-between">
+            <div
+              ref={leftWrapRef}
+              className="absolute -left-[18vw] top-[3%] flex h-[52%] w-[96vw] items-center justify-start overflow-hidden will-change-transform sm:static sm:h-full sm:w-1/2"
+            >
+              <pre ref={leftPreRef} className="ascii-hand-pre pointer-events-auto select-none" style={preStyle} />
+            </div>
+            <div
+              ref={rightWrapRef}
+              className="absolute -right-[18vw] bottom-[0%] flex h-[52%] w-[96vw] items-center justify-end overflow-hidden will-change-transform sm:static sm:h-full sm:w-1/2"
+            >
+              <pre ref={rightPreRef} className="ascii-hand-pre pointer-events-auto select-none" style={preStyle} />
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={nameRef}
+          role="img"
+          aria-label={`${firstName} ${lastName}`}
+          className="mx-auto flex w-full max-w-[110rem] items-baseline justify-between gap-[0.18em] whitespace-nowrap pb-2 text-[clamp(3.45rem,14vw,3.8rem)] leading-[1.12] sm:gap-[0.26em] sm:text-[5.75rem] md:text-[7rem] lg:text-[9.1rem] xl:text-[11.2rem] 2xl:text-[12.8rem]"
         >
-          {Array.from(firstName).map((ch, i) => (
-            <span key={i} className="inline-block overflow-hidden align-bottom">
-              <span data-side="left" className="inline-block will-change-transform">
-                {ch}
+          <span
+            aria-hidden="true"
+            className="inline-flex items-baseline font-semibold tracking-[-0.06em] text-white"
+            style={{ fontFamily: "var(--font-display), Inter, ui-sans-serif, system-ui, sans-serif" }}
+          >
+            {Array.from(firstName).map((ch, i) => (
+              <span key={i} className="-mx-[0.05em] -my-[0.28em] inline-block overflow-hidden px-[0.05em] pb-[0.38em] pt-[0.22em] align-baseline">
+                <span data-side="left" className="inline-block will-change-transform">
+                  {ch}
+                </span>
               </span>
-            </span>
-          ))}
-        </span>
-        <span aria-hidden="true" className="serif-accent text-[#a7d9f5]">
-          {Array.from(lastName).map((ch, i) => (
-            <span key={i} className="inline-block overflow-hidden align-bottom">
-              <span data-side="right" className="inline-block will-change-transform">
-                {ch}
+            ))}
+          </span>
+          <span aria-hidden="true" className="serif-accent inline-flex items-baseline text-[#a7d9f5]">
+            {Array.from(lastName).map((ch, i) => (
+              <span key={i} className="-mx-[0.14em] -my-[0.28em] inline-block overflow-hidden px-[0.14em] pb-[0.38em] pt-[0.22em] align-baseline">
+                <span data-side="right" className="inline-block will-change-transform">
+                  {ch}
+                </span>
               </span>
-            </span>
-          ))}
-        </span>
+            ))}
+          </span>
+        </div>
       </div>
     </footer>
   );

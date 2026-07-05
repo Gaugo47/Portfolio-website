@@ -82,11 +82,19 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
+      suppressHydrationWarning
       className={`${archivo.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} ${instrumentSerif.variable}`}
     >
       <head>
         <meta httpEquiv="Content-Security-Policy" content={contentSecurityPolicy} />
         <meta name="referrer" content="strict-origin-when-cross-origin" />
+        {/* Applique le thème clair avant le premier rendu pour éviter tout flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light')}}catch(e){}",
+          }}
+        />
       </head>
       <body>
         <ParticleField />

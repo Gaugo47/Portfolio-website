@@ -3,6 +3,7 @@
 import { Code2, Mail, Network } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ScrambleHover } from "@/components/ui/scramble-hover";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export type Language = "fr" | "en";
 
@@ -140,6 +141,7 @@ export function NavBar({ language, onLanguageChange, labels, links }: NavBarProp
               </button>
             ))}
           </div>
+          <ThemeToggle />
           <a
             href={links.github}
             className="focus-ring cursor-pointer rounded-full p-2 text-slate-300 transition-colors duration-200 hover:bg-white/[0.08] hover:text-white"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, BarChart3, ExternalLink, Layers3 } from "lucide-react";
 import { MacbookScrollShowcase } from "@/components/MacbookScrollShowcase";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { getProjectDetail, projectDetails } from "@/data/projectDetails";
 import { assetPath } from "@/lib/assetPath";
 
@@ -57,8 +58,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const displayedGallery = project.gallery?.filter((item) => !versionOneMediaSources.has(item.src));
 
   return (
-    <main className="relative min-h-screen overflow-x-visible px-5 py-7 md:px-8 md:py-10">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_76%_12%,rgba(56,189,248,0.16),transparent_28rem),radial-gradient(circle_at_18%_18%,rgba(16,185,129,0.1),transparent_24rem),linear-gradient(180deg,#020617_0%,#050816_46%,#020617_100%)]" />
+    <main className="project-detail-page relative min-h-screen overflow-x-visible px-5 py-7 md:px-8 md:py-10">
+      <div className="project-detail-bg pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_76%_12%,rgba(56,189,248,0.16),transparent_28rem),radial-gradient(circle_at_18%_18%,rgba(16,185,129,0.1),transparent_24rem),linear-gradient(180deg,#020617_0%,#050816_46%,#020617_100%)]" />
 
       <div className="mx-auto max-w-7xl">
         <nav className="mb-8 flex flex-wrap items-center justify-between gap-3">
@@ -69,13 +70,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <ArrowLeft className="h-4 w-4" />
             Retour aux projets
           </a>
-          <a
-            href={assetPath("/#contact")}
-            className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
-          >
-            Discuter du projet
-            <ExternalLink className="h-4 w-4" />
-          </a>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <a
+              href={assetPath("/#contact")}
+              className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
+            >
+              Discuter du projet
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
         </nav>
 
         {project.heroImage && project.heroVariant === "macbook-scroll" ? (
@@ -204,7 +208,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </div>
 
               <div
-                className="rounded-lg border border-white/10 bg-white/[0.035] p-5 md:p-6"
+                className="project-chart rounded-lg border border-white/10 bg-white/[0.035] p-5 md:p-6"
                 role="img"
                 aria-label={`${costReduction.baseline.label}: ${formatEuros(costReduction.baseline.totalCost)}. ${costReduction.optimized.label}: ${formatEuros(costReduction.optimized.totalCost)}.`}
               >
@@ -399,7 +403,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 </div>
 
                 <div
-                  className="grid min-h-72 grid-cols-2 items-end gap-6 rounded-md border border-white/10 bg-black/24 p-5"
+                  className="project-chart grid min-h-72 grid-cols-2 items-end gap-6 rounded-md border border-white/10 bg-black/24 p-5"
                   role="img"
                   aria-label={`${engineeringMetrics.weight.beforeLabel}: ${engineeringMetrics.weight.beforeValue}. ${engineeringMetrics.weight.afterLabel}: ${engineeringMetrics.weight.afterValue}.`}
                 >
@@ -444,7 +448,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                       V2
                     </span>
                   </div>
-                  <div className="mt-5 rounded-md border border-white/10 bg-black/24 p-4">
+                  <div className="project-chart mt-5 rounded-md border border-white/10 bg-black/24 p-4">
                     <div
                       className="relative h-40 sm:h-32"
                       role="img"
@@ -518,7 +522,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
                 <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
                   <div
-                    className="grid h-72 grid-cols-2 items-end gap-5 rounded-md border border-white/10 bg-black/24 p-5"
+                    className="project-chart grid h-72 grid-cols-2 items-end gap-5 rounded-md border border-white/10 bg-black/24 p-5"
                     role="img"
                     aria-label={engineeringMetrics.drivetrain.items.map((item) => `${item.motor}: ${item.previousRatio} vers ${item.ratio}`).join(". ")}
                   >
