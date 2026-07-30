@@ -15,6 +15,10 @@ export type GlobeRoute = {
   color?: string;
 };
 
+function shouldDisableMobileGlobeDrag() {
+  return window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+}
+
 interface RotatingEarthProps {
   width?: number;
   height?: number;
@@ -335,6 +339,8 @@ export default function RotatingEarth({
     };
 
     const handleMouseDown = (event: MouseEvent) => {
+      if (shouldDisableMobileGlobeDrag()) return;
+
       autoRotate = false;
       const startX = event.clientX;
       const startY = event.clientY;
@@ -393,15 +399,15 @@ export default function RotatingEarth({
     <div ref={containerRef} className={`relative flex justify-center ${className}`}>
       <canvas
         ref={canvasRef}
-        className="dark h-auto w-full cursor-grab rounded-2xl bg-background active:cursor-grabbing"
-        style={{ maxWidth: "100%", height: "auto" }}
+        className="dark h-auto w-full cursor-default rounded-2xl bg-background md:cursor-grab md:active:cursor-grabbing"
+        style={{ maxWidth: "100%", height: "auto", touchAction: "pan-y" }}
       />
       {isLoading ? (
         <div className="absolute inset-0 grid place-items-center">
           <span className="loader" />
         </div>
       ) : null}
-      <div className="dark absolute bottom-4 left-4 rounded-md bg-neutral-900 px-2 py-1 text-xs text-muted-foreground">
+      <div className="dark absolute bottom-4 left-4 hidden rounded-md bg-neutral-900 px-2 py-1 text-xs text-muted-foreground md:block">
         {interactionLabel}
       </div>
     </div>

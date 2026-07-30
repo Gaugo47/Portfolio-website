@@ -23,8 +23,8 @@ import { NavBar, type Language } from "@/components/NavBar";
 import { Reveal } from "@/components/Reveal";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SectionHeader } from "@/components/SectionHeader";
-import { SplineShowcase } from "@/components/SplineShowcase";
 import { AnimatedFeatureCard } from "@/components/ui/feature-card-1";
+import { ScrambleHover } from "@/components/ui/scramble-hover";
 import { SplineScene } from "@/components/ui/splite";
 import { journeys } from "@/data/journeys";
 import { assetPath } from "@/lib/assetPath";
@@ -42,6 +42,7 @@ const portfolioCopy = {
   fr: {
     nav: {
       brand: "GAUTHIER.AI",
+      about: "À propos",
       systems: "Construire",
       projects: "Projets",
       journey: "Parcours",
@@ -82,13 +83,36 @@ const portfolioCopy = {
       { value: "3 domaines", label: "mécanique · électronique · IA" },
       { value: "100% local", label: "IA embarquée, sans cloud" },
     ],
-    interface: {
-      eyebrow: "Système en direct",
-      title: "Une stack qui relie mécanique, électronique, logiciel et IA.",
-      modules: ["Mécanique", "Électronique", "Logiciel", "IA locale"],
-      moduleLabel: "Couche",
-      copy:
-        "La scène 3D reflète ma façon de travailler : relier plusieurs disciplines d’ingénierie pour transformer une idée en système réel, réactif et démontrable.",
+    aboutIntro: {
+      eyebrow: "About me",
+      title: "Construire est ma façon",
+      titleAccent: "de comprendre.",
+      portraitAlt: "Portrait de Gauthier Defoy",
+      portraitCaption: "Fig. 01 — entre deux prototypes",
+      paragraphs: [
+        [
+          { text: "Étudiant ingénieur à l’ESILV, j’ai besoin de ", accent: false },
+          { text: "fabriquer", accent: true },
+          {
+            text:
+              " pour comprendre. Un robot octopode entièrement mécanique, un assistant vocal qui tourne sans internet, une interface projetée pilotée au geste et à la voix : chaque projet est une excuse pour creuser un problème complexe jusqu’à ce qu’il fonctionne.",
+            accent: false,
+          },
+        ],
+        [
+          {
+            text:
+              "En parallèle des cours, je dirige une équipe de six sur un projet d’interface interactive et je monte des partenariats pour le DeVinci Fablab. Et parce qu’",
+            accent: false,
+          },
+          { text: "expliquer", accent: true },
+          {
+            text:
+              " est une autre manière d’apprendre, j’ai passé un été à donner des cours de maths et de physique à des lycéens.",
+            accent: false,
+          },
+        ],
+      ],
     },
     systemsHeader: {
       eyebrow: "Ce que je construis",
@@ -320,6 +344,7 @@ const portfolioCopy = {
   en: {
     nav: {
       brand: "GAUTHIER.AI",
+      about: "About",
       systems: "Build",
       projects: "Projects",
       journey: "Journey",
@@ -360,13 +385,36 @@ const portfolioCopy = {
       { value: "3 domains", label: "mechanics · electronics · AI" },
       { value: "100% local", label: "on-device AI, no cloud" },
     ],
-    interface: {
-      eyebrow: "Live system",
-      title: "A stack that connects mechanics, electronics, software and AI.",
-      modules: ["Mechanics", "Electronics", "Software", "Local AI"],
-      moduleLabel: "Layer",
-      copy:
-        "The 3D scene mirrors how I work: connecting several engineering disciplines to turn an idea into a real system — responsive and ready to demo.",
+    aboutIntro: {
+      eyebrow: "About me",
+      title: "Building is how I",
+      titleAccent: "make sense of things.",
+      portraitAlt: "Portrait of Gauthier Defoy",
+      portraitCaption: "Fig. 01 — between two prototypes",
+      paragraphs: [
+        [
+          { text: "Engineering student at ESILV, I need to ", accent: false },
+          { text: "build", accent: true },
+          {
+            text:
+              " things to understand them. A fully mechanical octopod robot, a voice assistant that runs without internet, a projected interface driven by gesture and voice: every project is an excuse to dig into a complex problem until it works.",
+            accent: false,
+          },
+        ],
+        [
+          {
+            text:
+              "Alongside my studies, I lead a team of six on an interactive interface project and build partnerships for the DeVinci Fablab. And because ",
+            accent: false,
+          },
+          { text: "explaining", accent: true },
+          {
+            text:
+              " is another way of learning, I spent a summer teaching maths and physics to high-school students.",
+            accent: false,
+          },
+        ],
+      ],
     },
     systemsHeader: {
       eyebrow: "What I Build",
@@ -618,6 +666,7 @@ export function RefinedHome() {
   const [mobileHeroMenuOpen, setMobileHeroMenuOpen] = useState(false);
   const t = portfolioCopy[language];
   const heroNavLinks = [
+    { label: t.nav.about, href: "#about" },
     { label: t.nav.systems, href: "#systems" },
     { label: t.nav.projects, href: "#projects" },
     { label: t.nav.journey, href: "#journey" },
@@ -834,7 +883,61 @@ export function RefinedHome() {
         </div>
       </section>
 
-      <SplineShowcase labels={t.interface} />
+      <section id="about" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-16">
+          <Reveal className="relative mx-auto w-full max-w-md lg:max-w-none">
+            <div className="relative">
+              <span className="absolute -left-2.5 -top-2.5 h-6 w-6 border-l-2 border-t-2 border-[#7cc8ef]/50" aria-hidden="true" />
+              <span className="absolute -right-2.5 -top-2.5 h-6 w-6 border-r-2 border-t-2 border-[#7cc8ef]/50" aria-hidden="true" />
+              <span className="absolute -bottom-2.5 -left-2.5 h-6 w-6 border-b-2 border-l-2 border-[#7cc8ef]/50" aria-hidden="true" />
+              <span className="absolute -bottom-2.5 -right-2.5 h-6 w-6 border-b-2 border-r-2 border-[#7cc8ef]/50" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-lg border border-white/10 bg-[#080a10]/72 shadow-[0_40px_120px_rgba(0,0,0,0.35)]">
+                <img
+                  src={assetPath("/profile.jpg")}
+                  alt={t.aboutIntro.portraitAlt}
+                  className="aspect-[4/5] w-full object-cover object-top saturate-[0.9]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05070c]/85 via-transparent to-transparent" aria-hidden="true" />
+                <p className="mono-detail absolute inset-x-0 bottom-0 px-4 pb-3.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  {t.aboutIntro.portraitCaption}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <p className="mono-detail flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7cc8ef]/80">
+              <span className="h-px w-10 bg-[#7cc8ef]/40" aria-hidden="true" />
+              <ScrambleHover
+                text={t.aboutIntro.eyebrow}
+                useOriginalCharsOnly
+                scrambleSpeed={38}
+                maxIterations={12}
+                className="cursor-default"
+                scrambledClassName="cursor-default text-[#7cc8ef]"
+              />
+            </p>
+            <h2 className="mt-5 text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.02em] text-white md:text-6xl">
+              {t.aboutIntro.title} <span className="serif-accent text-[#a7d9f5]">{t.aboutIntro.titleAccent}</span>
+            </h2>
+            {t.aboutIntro.paragraphs.map((paragraph, paragraphIndex) => (
+              <p key={paragraphIndex} className="mt-6 max-w-2xl text-pretty text-base leading-7 text-slate-300 md:text-lg md:leading-8">
+                {paragraph.map((segment, segmentIndex) =>
+                  segment.accent ? (
+                    <span key={segmentIndex} className="serif-accent text-[1.12em] text-[#a7d9f5]">
+                      {segment.text}
+                    </span>
+                  ) : (
+                    <span key={segmentIndex}>{segment.text}</span>
+                  ),
+                )}
+              </p>
+            ))}
+          </Reveal>
+        </div>
+      </section>
 
       <section id="systems" className="defer-render relative px-5 py-20 md:px-8 md:py-28">
         <div className="mx-auto max-w-7xl">
@@ -1125,7 +1228,7 @@ export function RefinedHome() {
       </section>
 
       <section id="contact" className="relative px-5 pb-12 pt-20 md:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 border-t border-white/10 pt-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(22rem,0.62fr)] lg:items-start">
+        <div className="mx-auto max-w-7xl border-t border-white/10 pt-10">
           <Reveal>
             <div>
               <p className="mono-detail mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{t.contact.eyebrow}</p>
@@ -1135,47 +1238,6 @@ export function RefinedHome() {
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{t.contact.copy}</p>
             </div>
           </Reveal>
-          <div className="w-full rounded-2xl border border-white/[0.12] bg-white/[0.035] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.28)] backdrop-blur md:p-5 lg:justify-self-end">
-            <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="mono-detail text-xs font-semibold uppercase tracking-[0.18em] text-[#7cc8ef]/80">
-                {t.contact.eyebrow}
-              </span>
-              <span className="h-2.5 w-2.5 rounded-full bg-[#7cc8ef] shadow-[0_0_18px_rgba(124,200,239,0.75)]" />
-            </div>
-            <div className="grid gap-3">
-              <a
-                className="focus-ring inline-flex min-h-12 cursor-pointer items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-sky-200"
-                href={profileLinks.email}
-              >
-                {t.contact.email}
-                <Mail className="h-4 w-4" />
-              </a>
-              <div className="grid gap-3">
-                <a
-                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                  href={profileLinks.linkedin}
-                >
-                  {t.contact.linkedin}
-                  <Network className="h-4 w-4 shrink-0" />
-                </a>
-                <a
-                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                  href={profileLinks.github}
-                >
-                  {t.contact.github}
-                  <Code2 className="h-4 w-4 shrink-0" />
-                </a>
-                <a
-                  className="focus-ring inline-flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-white/[0.12] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
-                  href={assetPath(profileLinks.cv)}
-                  download
-                >
-                  {t.contact.cv}
-                  <Download className="h-4 w-4 shrink-0" />
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1183,6 +1245,8 @@ export function RefinedHome() {
         firstName="Gauthier"
         lastName="Defoy."
         quickLinks={t.hero.quickLinks}
+        cvHref={profileLinks.cv}
+        cvLabel={t.contact.cv}
         rights={t.footer.rights}
         note={t.footer.note}
         backToTop={t.footer.backToTop}

@@ -9,6 +9,8 @@ type AsciiHandsFinaleProps = {
   firstName: string;
   lastName: string;
   quickLinks: QuickLink[];
+  cvHref: string;
+  cvLabel: string;
   rights: string;
   note: string;
   backToTop: string;
@@ -279,10 +281,11 @@ function attachScramble(preEl: HTMLPreElement, poolGrid: number[][], disposers: 
 
 // Lien avec roulement de caractères au survol — mêmes réglages que le footer
 // de lukebaffait.fr : 0.6s cubic-bezier(0.87,0,0.13,1), délai 28ms par lettre.
-function RollLink({ href, label }: { href: string; label: string }) {
+function RollLink({ href, label, download }: { href: string; label: string; download?: boolean }) {
   return (
     <a
       href={href}
+      download={download}
       className="focus-ring group relative inline-flex cursor-pointer overflow-hidden text-sm font-semibold uppercase leading-[1.2] text-white/80 md:text-[1.05rem]"
     >
       <span className="sr-only">{label}</span>
@@ -319,7 +322,16 @@ const preStyle: React.CSSProperties = {
   textShadow: "var(--ascii-glow)",
 };
 
-export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note, backToTop }: AsciiHandsFinaleProps) {
+export function AsciiHandsFinale({
+  firstName,
+  lastName,
+  quickLinks,
+  cvHref,
+  cvLabel,
+  rights,
+  note,
+  backToTop,
+}: AsciiHandsFinaleProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const leftWrapRef = useRef<HTMLDivElement | null>(null);
   const rightWrapRef = useRef<HTMLDivElement | null>(null);
@@ -480,6 +492,7 @@ export function AsciiHandsFinale({ firstName, lastName, quickLinks, rights, note
             {quickLinks.map((link) => (
               <RollLink key={link.label} href={link.href} label={link.label} />
             ))}
+            <RollLink href={assetPath(cvHref)} label={cvLabel} download />
             <RollLink href="#top" label={`${backToTop} ↑`} />
           </div>
         </div>

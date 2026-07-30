@@ -11,6 +11,7 @@ type NavBarProps = {
   language: Language;
   onLanguageChange: (language: Language) => void;
   labels: {
+    about: string;
     systems: string;
     projects: string;
     journey: string;
@@ -32,6 +33,7 @@ type NavBarProps = {
 
 export function NavBar({ language, onLanguageChange, labels, links }: NavBarProps) {
   const navLinks = [
+    { label: labels.about, href: "#about" },
     { label: labels.systems, href: "#systems" },
     { label: labels.projects, href: "#projects" },
     { label: labels.journey, href: "#journey" },

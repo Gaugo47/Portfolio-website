@@ -20,6 +20,11 @@ type AnchorStyle = CSSProperties & {
   positionAnchor?: string;
 };
 
+function shouldDisableMobileGlobeDrag(event?: PointerEvent | React.PointerEvent) {
+  if (event?.pointerType === "touch") return true;
+  return window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+}
+
 type GlobeProps = {
   markers?: Marker[];
   arcs?: Arc[];
@@ -89,6 +94,8 @@ export function Globe({
   );
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
+    if (shouldDisableMobileGlobeDrag(event)) return;
+
     pointerInteracting.current = { x: event.clientX, y: event.clientY };
     if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
     isPausedRef.current = true;
@@ -253,7 +260,7 @@ export function Globe({
           opacity: 0,
           transition: "opacity 1.2s ease",
           borderRadius: "50%",
-          touchAction: "none",
+          touchAction: "pan-y",
         }}
       />
 
